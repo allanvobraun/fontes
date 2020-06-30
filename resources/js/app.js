@@ -2,6 +2,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 import CardBody from './components/CardBody.vue';
 import TopBar from './components/TopBar.vue';
+import FontesTable from './components/FontesTable.vue';
 require('./bootstrap');
 
 window.Vue = require('vue');
@@ -17,6 +18,7 @@ const app = new Vue({
     el: '#app',
     components: {
         CardBody,
-        TopBar
+        TopBar,
+        FontesTable
     }
 });

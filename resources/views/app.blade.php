@@ -16,7 +16,7 @@
             <top-bar></top-bar>
 
             <main class="py-4 mx-4">
-                <card-body></card-body>
+                <card-body><fontes-table></fontes-table></card-body>
 
                 @yield('content')
             </main>

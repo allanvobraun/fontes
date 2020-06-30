@@ -1922,6 +1922,82 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/FontesTable.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/FontesTable.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      fields: [{
+        key: "cod_font",
+        sortable: true,
+        label: "Código Fonte"
+      }, {
+        key: "cod_interno",
+        sortable: true,
+        label: "Código Interno"
+      }, {
+        key: "modelo"
+      }, {
+        key: "fabricante"
+      }, {
+        key: "desc_problema",
+        label: "Problema"
+      }, {
+        key: "peças"
+      }, {
+        key: "status"
+      }, {
+        key: "created_at"
+      }],
+      items: [{
+        id: 1,
+        cod_interno: "codduwia2",
+        cod_font: "duhxauwghd",
+        desc_problema: "queimado",
+        peças: "parafusoaa30",
+        status: "ok",
+        created_at: "2020-06-30 18:25:23",
+        updated_at: "2020-06-30 18:25:25",
+        modelo: "modelo213",
+        fabricante: "fabricante2321"
+      }, {
+        id: 2,
+        cod_interno: "dhjavw23",
+        cod_font: "udwga2312",
+        desc_problema: "Fritou",
+        peças: "capacitor",
+        status: "nok",
+        created_at: "2020-06-30 18:30:44",
+        updated_at: "2020-06-30 18:30:47",
+        modelo: "modelb",
+        fabricante: "novo_fabricante"
+      }]
+    };
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/TopBar.vue?vue&type=script&lang=js&":
 /*!*****************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/TopBar.vue?vue&type=script&lang=js& ***!
@@ -80925,8 +81001,54 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "b-card",
-    { attrs: { header: "featured", "header-tag": "header", title: "Title" } },
-    [_c("b-card-text", [_vm._v("Header and footers using props.")])],
+    {
+      attrs: {
+        header: "featured",
+        "header-tag": "header",
+        title: "Todas as fontes do banco de dados"
+      }
+    },
+    [_vm._t("default")],
+    2
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/FontesTable.vue?vue&type=template&id=1c2192f6&":
+/*!**************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/FontesTable.vue?vue&type=template&id=1c2192f6& ***!
+  \**************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c("b-table", {
+        attrs: {
+          "sticky-header": "",
+          striped: "",
+          bordered: "",
+          outlined: "",
+          items: _vm.items,
+          fields: _vm.fields,
+          "head-variant": "dark"
+        }
+      })
+    ],
     1
   )
 }
@@ -93211,7 +93333,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var bootstrap_vue_dist_bootstrap_vue_css__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(bootstrap_vue_dist_bootstrap_vue_css__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _components_CardBody_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/CardBody.vue */ "./resources/js/components/CardBody.vue");
 /* harmony import */ var _components_TopBar_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/TopBar.vue */ "./resources/js/components/TopBar.vue");
-/* harmony import */ var bootstrap_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! bootstrap-vue */ "./node_modules/bootstrap-vue/esm/index.js");
+/* harmony import */ var _components_FontesTable_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/FontesTable.vue */ "./resources/js/components/FontesTable.vue");
+/* harmony import */ var bootstrap_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! bootstrap-vue */ "./node_modules/bootstrap-vue/esm/index.js");
+
 
 
 
@@ -93224,12 +93348,13 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 // Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 
-Vue.use(bootstrap_vue__WEBPACK_IMPORTED_MODULE_4__["BootstrapVue"]);
+Vue.use(bootstrap_vue__WEBPACK_IMPORTED_MODULE_5__["BootstrapVue"]);
 var app = new Vue({
   el: '#app',
   components: {
     CardBody: _components_CardBody_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
-    TopBar: _components_TopBar_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
+    TopBar: _components_TopBar_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
+    FontesTable: _components_FontesTable_vue__WEBPACK_IMPORTED_MODULE_4__["default"]
   }
 });
 
@@ -93344,6 +93469,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CardBody_vue_vue_type_template_id_c95f0586___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CardBody_vue_vue_type_template_id_c95f0586___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/FontesTable.vue":
+/*!*************************************************!*\
+  !*** ./resources/js/components/FontesTable.vue ***!
+  \*************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _FontesTable_vue_vue_type_template_id_1c2192f6___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./FontesTable.vue?vue&type=template&id=1c2192f6& */ "./resources/js/components/FontesTable.vue?vue&type=template&id=1c2192f6&");
+/* harmony import */ var _FontesTable_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./FontesTable.vue?vue&type=script&lang=js& */ "./resources/js/components/FontesTable.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _FontesTable_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _FontesTable_vue_vue_type_template_id_1c2192f6___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _FontesTable_vue_vue_type_template_id_1c2192f6___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/FontesTable.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/FontesTable.vue?vue&type=script&lang=js&":
+/*!**************************************************************************!*\
+  !*** ./resources/js/components/FontesTable.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_FontesTable_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./FontesTable.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/FontesTable.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_FontesTable_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/FontesTable.vue?vue&type=template&id=1c2192f6&":
+/*!********************************************************************************!*\
+  !*** ./resources/js/components/FontesTable.vue?vue&type=template&id=1c2192f6& ***!
+  \********************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FontesTable_vue_vue_type_template_id_1c2192f6___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./FontesTable.vue?vue&type=template&id=1c2192f6& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/FontesTable.vue?vue&type=template&id=1c2192f6&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FontesTable_vue_vue_type_template_id_1c2192f6___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FontesTable_vue_vue_type_template_id_1c2192f6___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

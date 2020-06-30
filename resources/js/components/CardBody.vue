@@ -2,9 +2,9 @@
   <b-card
     header="featured"
     header-tag="header"
-    title="Title"
+    title="Todas as fontes do banco de dados"
   >
-    <b-card-text>Header and footers using props.</b-card-text>
+    <slot></slot>
   </b-card>
 </template>
 
