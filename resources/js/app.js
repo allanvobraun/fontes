@@ -1,6 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
-import ExampleComponent from './components/ExampleComponent.vue';
+import CardBody from './components/CardBody.vue';
 import TopBar from './components/TopBar.vue';
 require('./bootstrap');
 
@@ -16,7 +16,7 @@ Vue.use(BootstrapVue);
 const app = new Vue({
     el: '#app',
     components: {
-        ExampleComponent,
+        CardBody,
         TopBar
     }
 });
