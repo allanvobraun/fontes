@@ -1,5 +1,5 @@
 <template>
-  <b-navbar toggleable="lg" type="dark" variant="info">
+  <b-navbar toggleable="lg" type="dark" style="background-color: #7386D5">
     <b-navbar-brand href="#">FonteControl</b-navbar-brand>
 
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
@@ -33,4 +33,5 @@ export default {};
 </script>
 
 <style>
+
 </style>

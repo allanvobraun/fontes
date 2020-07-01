@@ -1,11 +1,11 @@
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
-import CardBody from './components/CardBody.vue';
-import TopBar from './components/TopBar.vue';
-import FontesTable from './components/FontesTable.vue';
+import Vue from 'vue';
+import App from './components/App.vue';
+
+import router from './router';
 require('./bootstrap');
 
-window.Vue = require('vue');
 import { BootstrapVue } from 'bootstrap-vue';
 
 // const files = require.context('./', true, /\.vue$/i)
@@ -17,8 +17,7 @@ Vue.use(BootstrapVue);
 const app = new Vue({
     el: '#app',
     components: {
-        CardBody,
-        TopBar,
-        FontesTable
-    }
+        App
+    },
+    router: router
 });
