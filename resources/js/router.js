@@ -8,11 +8,6 @@ Vue.use(VueRouter);
 
 export default new VueRouter({
     routes: [
-        // {
-        //     path: '/show',
-        //     name: 'mostrar',
-        //     component: User
-        // },
         {path: '/show', name: 'mostrar', component: FontesTable},
         {path: '/b', component: TestB},
     ],
