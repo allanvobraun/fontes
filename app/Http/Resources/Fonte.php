@@ -17,6 +17,7 @@ class Fonte extends JsonResource
     {
         return [
             'cod_font' => $this->cod_font,
+            'cod_interno' => $this->cod_interno,
             'modelo' => $this->modelo,
             'fabricante' => $this->fabricante,
             'reparos' => ReparoResource::collection($this->reparos)

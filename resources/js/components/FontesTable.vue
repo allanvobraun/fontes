@@ -1,18 +1,39 @@
 <template>
   <div>
-    <b-table 
-    sticky-header 
-    striped 
-    bordered 
-    outlined 
-    :items="items"
-    :fields="fields" 
-    head-variant="dark"></b-table>
+    <b-table
+      sticky-header
+      striped
+      bordered
+      outlined
+      :items="items"
+      :fields="fields"
+      head-variant="dark"
+    ></b-table>
   </div>
 </template>
 
 <script>
 export default {
+  methods: {
+    jsonToData(data_obj) {
+      // remove reparos do obje  faz uma copia
+      const { reparos, ...fonte } = data_obj;
+      for (let i = 0; i < data_obj.reparos.length; i++) {
+        
+        let reparo = data_obj.reparos[i];
+        let obj = { ...fonte, ...reparo };
+        this.items.push(obj);
+      }
+    }
+  },
+  mounted () {
+    axios
+      .get('/api/fontes')
+      .then(response => {
+        
+        _.forEach(response.data.data, (data) => this.jsonToData(data))
+      })
+  },
   data() {
     return {
       fields: [
@@ -26,52 +47,17 @@ export default {
           sortable: true,
           label: "Código Interno"
         },
-        {
-          key: "modelo",
-        },        
-        {
-          key: "fabricante",
-        },
+        { key: "modelo" },
+        { key: "fabricante" },
         {
           key: "desc_problema",
           label: "Problema"
         },
-        {
-          key: "peças",
-        },
-        {
-          key: "status",
-        },        
-        {
-          key: "created_at",
-        },
+        { key: "peças" },
+        { key: "status" },
+        { key: "data" }
       ],
-      items: [
-        {
-          id: 1,
-          cod_interno: "codduwia2",
-          cod_font: "duhxauwghd",
-          desc_problema: "queimado",
-          peças: "parafusoaa30",
-          status: "ok",
-          created_at: "2020-06-30 18:25:23",
-          updated_at: "2020-06-30 18:25:25",
-          modelo: "modelo213",
-          fabricante: "fabricante2321"
-        },
-        {
-          id: 2,
-          cod_interno: "dhjavw23",
-          cod_font: "udwga2312",
-          desc_problema: "Fritou",
-          peças: "capacitor",
-          status: "nok",
-          created_at: "2020-06-30 18:30:44",
-          updated_at: "2020-06-30 18:30:47",
-          modelo: "modelb",
-          fabricante: "novo_fabricante"
-        }
-      ]
+      items: []
     };
   }
 };
