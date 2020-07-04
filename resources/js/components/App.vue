@@ -3,7 +3,7 @@
     <div class="wrapper">
       <side-bar></side-bar>
 
-      <main class="py-4 mx-4">
+      <main class="m-4 w-100">
         <card-body>
             <router-view></router-view>
         </card-body>

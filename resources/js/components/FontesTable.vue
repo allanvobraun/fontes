@@ -15,7 +15,8 @@
 <script>
 export default {
   methods: {
-    jsonToData(data_obj) {
+    // desaninha um objeto json com um lista
+    jsonToLine(data_obj) {
       // remove reparos do obje  faz uma copia
       const { reparos, ...fonte } = data_obj;
       for (let i = 0; i < data_obj.reparos.length; i++) {
@@ -31,7 +32,7 @@ export default {
       .get('/api/fontes')
       .then(response => {
         
-        _.forEach(response.data.data, (data) => this.jsonToData(data))
+        _.forEach(response.data.data, (data) => this.jsonToLine(data))
       })
   },
   data() {
