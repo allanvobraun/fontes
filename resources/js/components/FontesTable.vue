@@ -20,20 +20,16 @@ export default {
       // remove reparos do obje  faz uma copia
       const { reparos, ...fonte } = data_obj;
       for (let i = 0; i < data_obj.reparos.length; i++) {
-        
         let reparo = data_obj.reparos[i];
         let obj = { ...fonte, ...reparo };
         this.items.push(obj);
       }
     }
   },
-  mounted () {
-    axios
-      .get('/api/fontes')
-      .then(response => {
-        
-        _.forEach(response.data.data, (data) => this.jsonToLine(data))
-      })
+  mounted() {
+    axios.get("/api/fontes").then(response => {
+      _.forEach(response.data.data, data => this.jsonToLine(data));
+    });
   },
   data() {
     return {
@@ -56,6 +52,12 @@ export default {
         },
         { key: "peças" },
         { key: "status" },
+        {
+          key: "valor",
+          formatter: value => {
+            return value.toLocaleString('pt-br', {minimumFractionDigits: 2});
+          }
+        },
         { key: "data" }
       ],
       items: []

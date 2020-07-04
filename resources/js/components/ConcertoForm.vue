@@ -2,10 +2,9 @@
   <div class="mx-5">
     <b-form @submit.prevent="onSubmit" @reset="onReset" v-if="show" ref="form">
       <div class="row">
-        <b-form-group label="Código da fonte:" label-for="cod_font" class="col-sm-6">
+        <b-form-group label="Código da fonte:" class="col-sm-6">
           <b-form-input
             v-model="form.cod_font"
-            event="cod_font"
             type="text"
             index="1"
             @update="onFilled($event)"
@@ -28,9 +27,8 @@
       </div>
 
       <div class="row">
-        <b-form-group label="Modelo:" label-for="modelo" class="col-sm-6">
+        <b-form-group label="Modelo:" class="col-sm-6">
           <b-form-input
-            event="modelo"
             v-model="form.modelo"
             :disabled="lock"
             @keyup.enter.native="FocusNextElement($event)"
@@ -38,9 +36,8 @@
           ></b-form-input>
         </b-form-group>
 
-        <b-form-group label="Fabricante:" label-for="fabricante" class="col-sm-6">
+        <b-form-group label="Fabricante:" class="col-sm-6">
           <b-form-input
-            event="fabricante"
             v-model="form.fabricante"
             :disabled="lock"
             @keyup.enter.native="FocusNextElement($event)"
@@ -50,9 +47,8 @@
       </div>
 
       <div class="row">
-        <b-form-group label="Descrição problema:" label-for="problema" class="col-sm-6">
+        <b-form-group label="Descrição problema:" class="col-sm-6">
           <b-form-input
-            event="problema"
             v-model="form.problema"
             :disabled="lock"
             @keyup.enter.native="FocusNextElement($event)"
@@ -60,7 +56,7 @@
           ></b-form-input>
         </b-form-group>
 
-        <b-form-group label="Peças utilizadas:" label-for="peças" class="col-sm-6">
+        <b-form-group label="Peças utilizadas:" class="col-sm-6">
           <b-form-input
             event="peças"
             v-model="form.peças"
@@ -71,26 +67,34 @@
         </b-form-group>
       </div>
 
-      <div class="row justify-content-md-center">
-        <b-form-group label-cols-sm="4" label="Status" label-for="status">
-          <b-form-select
-            event="status"
-            :options="statuses"
-            v-model="form.status"
+      <div class="row">
+        <b-form-group class="col-sm-6" label="Valor:">
+          <money
+            v-model="form.valor"
+            v-bind="money"
             :disabled="lock"
-            required
-          ></b-form-select>
+            class="form-control"
+            maxlength="9"
+            index="7"
+          ></money>
+        </b-form-group>
+
+        <b-form-group class="col-sm-6" label="Status:">
+          <b-form-select :options="statuses" v-model="form.status" :disabled="lock" required></b-form-select>
         </b-form-group>
       </div>
 
-      <b-button type="submit" variant="primary" @click.prevent>Submit</b-button>
+      <b-button type="submit" variant="primary" @click.prevent="">Submit</b-button>
       <b-button type="reset" variant="danger">Reset</b-button>
     </b-form>
   </div>
 </template>
 
 <script>
+import { Money } from "v-money";
+
 export default {
+  components: { Money },
   data() {
     return {
       form: {
@@ -100,9 +104,16 @@ export default {
         fabricante: "",
         problema: "",
         peças: "",
-        status: ""
+        status: "",
+        valor: 0
       },
       statuses: [{ text: "Selecione", value: "" }, "OK", "NOK"],
+      money: {
+        decimal: ",",
+        prefix: "R$ ",
+        precision: 2,
+        masked: false
+      },
       show: true,
       lock: true
     };
@@ -138,7 +149,6 @@ export default {
         input => input.getAttribute("index") === next
       );
       if (next_input !== undefined) next_input.focus();
-
     }
   }
 };
