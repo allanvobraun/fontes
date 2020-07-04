@@ -84,7 +84,7 @@
         </b-form-group>
       </div>
 
-      <b-button type="submit" variant="primary" @click.prevent="">Submit</b-button>
+      <b-button type="submit" variant="primary" @click="checkTarget($event)">Submit</b-button>
       <b-button type="reset" variant="danger">Reset</b-button>
     </b-form>
   </div>
@@ -119,6 +119,10 @@ export default {
     };
   },
   methods: {
+    checkTarget(e) {
+      const target = e.explicitOriginalTarget;
+      if (target.tagName === 'INPUT') e.preventDefault();
+    },
     onSubmit(evt) {
       alert(JSON.stringify(this.form));
     },
