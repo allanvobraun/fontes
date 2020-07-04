@@ -8,6 +8,12 @@ use Carbon\Carbon;
 class Reparo extends Model
 {
 
+
+    protected $attributes = [
+        'valor' => 0
+    ];
+    protected $guarded = ['created_at', 'updated_at'];
+
     public function fontes()
     {
         return $this->belongsTo('App\Models\Fonte', 'cod_font', 'cod_font');
@@ -17,4 +23,5 @@ class Reparo extends Model
     {
         return Carbon::parse($data)->format('d/m/Y');
     }
+
 }

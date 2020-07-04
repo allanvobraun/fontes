@@ -9,6 +9,9 @@ class Fonte extends Model
     protected  $primaryKey = 'cod_font';
     public $keyType = 'string';
     public $incrementing = false;
+    protected $guarded = [];
+    public $timestamps = false;
+
     
     public function reparos()
     {

@@ -20,3 +20,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('/fontes', 'FontesController@index');
+Route::post('/fontes', 'FontesController@newFonte');
+Route::post('/fontes/{cod_font}/reparos', 'FontesController@newReparo');
