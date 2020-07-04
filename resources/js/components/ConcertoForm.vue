@@ -116,6 +116,7 @@ export default {
       this.form = _.mapValues(this.form, () => "");
       // Trick to reset/clear native browser form valeventation state
       this.show = false;
+      this.lock = true;
       this.$nextTick(() => {
         this.show = true;
       });
