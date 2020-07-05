@@ -17,4 +17,11 @@ class Fonte extends Model
     {
         return $this->hasMany('App\Models\Reparo', 'cod_font', 'cod_font');
     }
+
+    public static function likeSearch(string $field, string $query)
+    {
+        $result = self::where($field, 'like', "%{$query}%")
+            ->pluck($field);
+        return $result;
+    }
 }
