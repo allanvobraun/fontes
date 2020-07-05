@@ -20,7 +20,7 @@
             v-model="form.fonte.cod_interno"
             @keyup.enter.native="focusNextElement($event)"
             required
-            :disabled="lock"
+            :disabled="lock.fonte"
           ></b-form-input>
         </b-form-group>
       </div>
@@ -29,7 +29,7 @@
         <b-form-group label="Modelo:" class="col-sm-6">
           <b-form-input
             v-model="form.fonte.modelo"
-            :disabled="lock"
+            :disabled="lock.fonte"
             @keyup.enter.native="focusNextElement($event)"
             index="3"
           ></b-form-input>
@@ -38,7 +38,7 @@
         <b-form-group label="Fabricante:" class="col-sm-6">
           <b-form-input
             v-model="form.fonte.fabricante"
-            :disabled="lock"
+            :disabled="lock.fonte"
             @keyup.enter.native="focusNextElement($event)"
             index="4"
           ></b-form-input>
@@ -49,7 +49,7 @@
         <b-form-group label="Descrição problema:" class="col-sm-6">
           <b-form-input
             v-model="form.reparo.problema"
-            :disabled="lock"
+            :disabled="lock.reparo"
             @keyup.enter.native="focusNextElement($event)"
             index="5"
           ></b-form-input>
@@ -59,7 +59,7 @@
           <b-form-input
             event="peças"
             v-model="form.reparo.peças"
-            :disabled="lock"
+            :disabled="lock.reparo"
             @keyup.enter.native="focusNextElement($event)"
             index="6"
           ></b-form-input>
@@ -71,7 +71,7 @@
           <money
             v-model="form.reparo.valor"
             v-bind="money"
-            :disabled="lock"
+            :disabled="lock.reparo"
             class="form-control"
             maxlength="9"
             index="7"
@@ -79,7 +79,7 @@
         </b-form-group>
 
         <b-form-group class="col-sm-6" label="Status:">
-          <b-form-select :options="statuses" v-model="form.reparo.status" :disabled="lock" required></b-form-select>
+          <b-form-select :options="statuses" v-model="form.reparo.status" :disabled="lock.reparo" required></b-form-select>
         </b-form-group>
       </div>
 
@@ -119,27 +119,24 @@ export default {
         masked: false
       },
       show: true,
-      lock: true
+      lock: {
+        fonte: true,
+        reparo: true
+      }
     };
   },
   methods: {
     getFonte(text) {
-      console.log("aaaaaaaa");
-
       const url = `/api/fontes/${text}`;
       axios
         .get(url)
         .then(response => {
-          console.log("deu boa");
           this.form.fonte = response.data.data;
-          
-          // this.form.fonte = response.data.data;
-          console.log(response.data.data);
+          this.lock.fonte = true;
         })
         .catch(error => {
+          this.cleanFonte();
           console.log("erroo");
-          
-          console.log(error.response);
         });
     },
     async searchLike(input) {
@@ -164,6 +161,10 @@ export default {
         console.log(error);
       }
     },
+    lockAll(lock){
+      this.lock.fonte = lock;
+      this.lock.reparo = lock;
+    },
     onSubmit(evt) {
       axios
         .post("/api/fontes", this.form.fonte)
@@ -171,19 +172,28 @@ export default {
     },
     onReset(evt) {
       evt.preventDefault();
-      this.form = _.mapValues(this.form, () => "");
+      this.form.fonte = _.mapValues(this.form.fonte, () => "");
+      this.form.reparo = _.mapValues(this.form.reparo, () => "");
       // Trick to reset/clear native browser form valeventation state
       this.show = false;
-      this.lock = true;
+      this.lockAll(true);
       this.$nextTick(() => {
         this.show = true;
       });
     },
+    cleanFonte() {
+
+      this.form.fonte = _.mapValues(this.form.fonte, (value, key) => {
+        console.log(key);
+        return key !== "cod_font" ? "" : value;
+      });
+    },
     onFilled(text) {
       if (text !== "") {
-        this.lock = false;
+        this.lockAll(false);
       } else {
-        this.lock = true;
+        this.lockAll(true);
+        this.cleanFonte();
       }
     },
     focusNextElement(event) {
