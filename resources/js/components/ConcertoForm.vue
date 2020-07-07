@@ -48,7 +48,7 @@
       <div class="row">
         <b-form-group label="Descrição problema:" class="col-sm-6">
           <b-form-input
-            v-model="form.reparo.problema"
+            v-model="form.reparo.desc_problema"
             :disabled="lock.reparo"
             @keyup.enter.native="focusNextElement($event)"
             index="5"
@@ -79,7 +79,12 @@
         </b-form-group>
 
         <b-form-group class="col-sm-6" label="Status:">
-          <b-form-select :options="statuses" v-model="form.reparo.status" :disabled="lock.reparo" required></b-form-select>
+          <b-form-select
+            :options="statuses"
+            v-model="form.reparo.status"
+            :disabled="lock.reparo"
+            required
+          ></b-form-select>
         </b-form-group>
       </div>
 
@@ -98,6 +103,8 @@ export default {
   data() {
     return {
       form: {
+        // foi achada  a fonte no banco
+        fonteStatus: false,
         fonte: {
           cod_font: "",
           cod_interno: "",
@@ -105,7 +112,7 @@ export default {
           fabricante: ""
         },
         reparo: {
-          problema: "",
+          desc_problema: "",
           peças: "",
           status: "",
           valor: 0
@@ -126,6 +133,14 @@ export default {
     };
   },
   methods: {
+    notify(title, body, type) {
+      this.$notify({
+        group: "alert",
+        title: title,
+        text: body,
+        type: type
+      });
+    },
     getFonte(text) {
       const url = `/api/fontes/${text}`;
       axios
@@ -133,6 +148,8 @@ export default {
         .then(response => {
           this.form.fonte = response.data.data;
           this.lock.fonte = true;
+          this.form.fonteStatus = true;
+          this.notify("Fonte encontrada", "", "info");
         })
         .catch(error => {
           this.cleanFonte();
@@ -146,11 +163,7 @@ export default {
         .get(url)
         .then(response => {
           return response.data.data;
-        })
-        .catch(error => {
-          console.log(error.response);
         });
-      console.log(arr);
       return arr;
     },
     checkTarget(e) {
@@ -161,14 +174,32 @@ export default {
         console.log(error);
       }
     },
-    lockAll(lock){
+    lockAll(lock) {
       this.lock.fonte = lock;
       this.lock.reparo = lock;
     },
     onSubmit(evt) {
+      let fonte_txt = "";
+      let reparo_txt = "";
+      if (!this.form.fonteStatus) {
+        axios
+          .post("/api/fontes", this.form.fonte)
+          .then(response => console.log(response.data))
+          .catch(error => {
+            console.log(error.response);
+          });
+        fonte_txt = "Fonte salva com sucesso!";
+      }
+
+      const url = `/api/fontes/${this.form.fonte.cod_font}/reparos`;
       axios
-        .post("/api/fontes", this.form.fonte)
-        .then(response => console.log(response.data));
+        .post(url, this.form.reparo)
+        .then(response => console.log(response.data))
+        .catch(error => {
+          console.log(error.response);
+        });
+      reparo_txt = "Reparo salvo com sucesso!";
+      this.notify("Enviado com sucesoo!", `${fonte_txt} ${reparo_txt}`, "success");
     },
     onReset(evt) {
       evt.preventDefault();
@@ -177,16 +208,16 @@ export default {
       // Trick to reset/clear native browser form valeventation state
       this.show = false;
       this.lockAll(true);
+      this.form.fonteStatus = false;
       this.$nextTick(() => {
         this.show = true;
       });
     },
     cleanFonte() {
-
       this.form.fonte = _.mapValues(this.form.fonte, (value, key) => {
-        console.log(key);
         return key !== "cod_font" ? "" : value;
       });
+      this.form.fonteStatus = false;
     },
     onFilled(text) {
       if (text !== "") {
