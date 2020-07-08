@@ -1,6 +1,6 @@
 <template>
   <div class="mx-5">
-    <b-form @submit.prevent="onSubmit" @reset="onReset" v-if="show" ref="form" autocomplete="off">
+    <b-form @submit.prevent="onSubmit" @reset.prevent="onReset" v-if="show" ref="form" autocomplete="off">
       <div class="row">
         <b-form-group label="N/S Rework:" class="col-sm-6">
           <auto-complete-search
@@ -88,8 +88,8 @@
         </b-form-group>
       </div>
 
-      <b-button type="submit" variant="primary" @click="checkTarget($event)">Submit</b-button>
-      <b-button type="reset" variant="danger">Reset</b-button>
+      <b-button type="submit" variant="primary" @click="checkTarget($event)">Enviar</b-button>
+      <b-button type="reset" variant="danger">Limpar</b-button>
     </b-form>
   </div>
 </template>
@@ -224,9 +224,9 @@ export default {
       const responte_txt = `${fonte_txt} ${reparo_txt}`;
 
       this.notify("Enviado com sucesso!", responte_txt, "success");
+      this.onReset()
     },
-    onReset(evt) {
-      evt.preventDefault();
+    onReset() {
       this.form.fonte = _.mapValues(this.form.fonte, () => "");
       this.form.reparo = _.mapValues(this.form.reparo, () => "");
       // Trick to reset/clear native browser form valeventation state
