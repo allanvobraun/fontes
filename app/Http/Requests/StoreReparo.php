@@ -15,7 +15,7 @@ class StoreReparo extends ApiRequest
     public function rules()
     {
         return [
-            "cod_font" => 'bail|exists:App\Models\Fonte,cod_font|required|max:50|',
+            "cod_interno" => 'bail|exists:App\Models\Fonte,cod_interno|required|max:50|',
             "desc_problema" => 'max:100',
             "peças" => 'max:100',
             "valor" => 'numeric',

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Fonte extends Model
 {
-    protected  $primaryKey = 'cod_font';
+    protected  $primaryKey = 'cod_interno';
     public $keyType = 'string';
     public $incrementing = false;
     protected $guarded = [];
@@ -15,7 +15,7 @@ class Fonte extends Model
     
     public function reparos()
     {
-        return $this->hasMany('App\Models\Reparo', 'cod_font', 'cod_font');
+        return $this->hasMany('App\Models\Reparo', 'cod_interno', 'cod_interno');
     }
 
     public static function likeSearch(string $field, string $query)

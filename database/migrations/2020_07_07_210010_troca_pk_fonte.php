@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFontesTable extends Migration
+class TrocaPkFonte extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,15 @@ class CreateFontesTable extends Migration
      */
     public function up()
     {
+        Schema::dropIfExists('Fonte.fontes');
         Schema::create('Fonte.fontes', function (Blueprint $table) {
+            $table->string('cod_interno', 50);
             $table->string('cod_font', 50);
             $table->string('modelo', 100)->nullable();
             $table->string('fabricante', 100)->nullable();
-            $table->primary('cod_font');
-            // $table->foreign('empresa_id')->references('id')->on('pai.empresas');
-            // $table->timestamps();
+            $table->primary('cod_interno');
         });
+        
     }
 
     /**
@@ -31,5 +32,6 @@ class CreateFontesTable extends Migration
     public function down()
     {
         Schema::dropIfExists('Fonte.fontes');
+
     }
 }

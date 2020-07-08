@@ -35,14 +35,14 @@ export default {
     return {
       fields: [
         {
-          key: "cod_font",
-          sortable: true,
-          label: "Código Fonte"
-        },
-        {
           key: "cod_interno",
           sortable: true,
-          label: "Código Interno"
+          label: "N/S Rework"
+        },
+        {
+          key: "cod_font",
+          sortable: true,
+          label: "N/S Fabricante"
         },
         { key: "modelo" },
         { key: "fabricante" },
@@ -55,7 +55,7 @@ export default {
         {
           key: "valor",
           formatter: value => {
-            return value.toLocaleString('pt-br', {minimumFractionDigits: 2});
+            return value.toLocaleString("pt-br", { minimumFractionDigits: 2 });
           }
         },
         { key: "data" }

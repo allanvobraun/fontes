@@ -23,14 +23,14 @@ class FontesController extends Controller
         return Fonte::create($request->all());
     }
 
-    public function getFonte(SearchOneFonte $request, $cod_font)
+    public function getFonte(SearchOneFonte $request, $cod_interno)
     {
-        return jsonData(Fonte::find($cod_font));
+        return jsonData(Fonte::find($cod_interno));
     }
 
-    public function newReparo(StoreReparo $request, $cod_font)
+    public function newReparo(StoreReparo $request, $cod_interno)
     {
-        $fonte = Fonte::find($cod_font)->reparos()->create($request->all());
+        $fonte = Fonte::find($cod_interno)->reparos()->create($request->all());
         return $fonte;
     }
 

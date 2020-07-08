@@ -15,8 +15,8 @@ class StoreFonte extends ApiRequest
     public function rules()
     {
         return [
-            "cod_font" => "bail|required|unique:App\Models\Fonte,cod_font|max:50",
-            "cod_interno" => "bail|unique:App\Models\Fonte,cod_interno|required|max:50",
+            "cod_interno" => "bail|required|unique:App\Models\Fonte,cod_interno|max:50",
+            "cod_font" => "bail|unique:App\Models\Fonte,cod_font|required|max:50",
             "modelo" => "max:100",
             "fabricante" => "max:100"
 
@@ -26,7 +26,8 @@ class StoreFonte extends ApiRequest
     public function messages()
     {
         return [
-            'cod_font.unique' => 'A fonte já existe no banco de dados',
+            'cod_interno.unique' => 'Esse código interno já existe no banco de dados',
+            'cod_font.unique' => 'Esse código do fabricante já existe no banco de dados',
         ];
     }
 }

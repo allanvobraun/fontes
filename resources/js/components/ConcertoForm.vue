@@ -2,22 +2,22 @@
   <div class="mx-5">
     <b-form @submit.prevent="onSubmit" @reset="onReset" v-if="show" ref="form" autocomplete="off">
       <div class="row">
-        <b-form-group label="Código da fonte:" class="col-sm-6">
+        <b-form-group label="N/S Rework:" class="col-sm-6">
           <auto-complete-search
-            v-model="form.fonte.cod_font"
             index="1"
+            v-model="form.fonte.cod_interno"
             @update="onFilled($event)"
             @keyup.enter.native="focusNextElement($event)"
             @result-selected="getFonte"
-            required
             :search="searchLike"
+            required
           ></auto-complete-search>
         </b-form-group>
 
-        <b-form-group label="Código interno:" class="col-sm-6">
+        <b-form-group label="N/S Fabricante:" class="col-sm-6">
           <b-form-input
             index="2"
-            v-model="form.fonte.cod_interno"
+            v-model="form.fonte.cod_font"
             @keyup.enter.native="focusNextElement($event)"
             required
             :disabled="lock.fonte"
@@ -149,21 +149,18 @@ export default {
           this.form.fonte = response.data.data;
           this.lock.fonte = true;
           this.form.fonteStatus = true;
-          this.notify("Fonte encontrada", "", "info");
+          this.notify("Fonte encontrada!", "", "info");
         })
         .catch(error => {
           this.cleanFonte();
-          console.log("erroo");
         });
     },
     async searchLike(input) {
       if (input.length < 1) return [];
-      const url = `/api/fontes/search?query=${input}&attribute=cod_font`;
-      const arr = await axios
-        .get(url)
-        .then(response => {
-          return response.data.data;
-        });
+      const url = `/api/fontes/search?query=${input}&attribute=cod_interno`;
+      const arr = await axios.get(url).then(response => {
+        return response.data.data;
+      });
       return arr;
     },
     checkTarget(e) {
@@ -178,28 +175,55 @@ export default {
       this.lock.fonte = lock;
       this.lock.reparo = lock;
     },
-    onSubmit(evt) {
-      let fonte_txt = "";
-      let reparo_txt = "";
+    saveFonte() {
+      return axios
+        .post("/api/fontes", this.form.fonte)
+        .then(response => response)
+        .catch(error => error.response);
+    },
+    saveReparo() {
+      const url = `/api/fontes/${this.form.fonte.cod_interno}/reparos`;
+      return axios
+        .post(url, this.form.reparo)
+        .then(response => response)
+        .catch(error => error.response);
+    },
+    async onSubmit(evt) {
+      let fonteSave = false;
+      let reparoSave = false;
+      //só tenta salvar a fonte se ela não foi auto preenchida
       if (!this.form.fonteStatus) {
-        axios
-          .post("/api/fontes", this.form.fonte)
-          .then(response => console.log(response.data))
-          .catch(error => {
-            console.log(error.response);
-          });
-        fonte_txt = "Fonte salva com sucesso!";
+        const fonte_data = await this.saveFonte();
+        if (fonte_data.status >= 400) {
+          let erros = fonte_data.data.erros;
+          let erros_txt = _.values(
+            _.mapValues(erros, erro => erro.toString())
+          ).toString();
+
+          this.notify("Erro ao gravar a fonte!", erros_txt, "danger");
+          return;
+        } else {
+          fonteSave = true;
+        }
+        // console.log(fonte_data);
       }
 
-      const url = `/api/fontes/${this.form.fonte.cod_font}/reparos`;
-      axios
-        .post(url, this.form.reparo)
-        .then(response => console.log(response.data))
-        .catch(error => {
-          console.log(error.response);
-        });
-      reparo_txt = "Reparo salvo com sucesso!";
-      this.notify("Enviado com sucesoo!", `${fonte_txt} ${reparo_txt}`, "success");
+      const reparo_data = await this.saveReparo();
+      if (reparo_data.status >= 400) {
+        let erros = fonte_data.data.erros;
+        let erros_txt = _.values(
+          _.mapValues(erros, erro => erro.toString())
+        ).toString();
+        this.notify("Erro ao gravar o reparo", erros_txt, "danger");
+        return;
+      } else {
+        reparoSave = true;
+      }
+      let fonte_txt = fonteSave ? "Fonte salva com sucesso" : "";
+      let reparo_txt = reparoSave ? "Reparo da fonte salva com sucesso" : "";
+      const responte_txt = `${fonte_txt} ${reparo_txt}`;
+
+      this.notify("Enviado com sucesso!", responte_txt, "success");
     },
     onReset(evt) {
       evt.preventDefault();
@@ -215,7 +239,7 @@ export default {
     },
     cleanFonte() {
       this.form.fonte = _.mapValues(this.form.fonte, (value, key) => {
-        return key !== "cod_font" ? "" : value;
+        return key !== "cod_interno" ? "" : value;
       });
       this.form.fonteStatus = false;
     },
