@@ -52,11 +52,6 @@ export default {
   },
   mounted() {
     this.getRows(1);
-    // axios.get("/api/fontes").then(response => {
-    //   _.forEach(response.data.data, data => this.jsonToLine(data));
-    //   this.perPage = response.data.meta.per_page;
-    //   this.currentPage = response.data.meta.current_page;
-    // });
   },
   data() {
     return {
