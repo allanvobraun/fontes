@@ -1,6 +1,12 @@
 <template>
   <div class="mx-5">
-    <b-form @submit.prevent="onSubmit" @reset.prevent="onReset" v-if="show" ref="form" autocomplete="off">
+    <b-form
+      @submit.prevent="onSubmit"
+      @reset.prevent="onReset"
+      v-if="show"
+      ref="form"
+      autocomplete="off"
+    >
       <div class="row">
         <b-form-group label="N/S Rework:" class="col-sm-6">
           <auto-complete-search
@@ -164,12 +170,8 @@ export default {
       return arr;
     },
     checkTarget(e) {
-      const target = e.explicitOriginalTarget;
-      try {
-        if (target.tagName === "INPUT") e.preventDefault();
-      } catch (error) {
-        console.log(error);
-      }
+      // checa se o click veio do mause ou se foi do browser (0 é do browser)
+      if(e.detail == 0) e.preventDefault();
     },
     lockAll(lock) {
       this.lock.fonte = lock;
@@ -224,7 +226,7 @@ export default {
       const responte_txt = `${fonte_txt} ${reparo_txt}`;
 
       this.notify("Enviado com sucesso!", responte_txt, "success");
-      this.onReset()
+      this.onReset();
     },
     onReset() {
       this.form.fonte = _.mapValues(this.form.fonte, () => "");
