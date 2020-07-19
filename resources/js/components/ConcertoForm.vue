@@ -3,7 +3,6 @@
     <b-form
       @submit.prevent="onSubmit"
       @reset.prevent="onReset"
-      v-if="show"
       ref="form"
       autocomplete="off"
     >
@@ -11,6 +10,7 @@
         <b-form-group label="N/S Rework:" class="col-sm-6">
           <auto-complete-search
             index="1"
+            ref="search-input"
             v-model="form.fonte.cod_interno"
             @update="onFilled($event)"
             @keyup.enter.native="focusNextElement($event)"
@@ -131,7 +131,6 @@ export default {
         precision: 2,
         masked: false
       },
-      show: true,
       lock: {
         fonte: true,
         reparo: true
@@ -171,7 +170,7 @@ export default {
     },
     checkTarget(e) {
       // checa se o click veio do mause ou se foi do browser (0 é do browser)
-      if(e.detail == 0) e.preventDefault();
+      if (e.detail == 0) e.preventDefault();
     },
     lockAll(lock) {
       this.lock.fonte = lock;
@@ -193,9 +192,11 @@ export default {
     async onSubmit(evt) {
       let fonteSave = false;
       let reparoSave = false;
+
       //só tenta salvar a fonte se ela não foi auto preenchida
       if (!this.form.fonteStatus) {
         const fonte_data = await this.saveFonte();
+
         if (fonte_data.status >= 400) {
           let erros = fonte_data.data.erros;
           let erros_txt = _.values(
@@ -207,7 +208,6 @@ export default {
         } else {
           fonteSave = true;
         }
-        // console.log(fonte_data);
       }
 
       const reparo_data = await this.saveReparo();
@@ -232,12 +232,10 @@ export default {
       this.form.fonte = _.mapValues(this.form.fonte, () => "");
       this.form.reparo = _.mapValues(this.form.reparo, () => "");
       // Trick to reset/clear native browser form valeventation state
-      this.show = false;
       this.lockAll(true);
       this.form.fonteStatus = false;
-      this.$nextTick(() => {
-        this.show = true;
-      });
+      const input = this.$refs["search-input"];
+      input.$children[0].focus();
     },
     cleanFonte() {
       this.form.fonte = _.mapValues(this.form.fonte, (value, key) => {

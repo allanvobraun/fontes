@@ -4,7 +4,7 @@
       v-bind="$attrs"
       v-on="$listeners"
       list="input-list"
-      id="input-with-list"
+      ref="input-with-list"
       @keyup="update"
       @blur="onSelected"
     ></b-form-input>
@@ -34,6 +34,12 @@ export default {
       if (value !== "") {
         this.$emit("result-selected", value);
       }
+    },
+    focusInput() {
+      console.log('focussssssss');
+      
+      // this.$refs["input-with-list"].focus();
+
     }
   }
 };
