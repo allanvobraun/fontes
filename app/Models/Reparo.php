@@ -13,6 +13,7 @@ class Reparo extends Model
         'valor' => 0
     ];
     protected $guarded = ['created_at', 'updated_at'];
+    protected $appends = ['created_at'];
 
     public function fontes()
     {

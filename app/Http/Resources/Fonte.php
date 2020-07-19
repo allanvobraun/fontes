@@ -16,12 +16,10 @@ class Fonte extends JsonResource
     public function toArray($request)
     {
         return [
-            'cod_font' => $this->cod_font,
             'cod_interno' => $this->cod_interno,
+            'cod_font' => $this->cod_font,
             'modelo' => $this->modelo,
-            'fabricante' => $this->fabricante,
-            'reparos' => ReparoResource::collection($this->reparos)
-            
+            'fabricante' => $this->fabricante
         ];
     }
 }
