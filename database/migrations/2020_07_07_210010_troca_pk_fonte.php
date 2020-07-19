@@ -13,7 +13,7 @@ class TrocaPkFonte extends Migration
      */
     public function up()
     {
-        Schema::dropIfExists('fontes');
+        // Schema::dropIfExists('fontes');
         Schema::create('fontes', function (Blueprint $table) {
             $table->string('cod_interno', 50);
             $table->string('cod_font', 50);

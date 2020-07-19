@@ -13,7 +13,7 @@ class TrocaFkReparo extends Migration
      */
     public function up()
     {
-        Schema::dropIfExists('reparos');
+        // Schema::dropIfExists('reparos');
         Schema::create('reparos', function (Blueprint $table) {
             $table->id();
             $table->string('cod_interno', 50);
