@@ -19,7 +19,7 @@ class FontesController extends Controller
 {
     public function getFontes()
     {
-        $items = Fonte::orderBy('cod_interno')->paginate(5);
+        $items = Fonte::orderBy('cod_interno', 'DESC')->paginate(5);
         return FonteResource::collection($items);
     }
     public function getReparos(GetReparos $request, $cod_interno)
