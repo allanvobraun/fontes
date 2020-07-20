@@ -19,7 +19,10 @@ export default new VueRouter({
             path: "/fontes/:cod_interno/reparos",
             name: "reparos",
             component: ReparosTable,
-            meta: { title: "Todos os reparos da fonte" }
+            meta: {
+                title: route => `Todos os reparos da fonte "${route.params.cod_interno}"`
+            } ,
+            
         },
         {
             path: "/fontes",

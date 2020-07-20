@@ -8,8 +8,13 @@
 export default {
   computed: {
     titulo() {
-      return this.$route.meta.title
+      let title = this.$route.meta.title;
+      if (typeof title === "function") {
+        return title(this.$route);
+      } else {
+        return title;
+      }
     }
-  },
+  }
 };
 </script>

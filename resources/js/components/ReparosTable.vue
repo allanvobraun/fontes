@@ -10,11 +10,16 @@
       head-variant="dark"
       id="reparos-table"
     ></b-table>
+    <back-button style="float: right;"></back-button>
   </div>
 </template>
 
 <script>
+import BackButton from "./BackButton.vue";
 export default {
+  components: {
+    BackButton
+  },
   computed: {
     codigo() {
       return this.$route.params.cod_interno;
