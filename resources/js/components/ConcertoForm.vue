@@ -138,14 +138,6 @@ export default {
     };
   },
   methods: {
-    notify(title, body, type) {
-      this.$notify({
-        group: "alert",
-        title: title,
-        text: body,
-        type: type
-      });
-    },
     getFonte(text) {
       const url = `/api/fontes/${text}`;
       axios

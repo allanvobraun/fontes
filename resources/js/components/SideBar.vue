@@ -9,7 +9,7 @@
         <router-link :to="{ name: 'home'}">Home</router-link>
       </li>
       <li>
-        <router-link :to="{ name: 'mostrar'}">Mostrar Tudo</router-link>
+        <router-link :to="{ name: 'fontes'}">Mostrar Tudo</router-link>
       </li>
       <li>
         <router-link :to="{ name: 'novo'}">Novo Reparo</router-link>

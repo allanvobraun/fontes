@@ -9,7 +9,11 @@
       :fields="fields"
       head-variant="dark"
       id="fontes-table"
-    ></b-table>
+    >
+      <template v-slot:cell(reparos)="data">
+        <reparo-link width="3rem" height="2rem" :codigo="data.item.cod_interno"></reparo-link>
+      </template>
+    </b-table>
     <b-pagination
       v-model="currentPage"
       :total-rows="rows"
@@ -21,32 +25,19 @@
 </template>
 
 <script>
-export default {
-  methods: {
-    // desaninha um objeto json com um lista
-    jsonToLine(data_obj) {
-      // remove reparos do obje  faz uma copia
-      const { reparos, ...fonte } = data_obj;
+import ReparoLink from "./ReparoLink.vue";
 
-      if (data_obj.reparos.length > 0) {
-        for (let i = 0; i < data_obj.reparos.length; i++) {
-          let reparo = data_obj.reparos[i];
-          let obj = { ...fonte, ...reparo };
-          this.items.push(obj);
-        }
-      } else {
-        let obj = { ...fonte};
-        this.items.push(obj);
-      }
-    },
+export default {
+  components: {
+    ReparoLink
+  },
+  methods: {
     getRows(page) {
       this.items = [];
       const url = `/api/fontes?page=${page}`;
       axios.get(url).then(response => {
-        _.forEach(response.data.data, data => this.jsonToLine(data));
-        this.perPage = response.data.meta.per_page;
-        this.currentPage = response.data.meta.current_page;
-        this.rows = response.data.meta.total_join;
+        this.items = response.data.data;
+        this.rows = response.data.meta.total;
       });
     }
   },
@@ -69,24 +60,11 @@ export default {
         { key: "modelo" },
         { key: "fabricante" },
         {
-          key: "desc_problema",
-          label: "Problema"
-        },
-        { key: "peças" },
-        { key: "status" },
-        {
-          key: "valor",
-          formatter: value => {
-            if (value > 0) {
-              return value.toLocaleString("pt-br", {
-                minimumFractionDigits: 2
-              });
-            } else {
-              return 0;
-            }
-          }
-        },
-        { key: "data" }
+          key: "reparos",
+          label: "Reparos",
+          thStyle: "width: 5%",
+          tdClass: "d-flex justify-content-center icon-cell"
+        }
       ],
       items: [],
       currentPage: 1,
@@ -96,3 +74,8 @@ export default {
   }
 };
 </script>
+<style>
+.icon-cell {
+  padding: 0.60rem 0px !important;
+}
+</style>

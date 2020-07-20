@@ -6,13 +6,10 @@
 
 <script>
 export default {
-  data() {
-    return {
-      titulo: this.$route.meta
-    };
+  computed: {
+    titulo() {
+      return this.$route.meta.title
+    }
   },
-  updated() {
-    this.titulo = this.$route.meta;
-  }
 };
 </script>
