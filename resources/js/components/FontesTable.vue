@@ -39,6 +39,7 @@ export default {
       axios.get(url).then(response => {
         this.items = response.data.data;
         this.rows = response.data.meta.total;
+        this.perPage = response.data.meta.per_page
       });
     }
   },
