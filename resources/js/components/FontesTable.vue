@@ -20,6 +20,7 @@
       :per-page="perPage"
       aria-controls="fontes-table"
       @input="getRows"
+      align="center"
     ></b-pagination>
   </div>
 </template>
