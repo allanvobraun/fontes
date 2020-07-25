@@ -24,7 +24,5 @@ Route::post('/fontes', 'FontesController@newFonte');
 Route::get('/fontes/search', 'FontesController@searchFonte');
 Route::post('/fontes/{cod_interno}/reparos', 'FontesController@newReparo');
 Route::get('/fontes/{cod_interno}/reparos', 'FontesController@getReparos');
+Route::get('/fontes/reparos', 'FontesController@getAllReparos');
 Route::get('/fontes/{cod_interno}', 'FontesController@getFonte');
-
-
-

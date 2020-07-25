@@ -12,11 +12,29 @@ const path = require('path');
  |
  */
 
+mix.options({
+    hmrOptions: {
+        host: 'localhost',  // site's host name
+        port: 8181,
+    }
+});
+
 mix.webpackConfig({
     resolve: {
         alias: {
             'images': path.resolve(__dirname, "resources/assets/images/")
         }
+    },
+    devServer: { 
+        proxy: {
+            host: '127.0.0.1',  // host machine ip 
+            port: 8181,
+        },
+        watchOptions:{
+            aggregateTimeout:200,
+            poll:5000
+        },
+
     }
 });
 
@@ -24,4 +42,3 @@ mix.js("resources/js/app.js", "public/js").sass(
     "resources/sass/app.scss",
     "public/css"
 );
-

@@ -183,3 +183,6 @@ dist/
 # End of https://www.toptal.com/developers/gitignore/api/laravel,visualstudiocode,linux,node,vuejs
 public/js/app.js
 public/css/app.css
+
+composer.lock
+package-lock.json
