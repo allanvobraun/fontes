@@ -17,6 +17,6 @@ if (!function_exists('jsonError')) {
       'erros' => [
         'erro' => $error->getMessage()
       ]
-    ]);
+      ], 400);
   }
 }

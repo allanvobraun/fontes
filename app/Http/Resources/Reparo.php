@@ -19,7 +19,7 @@ class Reparo extends JsonResource
             'peças' => $this->peças,
             'status' => $this->status,
             'valor' => $this->valor,
-            'data' => $this->created_at,
+            'data' => $this->data,
 
         ];
     }

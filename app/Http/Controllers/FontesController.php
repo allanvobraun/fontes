@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Resources\Fonte as FonteResource;
 use App\Http\Resources\Reparo as ReparoResource;
+use App\Http\Resources\ReparoResourceNotNull;
 use Spatie\QueryBuilder\QueryBuilder;
 use App\Models\Fonte;
 use App\Models\Reparo;
@@ -34,6 +35,7 @@ class FontesController extends Controller
     {
         try {
             $fontes = QueryBuilder::for(Reparo::class)
+                ->allowedFields(['created_at', 'valor'])
                 ->allowedFilters([
                     AllowedFilter::custom('dia', new DateFilter),
                     AllowedFilter::custom('mes', new DateFilter),
@@ -44,7 +46,7 @@ class FontesController extends Controller
             return jsonError($th);
         }
 
-        return jsonData(ReparoResource::collection($fontes));
+        return jsonData(ReparoResourceNotNull::collection($fontes));
     }
 
     public function newFonte(StoreFonte $request)
