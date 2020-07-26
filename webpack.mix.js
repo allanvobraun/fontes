@@ -22,7 +22,8 @@ mix.options({
 mix.webpackConfig({
     resolve: {
         alias: {
-            'images': path.resolve(__dirname, "resources/assets/images/")
+            'images': path.resolve(__dirname, "resources/assets/images/"),
+            'charts': path.resolve(__dirname, "resources/js/charts")
         }
     },
     devServer: { 

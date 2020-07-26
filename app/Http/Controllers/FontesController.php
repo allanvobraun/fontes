@@ -34,7 +34,7 @@ class FontesController extends Controller
     public function getAllReparos(Request $request)
     {
         try {
-            $fontes = QueryBuilder::for(Reparo::class)
+            $reparos = QueryBuilder::for(Reparo::class)
                 ->allowedFields(['created_at', 'valor'])
                 ->allowedFilters([
                     AllowedFilter::custom('dia', new DateFilter),
@@ -46,7 +46,23 @@ class FontesController extends Controller
             return jsonError($th);
         }
 
-        return jsonData(ReparoResourceNotNull::collection($fontes));
+        return jsonData(ReparoResourceNotNull::collection($reparos));
+    }
+
+    public function getAllReparosSum(Request $request)
+    {
+        try {
+            $sumReparos = QueryBuilder::for(Reparo::class)
+                ->allowedFilters([
+                    AllowedFilter::custom('dia', new DateFilter),
+                    AllowedFilter::custom('mes', new DateFilter),
+                    AllowedFilter::custom('ano', new DateFilter)
+                ])
+                ->sum('valor');
+        } catch (\Throwable $th) {
+            return jsonError($th);
+        }
+        return jsonData(round($sumReparos, 2));
     }
 
     public function newFonte(StoreFonte $request)
