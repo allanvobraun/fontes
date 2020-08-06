@@ -19,7 +19,7 @@
           header-bg-variant="primary"
           header-text-variant="white"
           align="center"
-        ></b-card>
+        >batata</b-card>
       </b-col>
       <b-col>
         <b-card

@@ -28,8 +28,7 @@ mix.webpackConfig({
     },
     devServer: { 
         proxy: {
-            host: '127.0.0.1',  // host machine ip 
-            port: 8181,
+            '*' : '127.0.0.1:8000'
         },
         watchOptions:{
             aggregateTimeout:200,
