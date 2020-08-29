@@ -12,7 +12,7 @@ class Fonte extends Model
     protected $guarded = [];
     public $timestamps = false;
 
-    
+
     public function reparos()
     {
         return $this->hasMany('App\Models\Reparo', 'cod_interno', 'cod_interno');
@@ -20,8 +20,6 @@ class Fonte extends Model
 
     public static function likeSearch(string $field, string $query)
     {
-        $result = self::where($field, 'like', "%{$query}%")
-            ->pluck($field);
-        return $result;
+        return self::where($field, 'like', "%{$query}%")->limit(20)->pluck($field);
     }
 }

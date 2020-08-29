@@ -12,7 +12,7 @@
             index="1"
             ref="search-input"
             v-model="form.fonte.cod_interno"
-            @update="onFilled($event)"
+            @update="onPreenchido"
             @keyup.enter.native="focusNextElement($event)"
             @result-selected="getFonte"
             :search="searchLike"
@@ -101,10 +101,10 @@
 </template>
 
 <script>
-import { Money } from "v-money";
-import AutoCompleteSearch from "./AutoCompleteSearch";
+  import { Money } from "v-money";
+  import AutoCompleteSearch from "./AutoCompleteSearch";
 
-export default {
+  export default {
   components: { Money, AutoCompleteSearch },
   data() {
     return {
@@ -139,9 +139,8 @@ export default {
   },
   methods: {
     getFonte(text) {
-      const url = `/api/fontes/${text}`;
       axios
-        .get(url)
+        .get( `/api/fontes/${text}`)
         .then(response => {
           this.form.fonte = response.data.data;
           this.lock.fonte = true;
@@ -149,22 +148,23 @@ export default {
           this.notify("Fonte encontrada!", "", "info");
         })
         .catch(error => {
-          this.cleanFonte();
+          console.log("error")
+          // this.cleanFonte(false);
         });
     },
     async searchLike(input) {
-      if (input.length < 1) return [];
+      if (input.length < 2) return [];
       const url = `/api/fontes/search?query=${input}&attribute=cod_interno`;
-      const arr = await axios.get(url).then(response => {
+      return await axios.get(url).then(response => {
         return response.data.data;
       });
-      return arr;
     },
     checkTarget(e) {
       // checa se o click veio do mause ou se foi do browser (0 é do browser)
       if (e.detail == 0) e.preventDefault();
     },
-    lockAll(lock) {
+
+    lockOrUnlockForm(lock) {
       this.lock.fonte = lock;
       this.lock.reparo = lock;
     },
@@ -214,28 +214,34 @@ export default {
     },
 
     onReset() {
-      this.form.fonte = _.mapValues(this.form.fonte, () => "");
+      this.cleanFonte(true);
       this.form.reparo = _.mapValues(this.form.reparo, () => "");
-      // Trick to reset/clear native browser form valeventation state
-      this.lockAll(true);
-      this.form.fonteEncontradaStatus = false;
+
+      this.lockOrUnlockForm(true);
+
       const input = this.$refs["search-input"];
       input.$children[0].focus();
     },
-    cleanFonte() {
-      this.form.fonte = _.mapValues(this.form.fonte, (value, key) => {
-        return key !== "cod_interno" ? "" : value;
-      });
+
+    cleanFonte(limparCod) {
+      const {cod_interno} = this.form.fonte;
+      this.form.fonte = _.mapValues(this.form.fonte, () => "");
+
+      if (!limparCod) {
+        this.form.fonte.cod_interno = cod_interno;
+      }
       this.form.fonteEncontradaStatus = false;
     },
-    onFilled(text) {
+
+    onPreenchido(text) {
       if (text !== "") {
-        this.lockAll(false);
-      } else {
-        this.lockAll(true);
-        this.cleanFonte();
+        this.lockOrUnlockForm(false);
+        return;
       }
+      this.lockOrUnlockForm(true);
+      this.cleanFonte(false);
     },
+
     focusNextElement(event) {
       const idx = event.target.getAttribute("index");
       const next = (parseInt(idx) + 1).toString();

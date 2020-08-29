@@ -8,7 +8,7 @@
       @keyup="update"
       @blur="onSelected"
     ></b-form-input>
-    <b-form-datalist id="input-list" :options="options"></b-form-datalist>
+    <b-form-datalist id="input-list" ref="input-list" :options="options"></b-form-datalist>
   </div>
 </template>
 
@@ -26,20 +26,28 @@ export default {
   },
   methods: {
     async update(event) {
-      const lista = await this.search(event.target.value);
-      this.options = lista;
+      this.options = await this.search(event.target.value);
     },
+
     onSelected(event) {
       const value = event.target.value;
       if (value !== "") {
         this.$emit("result-selected", value);
       }
     },
-    focusInput() {
-      console.log('focussssssss');
-      
-      // this.$refs["input-with-list"].focus();
 
+    // TODO estudar utilidade do metodo
+    onInput(value) {
+      console.log(this.$refs['input-list'].$el.childNodes);
+      const opts = this.$refs['input-list'].childNodes;
+      for (let i = 0; i < opts.length; i++) {
+        if (opts[i].value === value) {
+          // An item was selected from the list!
+          // yourCallbackHere()
+          alert(opts[i].value);
+          break;
+        }
+      }
     }
   }
 };
