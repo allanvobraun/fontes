@@ -110,7 +110,7 @@ export default {
     return {
       form: {
         // foi achada  a fonte no banco
-        fonteStatus: false,
+        fonteEncontradaStatus: false,
         fonte: {
           cod_font: "",
           cod_interno: "",
@@ -145,7 +145,7 @@ export default {
         .then(response => {
           this.form.fonte = response.data.data;
           this.lock.fonte = true;
-          this.form.fonteStatus = true;
+          this.form.fonteEncontradaStatus = true;
           this.notify("Fonte encontrada!", "", "info");
         })
         .catch(error => {
@@ -168,64 +168,57 @@ export default {
       this.lock.fonte = lock;
       this.lock.reparo = lock;
     },
+
     saveFonte() {
       return axios
         .post("/api/fontes", this.form.fonte)
-        .then(response => response)
-        .catch(error => error.response);
+        .catch(error => {
+          this.tratarErro(error.response, "Erro ao gravar a fonte!");
+        });
     },
+
     saveReparo() {
       const url = `/api/fontes/${this.form.fonte.cod_interno}/reparos`;
       return axios
         .post(url, this.form.reparo)
-        .then(response => response)
-        .catch(error => error.response);
+        .catch(error => {
+          this.tratarErro(error.response, "Erro ao gravar o reparo!");
+        });
     },
-    async onSubmit(evt) {
-      let fonteSave = false;
-      let reparoSave = false;
 
-      //só tenta salvar a fonte se ela não foi auto preenchida
-      if (!this.form.fonteStatus) {
-        const fonte_data = await this.saveFonte();
+    tratarErro(error, tituloMensagem) {
+      const errorText = this.$helpers.getErroString(error);
+      this.notify(tituloMensagem, errorText, "danger");
+      throw new Error(tituloMensagem);
+    },
 
-        if (fonte_data.status >= 400) {
-          let erros = fonte_data.data.erros;
-          let erros_txt = _.values(
-            _.mapValues(erros, erro => erro.toString())
-          ).toString();
+    async onSubmit() {
+      let fonte_data;
+      let reparo_data;
 
-          this.notify("Erro ao gravar a fonte!", erros_txt, "danger");
-          return;
-        } else {
-          fonteSave = true;
-        }
+      //só tenta salvar a fonte se ja não foi auto preenchida
+      if (this.form.fonteEncontradaStatus === false) {
+        fonte_data = await this.saveFonte();
       }
+      reparo_data = await this.saveReparo();
+      this.notificarSave(fonte_data, reparo_data);
+      this.onReset();
+    },
 
-      const reparo_data = await this.saveReparo();
-      if (reparo_data.status >= 400) {
-        let erros = fonte_data.data.erros;
-        let erros_txt = _.values(
-          _.mapValues(erros, erro => erro.toString())
-        ).toString();
-        this.notify("Erro ao gravar o reparo", erros_txt, "danger");
-        return;
-      } else {
-        reparoSave = true;
-      }
-      let fonte_txt = fonteSave ? "Fonte salva com sucesso" : "";
-      let reparo_txt = reparoSave ? "Reparo da fonte salva com sucesso" : "";
+    notificarSave(fonte_data, reparo_data) {
+      const fonte_txt = fonte_data ? "Fonte salva com sucesso" : "";
+      const reparo_txt = reparo_data ? "Reparo da fonte salva com sucesso" : "";
       const responte_txt = `${fonte_txt} ${reparo_txt}`;
 
       this.notify("Enviado com sucesso!", responte_txt, "success");
-      this.onReset();
     },
+
     onReset() {
       this.form.fonte = _.mapValues(this.form.fonte, () => "");
       this.form.reparo = _.mapValues(this.form.reparo, () => "");
       // Trick to reset/clear native browser form valeventation state
       this.lockAll(true);
-      this.form.fonteStatus = false;
+      this.form.fonteEncontradaStatus = false;
       const input = this.$refs["search-input"];
       input.$children[0].focus();
     },
@@ -233,7 +226,7 @@ export default {
       this.form.fonte = _.mapValues(this.form.fonte, (value, key) => {
         return key !== "cod_interno" ? "" : value;
       });
-      this.form.fonteStatus = false;
+      this.form.fonteEncontradaStatus = false;
     },
     onFilled(text) {
       if (text !== "") {

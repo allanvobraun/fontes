@@ -4,6 +4,7 @@ import Vue from "vue";
 import App from "./components/App.vue";
 import Notifications from "vue-notification";
 import router from "./router";
+import helpers from "./helpers";
 require("./bootstrap");
 
 import { BootstrapVue } from "bootstrap-vue";
@@ -14,6 +15,15 @@ import { BootstrapVue } from "bootstrap-vue";
 // Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.use(BootstrapVue);
 Vue.use(Notifications);
+
+// helpers
+Vue.use({
+  install() {
+    Vue.helpers = helpers;
+    Vue.prototype.$helpers = helpers;
+  }
+});
+
 // função global
 Vue.mixin({
     methods: {

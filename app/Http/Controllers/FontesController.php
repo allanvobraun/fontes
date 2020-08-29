@@ -77,8 +77,7 @@ class FontesController extends Controller
 
     public function newReparo(StoreReparo $request, $cod_interno)
     {
-        $fonte = Fonte::find($cod_interno)->reparos()->create($request->all());
-        return $fonte;
+        return Fonte::find($cod_interno)->reparos()->create($request->all());
     }
 
     public function searchFonte(SearchFonte $request)
