@@ -7,7 +7,8 @@ module.exports = {
     extensions: ['.js', '.json', '.vue'],
     alias: {
       'images': path.resolve(__dirname, "./resources/assets/images/"),
-      'charts': path.resolve(__dirname, "./resources/js/charts")
+      'charts': path.resolve(__dirname, "./resources/js/charts"),
+      'components': path.resolve(__dirname, './resources/js/components')
     }
   },
   devServer: {

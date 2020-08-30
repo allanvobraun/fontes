@@ -30,7 +30,7 @@
         ],
         datasets: [
           {
-            data: [],
+            data: [0],
             label: "2020",
             backgroundColor: "#de1738",
           }

@@ -47,9 +47,6 @@
 </template>
 
 <script>
-import MoneyYearChart from "./MoneyYearChart.vue";
-// import BaseChart from "charts/BaseChart";
-// import ChartTotalizador from "charts/ChartTotalizador";
 import GanhosAnoChart from "charts/GanhosAnoChart";
 export default {
   components: {GanhosAnoChart}
