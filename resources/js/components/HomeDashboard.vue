@@ -9,7 +9,8 @@
           header-text-variant="white"
           align="center"
         >
-          <money-year-chart></money-year-chart>
+          <ganhos-ano-chart></ganhos-ano-chart>
+
         </b-card>
       </b-col>
       <b-col>
@@ -19,7 +20,8 @@
           header-bg-variant="primary"
           header-text-variant="white"
           align="center"
-        >batata1234</b-card>
+        >
+        </b-card>
       </b-col>
       <b-col>
         <b-card
@@ -45,9 +47,9 @@
 </template>
 
 <script>
-import MoneyYearChart from "./MoneyYearChart.vue";
+import GanhosAnoChart from "charts/GanhosAnoChart";
 export default {
-  components: { MoneyYearChart }
+  components: {GanhosAnoChart}
 };
 </script>
 
