@@ -1,10 +1,14 @@
 <template>
-  <bar-chart-money :getData="getMonth" :chartLabels="labels"></bar-chart-money>
+  <div>
+    <bar-chart-money :getData="getMonth" :chartLabels="labels"></bar-chart-money>
+    teste
+  </div>
+
 </template>
 
 <script>
-import LineChartMoney from "charts/LineChartMoney.js";
-import BarChartMoney from "charts/BarChartMoney.js";
+// import LineChartMoney from "charts/LineChartMoney.js";
+import BarChartMoney from 'charts/BarChartMoney.vue';
 
 export default {
   components: {
@@ -14,10 +18,9 @@ export default {
     getMonth(monthNum, year) {
       const endPoint = "/api/fontes/reparos/valorSum?";
       const filters = `filter[mes]=${monthNum}&filter[ano]=${year}`;
-      const url = endPoint + filters;
 
       return axios
-        .get(url)
+        .get(endPoint + filters)
         .then((response) => {
           return response.data.data;
         })
