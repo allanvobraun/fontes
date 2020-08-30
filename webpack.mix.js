@@ -1,5 +1,6 @@
 const mix = require("laravel-mix");
-const path = require('path');
+
+const webpackOpts = require('./webpack.config.js');
 
 /*
  |--------------------------------------------------------------------------
@@ -13,30 +14,12 @@ const path = require('path');
  */
 
 mix.options({
-    hmrOptions: {
-        host: 'localhost',  // site's host name
-        port: 8181,
-    }
+  hmrOptions: {
+    host: 'localhost',  // site's host name
+    port: 8181,
+  }
 });
-
-mix.webpackConfig({
-    resolve: {
-        alias: {
-            'images': path.resolve(__dirname, "resources/assets/images/"),
-            'charts': path.resolve(__dirname, "resources/js/charts")
-        }
-    },
-    devServer: { 
-        proxy: {
-            '*' : '127.0.0.1:8000'
-        },
-        watchOptions:{
-            aggregateTimeout:200,
-            poll:5000
-        },
-
-    }
-});
+mix.webpackConfig(webpackOpts);
 
 mix.js("resources/js/app.js", "public/js").sass(
     "resources/sass/app.scss",
