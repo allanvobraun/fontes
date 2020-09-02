@@ -142,15 +142,21 @@
       axios
         .get( `/api/fontes/${text}`)
         .then(response => {
-          this.form.fonte = response.data.data;
           this.lock.fonte = true;
           this.form.fonteEncontradaStatus = true;
+
           this.notify("Fonte encontrada!", "", "info");
+          this.$nextTick(() => {
+            this.form.fonte = response.data.data;
+            console.log(this.form.fonte.cod_font)
+
+          });
         })
         .catch(error => {
           console.log("error")
           // this.cleanFonte(false);
         });
+
     },
     async searchLike(input) {
       if (input.length < 2) return [];

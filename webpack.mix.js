@@ -21,7 +21,9 @@ mix.options({
 });
 mix.webpackConfig(webpackOpts);
 
-mix.js("resources/js/app.js", "public/js").sass(
+mix.js("resources/js/app.js", "public/js")
+// .sourceMaps(false, 'source-map')
+.sass(
     "resources/sass/app.scss",
     "public/css"
 );
