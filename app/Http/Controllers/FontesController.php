@@ -25,46 +25,6 @@ class FontesController extends Controller
         return FonteResource::collection($items);
     }
 
-    public function getReparos(GetReparos $request, $cod_interno)
-    {
-        $items = Fonte::find($cod_interno)->reparos()->get();
-        return ReparoResource::collection($items);
-    }
-
-    public function getAllReparos(Request $request)
-    {
-        try {
-            $reparos = QueryBuilder::for(Reparo::class)
-                ->allowedFields(['created_at', 'valor'])
-                ->allowedFilters([
-                    AllowedFilter::custom('dia', new DateFilter),
-                    AllowedFilter::custom('mes', new DateFilter),
-                    AllowedFilter::custom('ano', new DateFilter)
-                ])
-                ->get();
-        } catch (\Throwable $th) {
-            return jsonError($th);
-        }
-
-        return jsonData(ReparoResourceNotNull::collection($reparos));
-    }
-
-    public function getAllReparosSum(Request $request)
-    {
-        try {
-            $sumReparos = QueryBuilder::for(Reparo::class)
-                ->allowedFilters([
-                    AllowedFilter::custom('dia', new DateFilter),
-                    AllowedFilter::custom('mes', new DateFilter),
-                    AllowedFilter::custom('ano', new DateFilter)
-                ])
-                ->sum('valor');
-        } catch (\Throwable $th) {
-            return jsonError($th);
-        }
-        return jsonData(round($sumReparos, 2));
-    }
-
     public function newFonte(StoreFonte $request)
     {
         return Fonte::create($request->all());
@@ -73,11 +33,6 @@ class FontesController extends Controller
     public function getFonte(SearchOneFonte $request, $cod_interno)
     {
         return jsonData(Fonte::find($cod_interno));
-    }
-
-    public function newReparo(StoreReparo $request, $cod_interno)
-    {
-        return Fonte::find($cod_interno)->reparos()->create($request->all());
     }
 
     public function searchFonte(SearchFonte $request)

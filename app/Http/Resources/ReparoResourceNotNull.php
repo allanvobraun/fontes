@@ -17,12 +17,11 @@ class ReparoResourceNotNull extends Reparo
     {
         $original = parent::toArray($request);
 
-        $onlyNotNull = array_filter(
+        return array_filter(
             $original,
             function ($atribute) {
                 return !is_null($atribute);
             }
         );
-        return $onlyNotNull;
     }
 }

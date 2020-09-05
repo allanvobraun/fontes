@@ -19,11 +19,17 @@ class Reparo extends Model
     }
 
     public function getDataAttribute()
-    {   
+    {
         if (is_null($this->created_at)) {
             return null;
         }
         return Carbon::parse($this->created_at)->format('d/m/Y');
+    }
+
+    public function scopeDuasSemanasAtras($query, Carbon $dataReferencia)
+    {
+        $semanaRetrasada = $dataReferencia->startOfWeek(Carbon::MONDAY)->subWeek()->subWeek();
+        return $query->where('created_at', '>=', $semanaRetrasada);
     }
 
 }

@@ -23,13 +23,10 @@ class DateFilter implements Filter
             case 'mes':
                 return 'whereMonth';
                 break;
-            
+
             case 'ano':
                 return 'whereYear';
                 break;
         }
     }
 }
-
-
-// $users will contain all users that have the `createPosts` permission
