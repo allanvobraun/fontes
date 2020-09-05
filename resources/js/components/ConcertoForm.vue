@@ -144,27 +144,25 @@
         .then(response => {
           this.lock.fonte = true;
           this.form.fonteEncontradaStatus = true;
-
           this.notify("Fonte encontrada!", "", "info");
+
           this.$nextTick(() => {
             this.form.fonte = response.data.data;
-            console.log(this.form.fonte.cod_font)
-
           });
         })
         .catch(error => {
-          console.log("error")
-          // this.cleanFonte(false);
+          console.log("Fonte não encontrada")
         });
-
     },
-    async searchLike(input) {
+
+    searchLike(input) {
       if (input.length < 2) return [];
       const url = `/api/fontes/search?query=${input}&attribute=cod_interno`;
-      return await axios.get(url).then(response => {
+      return axios.get(url).then(response => {
         return response.data.data;
       });
     },
+
     checkTarget(e) {
       // checa se o click veio do mause ou se foi do browser (0 é do browser)
       if (e.detail == 0) e.preventDefault();
