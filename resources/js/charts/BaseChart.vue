@@ -1,5 +1,5 @@
 <template>
-  <canvas id="myChart" ref="myChart" width="400" height="400"></canvas>
+  <canvas ref="myChart" width="400" height="400"></canvas>
 </template>
 
 <script>
@@ -21,13 +21,17 @@
         type: Object,
         required: false,
         default: () => {{}}
+      },
+      chartType: {
+        type: String,
+        default: () => {return 'bar'}
       }
     },
 
     data() {
       return {
         chart: {
-          type: 'bar',
+          type: this.chartType,
           data: {
             labels: this.chartLabels,
             datasets: this.chartDatasets
@@ -41,10 +45,14 @@
       chartContext() {
         return this.$refs['myChart'].getContext('2d');
       },
-      chartDataArray() {
-        return this.chartDatasets[0].data;
+
+      allDatasetsArray() {
+        return this.chartDatasets.reduce(( acc, dataset ) => {
+          return acc.concat(dataset.data)
+        }, []);
       }
     },
+
     mounted() {
       this.startChart();
     },
@@ -54,7 +62,7 @@
       }
     },
     watch: {
-      chartDataArray() {
+      allDatasetsArray() {
         this.startChart();
       }
     }

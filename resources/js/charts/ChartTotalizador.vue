@@ -1,6 +1,6 @@
 <template>
   <div>
-    <canvas id="myChart" ref="myChart" width="400" height="400"></canvas>
+    <canvas ref="myChart" width="400" height="400"></canvas>
     <number-badge :number="totalAno" text="Total: R$"></number-badge>
   </div>
 
@@ -15,7 +15,7 @@
     components: {NumberBadge},
     computed: {
       totalAno() {
-        return this.chartDataArray.reduce((acc, mes) => {
+        return this.allDatasetsArray.reduce((acc, mes) => {
           return acc + mes
         });
       }
