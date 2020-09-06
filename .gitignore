@@ -189,3 +189,6 @@ package-lock.json
 
 public/mix-manifest.json
 .idea/
+public/css
+public/js
+.vscode
