@@ -8,7 +8,8 @@ module.exports = {
     alias: {
       'images': path.resolve(__dirname, "./resources/assets/images/"),
       'charts': path.resolve(__dirname, "./resources/js/charts"),
-      'components': path.resolve(__dirname, './resources/js/components')
+      'components': path.resolve(__dirname, './resources/js/components'),
+      'classes': path.resolve(__dirname, './resources/js/classes')
     }
   },
   devServer: {

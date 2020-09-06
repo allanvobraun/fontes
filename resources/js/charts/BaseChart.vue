@@ -30,14 +30,6 @@
 
     data() {
       return {
-        chart: {
-          type: this.chartType,
-          data: {
-            labels: this.chartLabels,
-            datasets: this.chartDatasets
-          },
-          options: this.chartOptions
-        },
         chartObj: {}
       }
     },
@@ -47,9 +39,20 @@
       },
 
       allDatasetsArray() {
-        return this.chartDatasets.reduce(( acc, dataset ) => {
+        return this.chartDatasets.reduce((acc, dataset) => {
           return acc.concat(dataset.data)
         }, []);
+      },
+
+      chart() {
+        return {
+          type: this.chartType,
+          data: {
+            labels: this.chartLabels,
+            datasets: this.chartDatasets
+          },
+          options: this.chartOptions
+        }
       }
     },
 
@@ -64,7 +67,7 @@
     watch: {
       allDatasetsArray() {
         this.startChart();
-      }
+      },
     }
   }
 </script>

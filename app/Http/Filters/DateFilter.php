@@ -28,5 +28,6 @@ class DateFilter implements Filter
                 return 'whereYear';
                 break;
         }
+        return 'erro';
     }
 }

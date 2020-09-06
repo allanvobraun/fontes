@@ -15,6 +15,15 @@ export default {
       stringFinal += `${key}:\n${value}.\n\n`
     });
     return stringFinal;
+  },
+
+  /**
+   * @description Arrendonda para duas casas decimais somente se necessario
+   * @param {number} number
+   * @return {number}
+   */
+  round2(number) {
+    return Math.round((number + Number.EPSILON) * 100) / 100;
   }
 
 };

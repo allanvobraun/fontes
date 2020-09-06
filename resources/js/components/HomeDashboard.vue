@@ -16,17 +16,18 @@
       <b-col>
         <b-card
           border-variant="primary"
-          header="Reparos Ano"
+          header="Ganhos ultimas 3 semanas"
           header-bg-variant="primary"
           header-text-variant="white"
           align="center"
         >
+          <ganhos-semana-chart></ganhos-semana-chart>
         </b-card>
       </b-col>
       <b-col>
         <b-card
           border-variant="primary"
-          header="Ganhos Mês"
+          header="Em construção"
           header-bg-variant="primary"
           header-text-variant="white"
           align="center"
@@ -48,10 +49,19 @@
 
 <script>
 import GanhosAnoChart from "charts/GanhosAnoChart";
+import GanhosSemanaChart from "charts/GanhosSemanaChart";
 export default {
-  components: {GanhosAnoChart}
+  components: { GanhosAnoChart, GanhosSemanaChart },
+
 };
 </script>
 
-<style>
+<style scoped>
+  .card-header {
+    font-size: 1rem;
+    font-weight: bold;
+  }
+  .card-body {
+    padding: 0.2rem;
+  }
 </style>
