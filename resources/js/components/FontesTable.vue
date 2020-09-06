@@ -19,8 +19,10 @@
       :total-rows="rows"
       :per-page="perPage"
       aria-controls="fontes-table"
+      limit="10"
       @input="getRows"
       align="center"
+      hide-ellipsis
     ></b-pagination>
   </div>
 </template>
