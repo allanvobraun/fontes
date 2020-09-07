@@ -4,7 +4,6 @@
     v-bind="$attrs"
     v-on="$listeners"
   >
-
   </auto-complete-search-button>
 </template>
 

@@ -100,12 +100,10 @@
 
 <script>
   import { Money } from "v-money";
-  // import AutoCompleteSearchButton from "components/search/AutoCompleteSearchButton.vue";
   import AutoCompleteNSRework from "components/search/AutoCompleteNSRework.vue";
 
   export default {
   components: { Money, AutoCompleteNSRework },
-  // components: { Money, AutoCompleteNSRework },
   data() {
     return {
       form: {
@@ -153,14 +151,6 @@
         .catch(error => {
           console.log("Fonte não encontrada")
         });
-    },
-
-    searchLike(input) {
-      if (input.length < 2) return [];
-      const url = `/api/fontes/search?query=${input}&attribute=cod_interno`;
-      return axios.get(url).then(response => {
-        return response.data.data;
-      });
     },
 
     checkTarget(e) {

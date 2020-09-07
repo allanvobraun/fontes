@@ -15,7 +15,7 @@
         <router-link :to="{ name: 'novo'}">Novo Reparo</router-link>
       </li>
       <li>
-        <a href="#">Pesquisar</a>
+        <router-link :to="{ name: 'editar'}">Editor</router-link>
       </li>
     </ul>
   </nav>
