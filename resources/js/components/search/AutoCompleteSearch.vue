@@ -42,8 +42,6 @@ export default {
       const opts = this.$refs['input-list'].childNodes;
       for (let i = 0; i < opts.length; i++) {
         if (opts[i].value === value) {
-          // An item was selected from the list!
-          // yourCallbackHere()
           alert(opts[i].value);
           break;
         }

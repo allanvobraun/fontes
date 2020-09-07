@@ -8,16 +8,14 @@
     >
       <div class="row">
         <b-form-group label="N/S Rework:" class="col-sm-6">
-          <auto-complete-search
+          <auto-complete-n-s-rework
             index="1"
-            ref="search-input"
             v-model="form.fonte.cod_interno"
             @update="onPreenchido"
             @keyup.enter.native="focusNextElement($event)"
             @result-selected="getFonte"
-            :search="searchLike"
             required
-          ></auto-complete-search>
+          ></auto-complete-n-s-rework>
         </b-form-group>
 
         <b-form-group label="N/S Fabricante:" class="col-sm-6">
@@ -102,10 +100,12 @@
 
 <script>
   import { Money } from "v-money";
-  import AutoCompleteSearch from "./AutoCompleteSearch";
+  // import AutoCompleteSearchButton from "components/search/AutoCompleteSearchButton.vue";
+  import AutoCompleteNSRework from "components/search/AutoCompleteNSRework.vue";
 
   export default {
-  components: { Money, AutoCompleteSearch },
+  components: { Money, AutoCompleteNSRework },
+  // components: { Money, AutoCompleteNSRework },
   data() {
     return {
       form: {
@@ -220,11 +220,7 @@
     onReset() {
       this.cleanFonte(true);
       this.form.reparo = _.mapValues(this.form.reparo, () => "");
-
       this.lockOrUnlockForm(true);
-
-      const input = this.$refs["search-input"];
-      input.$children[0].focus();
     },
 
     cleanFonte(limparCod) {
