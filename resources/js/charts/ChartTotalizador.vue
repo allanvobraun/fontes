@@ -3,7 +3,7 @@
     <b-card border-variant="dark" align="center">
       <canvas ref="myChart" width="100%" height="100%"></canvas>
     </b-card>
-    <number-badge :number="totalDados" text="Total: R$"></number-badge>
+    <number-badge :number="$helpers.round2(totalDados)" text="Total: R$"></number-badge>
   </div>
 
 </template>
