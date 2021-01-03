@@ -1,5 +1,4 @@
 import helpers from "../helpers";
-import {interpolateTurbo} from 'd3-scale-chromatic';
 export default class ChartSemanaData {
 
   /**
@@ -35,15 +34,11 @@ export default class ChartSemanaData {
     return dia.getDay();
   }
 
-  get randomColor() {
-    return interpolateTurbo(Math.random())
-  }
-
   toObject() {
     return {
       data: this.dataArray,
       label: this.semanaId,
-      borderColor: this.randomColor,
+      borderColor: helpers.randomColor(),
       fill: false
     }
   }

@@ -65,6 +65,15 @@
 
         this.chartObj = new Chart(this.chartContext, this.chartConfigurationObject);
       }
+    },
+    watch: {
+      allDatasetsArray() {
+        console.log("dando update");
+        try {
+          this.chartObj.update();
+        } catch (e) {
+        }
+      },
     }
   }
 </script>

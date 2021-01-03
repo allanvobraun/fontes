@@ -34,14 +34,9 @@ export default {
         "Novembro",
         "Dezembro",
       ],
-      datasets: [
-        {
-          data: [],
-          label: this.ano,
-          backgroundColor: "#de1738",
-        }
-      ],
-      options: {}
+      datasets: [],
+      options: {},
+      firstYear: 2020
     }
   },
 
@@ -49,29 +44,42 @@ export default {
     this.setChartData();
   },
 
+  computed: {
+    finalYear() {
+      return new Date().getFullYear();
+    }
+  },
+
   methods: {
     setChartData() {
-      this.getChartData().then(result => {
-        this.datasets[0].data = result;
-      })
+      // const yearRange = _.range(this.firstYear, this.finalYear + 1);
+      const yearRange = [2020, 2021];
+      yearRange.forEach((year, idx) => {
+
+        this.getChartData(year).then(result => {
+          const dataSetObj = {
+            data: result,
+            label: year,
+            backgroundColor: this.$helpers.randomColor(),
+          }
+          this.datasets.push(dataSetObj);
+        })
+      });
     },
 
-    getChartData() {
-      return axios.get(`/api/fontes/reparos/valorReparosAnual?ano=${this.ano}`).then((response) => {
+    getChartData(year) {
+      return axios.get(`/api/fontes/reparos/valorReparosAnual?ano=${year}`).then((response) => {
         return this.formatDataMeses(response.data.data)
       });
     },
 
     formatDataMeses(unformatedData) {
-      console.log(unformatedData)
-      const data = [];
-      for (let i = 0; i < 13; i++) {
+      const data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+      for (let i = 0; i < data.length; i++) {
         const dataObj = unformatedData.find((obj) => obj.mes === i + 1);
         if (dataObj) {
           data[i] = dataObj.valor;
-          continue;
         }
-        data[i] =  0;
       }
       return data;
     }
