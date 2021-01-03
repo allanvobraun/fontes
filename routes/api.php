@@ -2,7 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Mockery\Generator\Generator;
+use App\Http\Controllers\FontesController;
+use App\Http\Controllers\ReparosController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,15 +21,15 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 // fontes
-Route::get('/fontes', 'FontesController@getFontes');
-Route::post('/fontes', 'FontesController@newFonte');
-Route::get('/fontes/search', 'FontesController@searchFonte');
-Route::get('/fontes/{cod_interno}', 'FontesController@getFonte');
+Route::get('/fontes', [FontesController::class, 'getFontes']);
+Route::post('/fontes', [FontesController::class, 'newFonte']);
+Route::get('/fontes/search', [FontesController::class, 'searchFonte']);
+Route::get('/fontes/{cod_interno}', [FontesController::class, 'getFonte']);
 
 // reparos
-Route::post('/fontes/{cod_interno}/reparos', 'ReparosController@newReparo');
-Route::get('/fontes/{cod_interno}/reparos', 'ReparosController@getReparos');
-Route::get('/fontes/reparos', 'ReparosController@getAllReparos');
-Route::get('/fontes/reparos/valorSum', 'ReparosController@getAllReparosSum');
-Route::get('/fontes/reparos/valorSemanas', 'ReparosController@getValoresReparosUltimasSemanas');
+Route::post('/fontes/{cod_interno}/reparos', [ReparosController::class, 'newReparo']);
+Route::get('/fontes/{cod_interno}/reparos', [ReparosController::class, 'getReparos']);
+Route::get('/fontes/reparos', [ReparosController::class, 'getAllReparos']);
+Route::get('/fontes/reparos/valorSum', [ReparosController::class, 'getAllReparosSum']);
+Route::get('/fontes/reparos/valorSemanas', [ReparosController::class, 'getValoresReparosUltimasSemanas']);
 
