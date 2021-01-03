@@ -68,7 +68,6 @@
     },
     watch: {
       allDatasetsArray() {
-        console.log("dando update");
         try {
           this.chartObj.update();
         } catch (e) {

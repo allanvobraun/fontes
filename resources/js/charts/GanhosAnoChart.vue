@@ -52,8 +52,7 @@ export default {
 
   methods: {
     setChartData() {
-      // const yearRange = _.range(this.firstYear, this.finalYear + 1);
-      const yearRange = [2020, 2021];
+      const yearRange = _.range(this.firstYear, this.finalYear + 1);
       yearRange.forEach((year, idx) => {
 
         this.getChartData(year).then(result => {
