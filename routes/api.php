@@ -31,5 +31,6 @@ Route::post('/fontes/{cod_interno}/reparos', [ReparosController::class, 'newRepa
 Route::get('/fontes/{cod_interno}/reparos', [ReparosController::class, 'getReparos']);
 Route::get('/fontes/reparos', [ReparosController::class, 'getAllReparos']);
 Route::get('/fontes/reparos/valorSum', [ReparosController::class, 'getAllReparosSum']);
+Route::get('/fontes/reparos/valorReparosAnual', [ReparosController::class, 'getValorReparosAno']);
 Route::get('/fontes/reparos/valorSemanas', [ReparosController::class, 'getValoresReparosUltimasSemanas']);
 

@@ -24,6 +24,16 @@ export default {
    */
   round2(number) {
     return Math.round((number + Number.EPSILON) * 100) / 100;
+  },
+
+  /**
+   *
+   * @param {number} number
+   * @returns {string}
+   */
+  numberToMonth(number) {
+    const meses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+    return meses[number + 1];
   }
 
 };

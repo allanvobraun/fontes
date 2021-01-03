@@ -9,7 +9,7 @@
           header-text-variant="white"
           align="center"
         >
-          <ganhos-ano-chart></ganhos-ano-chart>
+          <ganhos-ano-chart ano="2020"></ganhos-ano-chart>
 
         </b-card>
       </b-col>

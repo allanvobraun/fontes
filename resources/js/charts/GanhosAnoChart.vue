@@ -8,70 +8,74 @@
 </template>
 
 <script>
-  import ChartTotalizador from "charts/ChartTotalizador";
+import ChartTotalizador from "charts/ChartTotalizador";
 
-  export default {
-    components: {ChartTotalizador},
-    data() {
-      return {
-        labels: [
-          "Janeiro",
-          "Fevereiro",
-          "Março",
-          "Abril",
-          "Maio",
-          "Junho",
-          "Julho",
-          "Agosto",
-          "Setembro",
-          "Outubro",
-          "Novembro",
-          "Dezembro",
-        ],
-        datasets: [
-          {
-            data: [0],
-            label: "2020",
-            backgroundColor: "#de1738",
-          }
-        ],
-        options: {}
-      }
-    },
-
-    beforeMount() {
-      this.setChartData();
-    },
-    methods: {
-      setChartData() {
-        this.getChartData().then( result =>{
-          this.datasets[0].data = result;
-        })
-      },
-      async getChartData() {
-        const results = [];
-        for (let i = 1; i < 13; i++) {
-          const monthTotal = await this.getTotalMonth(i, 2020);
-          results.push(monthTotal);
+export default {
+  components: {ChartTotalizador},
+  props: {
+    ano: {
+      type: String,
+      required: true
+    }
+  },
+  data() {
+    return {
+      labels: [
+        "Janeiro",
+        "Fevereiro",
+        "Março",
+        "Abril",
+        "Maio",
+        "Junho",
+        "Julho",
+        "Agosto",
+        "Setembro",
+        "Outubro",
+        "Novembro",
+        "Dezembro",
+      ],
+      datasets: [
+        {
+          data: [],
+          label: this.ano,
+          backgroundColor: "#de1738",
         }
-        return results;
-      },
+      ],
+      options: {}
+    }
+  },
 
-      getTotalMonth(monthNum, year) {
-        const endPoint = "/api/fontes/reparos/valorSum?";
-        const filters = `filter[mes]=${monthNum}&filter[ano]=${year}`;
+  beforeMount() {
+    this.setChartData();
+  },
 
-        return axios
-          .get(endPoint + filters)
-          .then((response) => {
-            return response.data.data;
-          })
-          .catch((err) => {
-            const error = err.response.data.erros;
-            this.notify("Erro ao buscar dados", error, "danger");
-          });
+  methods: {
+    setChartData() {
+      this.getChartData().then(result => {
+        this.datasets[0].data = result;
+      })
+    },
+
+    getChartData() {
+      return axios.get(`/api/fontes/reparos/valorReparosAnual?ano=${this.ano}`).then((response) => {
+        return this.formatDataMeses(response.data.data)
+      });
+    },
+
+    formatDataMeses(unformatedData) {
+      console.log(unformatedData)
+      const data = [];
+      for (let i = 0; i < 13; i++) {
+        const dataObj = unformatedData.find((obj) => obj.mes === i + 1);
+        if (dataObj) {
+          data[i] = dataObj.valor;
+          continue;
+        }
+        data[i] =  0;
       }
+      return data;
     }
   }
+}
 </script>
 
