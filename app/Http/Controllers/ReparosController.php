@@ -55,6 +55,18 @@ class ReparosController extends Controller
         return jsonData(round($sumReparos, 2));
     }
 
+    public function getValorReparosAno(Request $request) {
+        try {
+            $ano = $request->ano;
+            $reparos = Reparo::selectRaw('round(sum(`valor`), 2) as valor, month(created_at) as mes')
+                ->whereYear('created_at', '=', $ano)
+                ->groupBy('mes')->get();
+        } catch (\Throwable $th) {
+            return jsonError($th);
+        }
+        return jsonData($reparos);
+    }
+
     public function getValoresReparosUltimasSemanas()
     {
         $reparosUltimasSemanas = Reparo::selectRaw('sum(`valor`) as valor, date(created_at) as reparo_data')

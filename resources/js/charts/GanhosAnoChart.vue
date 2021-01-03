@@ -8,70 +8,81 @@
 </template>
 
 <script>
-  import ChartTotalizador from "charts/ChartTotalizador";
+import ChartTotalizador from "charts/ChartTotalizador";
 
-  export default {
-    components: {ChartTotalizador},
-    data() {
-      return {
-        labels: [
-          "Janeiro",
-          "Fevereiro",
-          "Março",
-          "Abril",
-          "Maio",
-          "Junho",
-          "Julho",
-          "Agosto",
-          "Setembro",
-          "Outubro",
-          "Novembro",
-          "Dezembro",
-        ],
-        datasets: [
-          {
-            data: [0],
-            label: "2020",
-            backgroundColor: "#de1738",
+export default {
+  components: {ChartTotalizador},
+  props: {
+    ano: {
+      type: String,
+      required: true
+    }
+  },
+  data() {
+    return {
+      labels: [
+        "Janeiro",
+        "Fevereiro",
+        "Março",
+        "Abril",
+        "Maio",
+        "Junho",
+        "Julho",
+        "Agosto",
+        "Setembro",
+        "Outubro",
+        "Novembro",
+        "Dezembro",
+      ],
+      datasets: [],
+      options: {},
+      firstYear: 2020
+    }
+  },
+
+  beforeMount() {
+    this.setChartData();
+  },
+
+  computed: {
+    finalYear() {
+      return new Date().getFullYear();
+    }
+  },
+
+  methods: {
+    setChartData() {
+      const yearRange = _.range(this.firstYear, this.finalYear + 1);
+      yearRange.forEach((year, idx) => {
+
+        this.getChartData(year).then(result => {
+          const dataSetObj = {
+            data: result,
+            label: year,
+            backgroundColor: this.$helpers.randomColor(),
           }
-        ],
-        options: {}
-      }
-    },
-
-    beforeMount() {
-      this.setChartData();
-    },
-    methods: {
-      setChartData() {
-        this.getChartData().then( result =>{
-          this.datasets[0].data = result;
+          this.datasets.push(dataSetObj);
         })
-      },
-      async getChartData() {
-        const results = [];
-        for (let i = 1; i < 13; i++) {
-          const monthTotal = await this.getTotalMonth(i, 2020);
-          results.push(monthTotal);
+      });
+    },
+
+    getChartData(year) {
+      return axios.get(`/api/fontes/reparos/valorReparosAnual?ano=${year}`).then((response) => {
+        return this.formatDataMeses(response.data.data)
+      });
+    },
+
+    formatDataMeses(unformatedData) {
+      const data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+      for (let i = 0; i < data.length; i++) {
+        const dataObj = unformatedData.find((obj) => obj.mes === i + 1);
+        if (dataObj) {
+          data[i] = dataObj.valor;
         }
-        return results;
-      },
-
-      getTotalMonth(monthNum, year) {
-        const endPoint = "/api/fontes/reparos/valorSum?";
-        const filters = `filter[mes]=${monthNum}&filter[ano]=${year}`;
-
-        return axios
-          .get(endPoint + filters)
-          .then((response) => {
-            return response.data.data;
-          })
-          .catch((err) => {
-            const error = err.response.data.erros;
-            this.notify("Erro ao buscar dados", error, "danger");
-          });
       }
+      return data;
     }
   }
+}
 </script>
 

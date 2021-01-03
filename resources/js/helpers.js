@@ -1,3 +1,5 @@
+import {interpolateTurbo} from 'd3-scale-chromatic';
+
 export default {
   /**
    * @description Pega um objeto de erro e retorna um string com todos os erros
@@ -24,6 +26,24 @@ export default {
    */
   round2(number) {
     return Math.round((number + Number.EPSILON) * 100) / 100;
+  },
+
+  /**
+   *
+   * @param {number} number
+   * @returns {string}
+   */
+  numberToMonth(number) {
+    const meses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+    return meses[number + 1];
+  },
+
+  /**
+   * Gera uma cor aleatoria  usando um random de 0 a 1
+   * @returns {string}
+   */
+  randomColor() {
+    return interpolateTurbo(Math.random());
   }
 
 };

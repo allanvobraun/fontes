@@ -24,13 +24,21 @@
       },
       chartType: {
         type: String,
-        default: () => {return 'bar'}
+        default: () => 'bar'
       }
     },
 
     data() {
       return {
-        chartObj: {}
+        chartObj: {},
+        chartConfigurationObject: {
+          type: null,
+          data: {
+            labels: null,
+            datasets: null
+          },
+          options: null
+        }
       }
     },
     computed: {
@@ -42,31 +50,28 @@
         return this.chartDatasets.reduce((acc, dataset) => {
           return acc.concat(dataset.data)
         }, []);
-      },
-
-      chart() {
-        return {
-          type: this.chartType,
-          data: {
-            labels: this.chartLabels,
-            datasets: this.chartDatasets
-          },
-          options: this.chartOptions
-        }
       }
     },
 
-    mounted() {
+    updated() {
       this.startChart();
     },
+
     methods: {
       startChart() {
-        this.chartObj = new Chart(this.chartContext, this.chart);
+        this.chartConfigurationObject.type = this.chartType;
+        this.chartConfigurationObject.data = {labels: this.chartLabels, datasets: this.chartDatasets};
+        this.chartConfigurationObject.options = this.chartOptions;
+
+        this.chartObj = new Chart(this.chartContext, this.chartConfigurationObject);
       }
     },
     watch: {
       allDatasetsArray() {
-        this.startChart();
+        try {
+          this.chartObj.update();
+        } catch (e) {
+        }
       },
     }
   }
