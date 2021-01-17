@@ -1,12 +1,35 @@
 <template>
-  <div>
+  <div v-infinite-scroll="fetchFontes" :infinite-scroll-immediate-check="false">
+    <b-row no-gutters class="my-3">
+      <b-col sm="4" class="my-1">
+        <b-form-group
+          label="Filtro"
+          label-for="filter-input"
+          label-size="md"
+          class="mb-0"
+        >
+          <b-input-group size="md">
+            <b-form-input
+              id="filter-input"
+              v-model="filter"
+              type="search"
+              placeholder="Digite para pesquisar"
+            ></b-form-input>
+
+            <b-input-group-append>
+              <b-button variant="outline-info" @click="filter = ''">Limpar</b-button>
+            </b-input-group-append>
+          </b-input-group>
+        </b-form-group>
+      </b-col>
+    </b-row>
     <b-table
-      sticky-header="50rem"
       striped
       bordered
       outlined
       :items="items"
       :fields="fields"
+      :filter="filter"
       head-variant="dark"
       id="fontes-table"
     >
@@ -14,40 +37,23 @@
         <reparo-link width="3rem" height="2rem" :codigo="data.item.cod_interno"></reparo-link>
       </template>
     </b-table>
-    <b-pagination
-      v-model="currentPage"
-      :total-rows="rows"
-      :per-page="perPage"
-      aria-controls="fontes-table"
-      limit="10"
-      @input="getRows"
-      align="center"
-      hide-ellipsis
-    ></b-pagination>
+    <b-row no-gutters class="my-3">
+      <b-col offset-sm="4" sm="4" class="d-flex justify-content-center align-content-center">
+        <b-spinner v-if="loading" label="Carregando peraee..."></b-spinner>
+      </b-col>
+    </b-row>
+
   </div>
 </template>
 
 <script>
 import ReparoLink from "./ReparoLink.vue";
+import infiniteScroll from 'vue-infinite-scroll';
+import {mapGetters, mapActions} from 'vuex';
 
 export default {
-  components: {
-    ReparoLink
-  },
-  methods: {
-    getRows(page) {
-      this.items = [];
-      const url = `/api/fontes?page=${page}`;
-      axios.get(url).then(response => {
-        this.items = response.data.data;
-        this.rows = response.data.meta.total;
-        this.perPage = response.data.meta.per_page
-      });
-    }
-  },
-  mounted() {
-    this.getRows(1);
-  },
+  components: {ReparoLink},
+  directives: {infiniteScroll},
   data() {
     return {
       fields: [
@@ -61,8 +67,8 @@ export default {
           sortable: true,
           label: "N/S Fabricante"
         },
-        { key: "modelo" },
-        { key: "fabricante" },
+        {key: "modelo"},
+        {key: "fabricante"},
         {
           key: "reparos",
           label: "Reparos",
@@ -70,16 +76,28 @@ export default {
           tdClass: "d-flex justify-content-center icon-cell"
         }
       ],
-      items: [],
-      currentPage: 1,
-      perPage: 0,
-      rows: 0
+      filter: '',
     };
-  }
+  },
+  computed: {
+    ...mapGetters('fontes', [
+      "items",
+      "loading"
+    ])
+  },
+
+  methods: {
+    ...mapActions('fontes', [
+      'fetchFontes'
+    ])
+  },
+  mounted() {
+    this.fetchFontes();
+  },
 };
 </script>
 <style>
 .icon-cell {
-  padding: 0.60rem 0px !important;
+  padding: 0.60rem 0 !important;
 }
 </style>
