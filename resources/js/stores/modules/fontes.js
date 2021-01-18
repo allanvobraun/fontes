@@ -1,3 +1,5 @@
+import {debounce} from 'lodash';
+
 const state = {
   items: [],
   page: 0,
@@ -15,21 +17,21 @@ const getters = {
 };
 
 const actions = {
-  fetchFontes({state, commit}) {
+  fetchFontes: debounce(function ({state, commit}) {
+
     if (state.page >= state.last_page) {
       return;
     }
     state.loading = true;
-    _.debounce(() => {
-      commit('add_page');
-      const url = `/api/fontes?page=${state.page}`;
-      return axios.get(url).then(response => {
-        commit('union_items', response.data.data);
-        commit('set_last_page', response.data.meta.last_page ?? 2);
-        state.loading = false;
-      });
-    }, 500)();
-  }
+
+    commit('add_page');
+    const url = `/api/fontes?page=${state.page}`;
+    return axios.get(url).then(response => {
+      commit('union_items', response.data.data);
+      commit('set_last_page', response.data.meta.last_page ?? 2);
+      state.loading = false;
+    });
+  }, 600),
 };
 
 const mutations = {

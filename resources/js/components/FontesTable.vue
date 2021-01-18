@@ -42,7 +42,6 @@
         <b-spinner v-if="loading" label="Carregando peraee..."></b-spinner>
       </b-col>
     </b-row>
-
   </div>
 </template>
 
@@ -85,11 +84,10 @@ export default {
       "loading"
     ])
   },
-
   methods: {
     ...mapActions('fontes', [
       'fetchFontes'
-    ])
+    ]),
   },
   mounted() {
     this.fetchFontes();
