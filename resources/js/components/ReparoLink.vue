@@ -15,9 +15,13 @@ export default {
   data() {
     return {
       icone: icon,
-      link: `/fontes/${this.codigo}/reparos`,
       size: `width:${this.width};height:${this.height};`
     };
+  },
+  computed: {
+    link() {
+      return `/fontes/${this.codigo}/reparos`;
+    }
   }
 };
 </script>

@@ -33,7 +33,7 @@
       head-variant="dark"
       id="fontes-table"
     >
-      <template v-slot:cell(reparos)="data">
+      <template #cell(reparos)="data">
         <reparo-link width="3rem" height="2rem" :codigo="data.item.cod_interno"></reparo-link>
       </template>
     </b-table>
