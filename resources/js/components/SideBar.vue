@@ -1,4 +1,4 @@
-<template functional>
+<template>
   <nav id="sidebar">
     <div class="sidebar-content">
       <div class="sidebar-header">
@@ -10,7 +10,7 @@
           <router-link :to="{ name: 'home'}">Home</router-link>
         </li>
         <li>
-          <router-link :to="{ name: 'fontes'}">Mostrar Tudo</router-link>
+          <router-link :to="{ name: 'fontes'}" @click.native="$helpers.scrollToTop">Mostrar Tudo</router-link>
         </li>
         <li>
           <router-link :to="{ name: 'novo'}">Novo Reparo</router-link>

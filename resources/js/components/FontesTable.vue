@@ -1,6 +1,6 @@
 <template>
   <div v-infinite-scroll="fetchFontes" :infinite-scroll-immediate-check="false">
-    <b-row no-gutters class="my-3">
+    <b-row no-gutters class="mb-3">
       <b-col sm="4" class="my-1">
         <b-form-group
           label="Filtro"
