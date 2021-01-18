@@ -5,6 +5,7 @@ const state = {
   page: 0,
   last_page: 2,
   loading: false,
+  filter: '',
 };
 
 const getters = {
@@ -13,13 +14,19 @@ const getters = {
   },
   loading(state) {
     return state.loading;
+  },
+  busy(state) {
+    return state.filter !== '' || state.loading;
+  },
+  filter(state) {
+    return state.filter;
   }
 };
 
 const actions = {
-  fetchFontes: debounce(function ({state, commit}) {
+  fetchFontes: debounce(function ({state, commit, getters}) {
 
-    if (state.page >= state.last_page) {
+    if (state.page >= state.last_page || getters.busy) {
       return;
     }
     state.loading = true;
@@ -31,7 +38,7 @@ const actions = {
       commit('set_last_page', response.data.meta.last_page ?? 2);
       state.loading = false;
     });
-  }, 600),
+  }, 800),
 };
 
 const mutations = {
@@ -44,6 +51,9 @@ const mutations = {
   union_items(state, payload) {
     state.items = _.unionBy(state.items, payload, 'cod_interno');
   },
+  set_filter(state, payload) {
+    state.filter = payload;
+  }
 };
 
 export default {
