@@ -1,5 +1,5 @@
 <template>
-  <div v-infinite-scroll="fetchFontes" :infinite-scroll-immediate-check="false">
+  <div v-infinite-scroll="fetchFontes" infinite-scroll-immediate-check="false">
     <b-row no-gutters class="mb-3">
       <b-col sm="4" class="my-1">
         <b-form-group
@@ -11,13 +11,14 @@
           <b-input-group size="md">
             <b-form-input
               id="filter-input"
-              v-model="filter"
+              @input="set_filter"
+              :value="filter"
               type="search"
               placeholder="Digite para pesquisar"
             ></b-form-input>
 
             <b-input-group-append>
-              <b-button variant="outline-info" @click="filter = ''">Limpar</b-button>
+              <b-button variant="outline-info" @click="set_filter('')">Limpar</b-button>
             </b-input-group-append>
           </b-input-group>
         </b-form-group>
@@ -48,9 +49,10 @@
 <script>
 import ReparoLink from "./ReparoLink.vue";
 import infiniteScroll from 'vue-infinite-scroll';
-import {mapGetters, mapActions} from 'vuex';
+import {mapGetters, mapActions, mapMutations} from 'vuex';
 
 export default {
+  name: 'FontesTable',
   components: {ReparoLink},
   directives: {infiniteScroll},
   data() {
@@ -75,19 +77,20 @@ export default {
           tdClass: "d-flex justify-content-center icon-cell"
         }
       ],
-      filter: '',
     };
   },
   computed: {
     ...mapGetters('fontes', [
       "items",
-      "loading"
-    ])
+      "loading",
+      "filter"
+    ]),
   },
   methods: {
     ...mapActions('fontes', [
       'fetchFontes'
     ]),
+    ...mapMutations('fontes', ['set_filter'])
   },
   mounted() {
     this.fetchFontes();
