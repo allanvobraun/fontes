@@ -44,6 +44,10 @@ export default {
    */
   randomColor() {
     return interpolateTurbo(Math.random());
+  },
+
+  scrollToTop() {
+    window.scrollTo(0,0);
   }
 
 };

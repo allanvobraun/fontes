@@ -13,7 +13,7 @@ class FontesController extends Controller
 {
     public function getFontes()
     {
-        $items = Fonte::orderBy('cod_interno', 'DESC')->paginate(7);
+        $items = Fonte::orderBy('cod_interno', 'DESC')->paginate(10);
         return FonteResource::collection($items);
     }
 

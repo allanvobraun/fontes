@@ -1,10 +1,5 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import FontesTable from "components/FontesTable.vue";
-import ReparosTable from "components/ReparosTable.vue";
-import ConcertoForm from "components/ConcertoForm.vue";
-import HomeDashboard from "components/HomeDashboard.vue";
-import EditorFontes from "components/EditorFontes.vue";
 
 Vue.use(VueRouter);
 
@@ -13,34 +8,33 @@ export default new VueRouter({
         {
             path: "/",
             name: "home",
-            component: HomeDashboard,
+            component: () => import("components/HomeDashboard.vue"),
             meta: { title: "Home" }
         },
         {
             path: "/fontes/:cod_interno/reparos",
             name: "reparos",
-            component: ReparosTable,
+            component: () => import("components/ReparosTable.vue"),
             meta: {
                 title: route => `Todos os reparos da fonte "${route.params.cod_interno}"`
             } ,
-
         },
         {
             path: "/fontes",
             name: "fontes",
-            component: FontesTable,
+            component: () => import("components/FontesTable.vue"),
             meta: { title: "Todas as fontes" }
         },
         {
           path: "/new",
           name: "novo",
-          component: ConcertoForm,
+          component: () => import("components/ConcertoForm.vue"),
           meta: { title: "Novo registro" }
         },
         {
           path: "/fontes/edit/:cod_interno?",
           name: "editar",
-          component: EditorFontes,
+          component: () => import("components/EditorFontes.vue"),
           meta: {
             title: route => `Editando ${route.params.cod_interno}`.replace('undefined', '')
           }
