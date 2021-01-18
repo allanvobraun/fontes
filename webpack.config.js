@@ -21,5 +21,8 @@ module.exports = {
       aggregateTimeout: 200,
       poll: 5000
     },
+  },
+  externals: {
+    moment: 'moment'
   }
 }

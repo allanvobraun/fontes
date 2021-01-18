@@ -16,7 +16,6 @@ const getters = {
 
 const actions = {
   fetchFontes({state, commit}) {
-    console.log("fech")
     if (state.page >= state.last_page) {
       return;
     }

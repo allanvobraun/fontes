@@ -6,7 +6,6 @@ import Notifications from "vue-notification";
 import router from "./router";
 import helpers from "./helpers";
 import store from "./stores/index";
-import vuescroll from 'vue-scroll';
 
 
 require("./bootstrap");
@@ -15,7 +14,6 @@ import {BootstrapVue} from "bootstrap-vue";
 
 Vue.use(BootstrapVue);
 Vue.use(Notifications);
-Vue.use(vuescroll);
 
 // helpers
 Vue.use({

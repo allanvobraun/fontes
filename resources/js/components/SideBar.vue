@@ -1,29 +1,28 @@
-<template>
+<template functional>
   <nav id="sidebar">
-    <div class="sidebar-header">
-      <h3><router-link :to="{ name: 'home'}">Fonte Control</router-link></h3>
+    <div class="sidebar-content">
+      <div class="sidebar-header">
+        <h3><router-link :to="{ name: 'home'}">Fonte Control</router-link></h3>
+      </div>
+
+      <ul class="list-unstyled components">
+        <li>
+          <router-link :to="{ name: 'home'}">Home</router-link>
+        </li>
+        <li>
+          <router-link :to="{ name: 'fontes'}">Mostrar Tudo</router-link>
+        </li>
+        <li>
+          <router-link :to="{ name: 'novo'}">Novo Reparo</router-link>
+        </li>
+        <li>
+          <router-link :to="{ name: 'editar'}">Editor</router-link>
+        </li>
+      </ul>
     </div>
 
-    <ul class="list-unstyled components">
-      <li>
-        <router-link :to="{ name: 'home'}">Home</router-link>
-      </li>
-      <li>
-        <router-link :to="{ name: 'fontes'}">Mostrar Tudo</router-link>
-      </li>
-      <li>
-        <router-link :to="{ name: 'novo'}">Novo Reparo</router-link>
-      </li>
-      <li>
-        <router-link :to="{ name: 'editar'}">Editor</router-link>
-      </li>
-    </ul>
   </nav>
 </template>
-
-<script>
-export default {};
-</script>
 
 <style scoped>
 #sidebar {
@@ -35,6 +34,12 @@ export default {};
 #sidebar.active {
   margin-left: -250px;
 }
+
+.sidebar-content {
+  position: sticky;
+  top: 0;
+}
+
 a[data-toggle="collapse"] {
   position: relative;
 }
