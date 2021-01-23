@@ -36,7 +36,6 @@ export default {
         })
         .catch(error => {
           let erros = error.response.data.erros;
-          console.log(erros);
           _.mapValues(erros, err => {
             this.notify("Erro ao procurar reparos", err[0], "danger");
           });
