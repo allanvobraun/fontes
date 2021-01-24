@@ -1,5 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import {AuthRequired} from "./utils/routeGuards";
 
 Vue.use(VueRouter);
 
@@ -8,6 +9,7 @@ export default new VueRouter({
     {
       path: "/",
       component: () => import('components/MainApp'),
+      beforeEnter: AuthRequired,
       children: [
         {
           path: '',

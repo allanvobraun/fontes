@@ -52,7 +52,15 @@ export default {
     ...mapActions('user', ['login']),
 
     formSubmit() {
-      this.login(this.form)
+      this.login(this.form).then(() => {
+        this.$router.push("/");
+
+        // this.notify("Logado com sucesso!", "", "success");
+
+      }).catch(() => {
+        console.log("errroooooooooooo")
+        this.notify("Ocorreu um erro ao se conectar.", "Verifique suas credenciais", "danger");
+      });
     },
   }
 }
