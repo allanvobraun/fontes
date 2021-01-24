@@ -9,3 +9,13 @@
 @import '~bootstrap/scss/bootstrap';
 @import '~bootstrap-vue';
 
+
+html, body, #app {
+    height: 100vh;
+    padding: 0;
+}
+
+
+.login-input-append {
+    background-color: $primary;
+}
