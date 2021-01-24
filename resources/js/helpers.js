@@ -48,6 +48,14 @@ export default {
 
   scrollToTop() {
     window.scrollTo(0,0);
+  },
+
+  /**
+   * @returns {string[]}
+   */
+  getWalpapersList() {
+    const webPackRequire = require.context('wallpapers/', false, /\.webp$/);
+    return webPackRequire.keys().map(webPackRequire);
   }
 
 };

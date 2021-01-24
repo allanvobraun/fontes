@@ -1,8 +1,8 @@
 <template>
-  <div>
-    <div>
-      <b-input-group size="md" class="my-3">
-        <b-input-group-prepend>
+  <div class="h-100 d-flex flex-column justify-content-around">
+    <div class="my-2">
+      <b-input-group size="md" class="my-4">
+        <b-input-group-prepend >
           <b-input-group-text class="login-input-append">
             <b-icon-envelope-fill variant="dark"></b-icon-envelope-fill>
           </b-input-group-text>
@@ -14,7 +14,7 @@
           placeholder="Email"
         ></b-form-input>
       </b-input-group>
-      <b-input-group size="md" class="my-3">
+      <b-input-group size="md" class="my-4">
         <b-input-group-prepend>
           <b-input-group-text class="login-input-append">
             <b-icon-key-fill variant="dark"></b-icon-key-fill>
@@ -45,7 +45,6 @@ export default {
       form: {
         email: '',
         password: ''
-
       }
     }
   }

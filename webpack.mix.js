@@ -21,9 +21,10 @@ mix.options({
 });
 mix.webpackConfig(webpackOpts);
 
-mix.js("resources/js/app.js", "public/js")
-// .sourceMaps(false, 'source-map')
-.sass(
+mix
+  .setResourceRoot("")
+  .js("resources/js/app.js", "public/js")
+  .sass(
     "resources/sass/app.scss",
     "public/css"
-);
+  );
