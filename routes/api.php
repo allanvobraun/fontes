@@ -15,10 +15,10 @@ use App\Http\Controllers\ReparosController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Auth::routes(['register' => false]);
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+
+Route::middleware('auth:sanctum')->get('/user', fn(Request $request) => $request->user());
 
 // fontes
 Route::get('/fontes', [FontesController::class, 'getFontes']);

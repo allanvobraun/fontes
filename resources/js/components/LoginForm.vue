@@ -1,5 +1,5 @@
 <template>
-  <div class="h-100 d-flex flex-column justify-content-around">
+  <b-form @submit.prevent="formSubmit" class="h-100 d-flex flex-column justify-content-around">
     <div class="my-2">
       <b-input-group size="md" class="my-4">
         <b-input-group-prepend >
@@ -29,14 +29,14 @@
       </b-input-group>
     </div>
     <div class="d-flex justify-content-center align-content-center">
-      <b-button size="lg" variant="primary">Login</b-button>
+      <b-button type="submit" size="lg" variant="primary">Login</b-button>
     </div>
-
-  </div>
+  </b-form>
 </template>
 
 <script>
 import {BIconEnvelopeFill, BIconKeyFill} from 'bootstrap-vue';
+import { mapActions } from "vuex";
 
 export default {
   components: {BIconEnvelopeFill, BIconKeyFill},
@@ -47,6 +47,13 @@ export default {
         password: ''
       }
     }
+  },
+  methods: {
+    ...mapActions('user', ['login']),
+
+    formSubmit() {
+      this.login(this.form)
+    },
   }
 }
 </script>
