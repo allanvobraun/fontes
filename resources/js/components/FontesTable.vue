@@ -11,15 +11,20 @@
           <b-input-group size="md">
             <b-form-input
               id="filter-input"
-              @input="set_filter"
-              :value="filter"
+              v-model="filterQuery"
               type="search"
               placeholder="Digite para pesquisar"
             ></b-form-input>
 
             <b-input-group-append>
-              <b-button variant="outline-info" @click="set_filter('')">Limpar</b-button>
+              <b-button variant="outline-info" @click="searchFontes(filterQuery)">
+                <b-icon-search></b-icon-search>
+              </b-button>
+              <b-button variant="outline-info" @click="wipeFilter">
+                Limpar
+              </b-button>
             </b-input-group-append>
+
           </b-input-group>
         </b-form-group>
       </b-col>
@@ -28,15 +33,23 @@
       striped
       bordered
       outlined
+      show-empty
       :items="items"
       :fields="fields"
-      :filter="filter"
       head-variant="dark"
       id="fontes-table"
+      empty-text="Nenhuma fonte foi encontrada"
     >
       <template #cell(reparos)="data">
         <reparo-link width="3rem" height="2rem" :codigo="data.item.cod_interno"></reparo-link>
       </template>
+
+      <template #empty="scope">
+        <h4 class="d-flex flex-row justify-content-center align-content-center">
+          {{ scope.emptyText }}
+        </h4>
+      </template>
+
     </b-table>
     <b-row no-gutters class="my-3">
       <b-col offset-sm="4" sm="4" class="d-flex justify-content-center align-content-center">
@@ -49,11 +62,12 @@
 <script>
 import ReparoLink from "./ReparoLink.vue";
 import infiniteScroll from 'vue-infinite-scroll';
-import {mapGetters, mapActions, mapMutations} from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
+import { BIconSearch } from 'bootstrap-vue';
 
 export default {
   name: 'FontesTable',
-  components: {ReparoLink},
+  components: {ReparoLink, BIconSearch},
   directives: {infiniteScroll},
   data() {
     return {
@@ -77,20 +91,25 @@ export default {
           tdClass: "d-flex justify-content-center icon-cell"
         }
       ],
+      filterQuery: ''
     };
   },
   computed: {
     ...mapGetters('fontes', [
       "items",
       "loading",
-      "filter"
-    ]),
+    ])
   },
   methods: {
     ...mapActions('fontes', [
-      'fetchFontes'
+      'fetchFontes',
+      'searchFontes'
     ]),
-    ...mapMutations('fontes', ['set_filter'])
+
+    wipeFilter() {
+      this.filterQuery = '';
+      this.searchFontes('');
+    }
   },
   mounted() {
     this.fetchFontes();

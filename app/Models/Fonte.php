@@ -22,4 +22,8 @@ class Fonte extends Model
     {
         return self::where($field, 'like', "%{$query}%")->limit(20)->pluck($field);
     }
+
+    public function scopeSearchInFields($query, string $search) {
+        return $query->whereRaw("CONCAT_WS('&', cod_interno, cod_font, modelo, fabricante) like ?", ["%{$search}%"]);
+    }
 }

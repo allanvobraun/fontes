@@ -23,6 +23,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Fonte newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Fonte newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Fonte query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Fonte searchInFields(string $search)
  * @method static \Illuminate\Database\Eloquent\Builder|Fonte whereCodFont($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Fonte whereCodInterno($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Fonte whereFabricante($value)

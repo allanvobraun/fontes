@@ -11,9 +11,14 @@ use App\Http\Requests\SearchOneFonte;
 
 class FontesController extends Controller
 {
-    public function getFontes()
+    public function getFontes(Request $request)
     {
-        $items = Fonte::orderBy('cod_interno', 'DESC')->paginate(10);
+        $fontes = Fonte::orderBy('cod_interno', 'DESC');
+        if ($request->search) {
+            $items = $fontes->searchInFields($request->search)->paginate(10);
+            return FonteResource::collection($items);
+        }
+        $items = $fontes->paginate(10);
         return FonteResource::collection($items);
     }
 
