@@ -4,7 +4,7 @@ import Vue from "vue";
 import App from "./components/App.vue";
 import Notifications from "vue-notification";
 import router from "./router";
-import helpers from "./helpers";
+import helpers from "./utils/helpers";
 import store from "./stores/index";
 
 

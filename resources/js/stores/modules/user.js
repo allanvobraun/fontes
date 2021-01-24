@@ -32,7 +32,7 @@ const actions = {
     commit('setAuth', true);
 
     const user = await axios.get('api/user')
-      .then(response => response.data);
+      .then(response => response.data.data);
 
     commit('setUser', user);
   },
