@@ -48,12 +48,18 @@ export default {
       }
     }
   },
+
+  mounted() {
+    this.setCookie();
+  },
   methods: {
-    ...mapActions('user', ['login']),
+    ...mapActions('user', ['login', 'setCookie']),
 
     formSubmit() {
       this.login(this.form).then(() => {
-        this.$router.push("/");
+        this.$router.push({name: 'fontes'});
+        // this.$router.go({name: 'home'});
+        console.log("sucesso!");
 
         // this.notify("Logado com sucesso!", "", "success");
 

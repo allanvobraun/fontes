@@ -15,7 +15,7 @@
         "guzzlehttp/guzzle": "^7.0.1",
         "lanin/laravel-api-debugger": "^3.0",
         "laravel/framework": "^8.0",
-        "laravel/sanctum": "^2.8",
+        "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^3.2",
         "lucascudo/laravel-pt-br-localization": "^1.1",

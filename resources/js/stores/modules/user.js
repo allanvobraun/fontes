@@ -26,8 +26,14 @@ const mutations = {
 };
 
 const actions = {
+
+  async setCookie() {
+    const request = await axios.get('sanctum/csrf-cookie');
+    console.log("cookie");
+    return request;
+  },
+
   async login({commit}, payload) {
-    await axios.get('sanctum/csrf-cookie');
     await axios.post('api/login', payload);
     commit('setAuth', true);
 

@@ -1,15 +1,20 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import {AuthRequired} from "./utils/routeGuards";
+import {authRequired} from "./utils/routeGuards";
 
 Vue.use(VueRouter);
 
 export default new VueRouter({
   routes: [
     {
+      path: '/login',
+      name: 'login',
+      component: () => import('components/UserLogin')
+    },
+    {
       path: "/",
       component: () => import('components/MainApp'),
-      beforeEnter: AuthRequired,
+      beforeEnter: authRequired,
       children: [
         {
           path: '',
@@ -47,11 +52,6 @@ export default new VueRouter({
         }
       ]
     },
-    {
-      path: '/login',
-      name: 'login',
-      component: () => import('components/UserLogin')
-    }
   ],
   mode: "history"
 });
