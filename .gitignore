@@ -200,3 +200,6 @@ public/js/*
 /public/images/dinheiro.webp
 /public/images/floresta.webp
 /public/images/gato.webp
+.phpstorm.meta.php
+_ide_helper.php
+_ide_helper_models.php
