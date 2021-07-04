@@ -21,7 +21,6 @@ const actions = {
   fetchFontes: debounce(function ({state, commit}) {
     if (state.page >= state.last_page || state.loading) return;
 
-    console.log("executandpo", state.filter);
     state.loading = true;
     commit('add_page');
 

@@ -101,6 +101,7 @@
 <script>
   import { Money } from "v-money";
   import AutoCompleteNSRework from "components/search/AutoCompleteNSRework.vue";
+  import notify from "utils/notify.js";
 
   export default {
   components: { Money, AutoCompleteNSRework },
@@ -118,11 +119,11 @@
         reparo: {
           desc_problema: "",
           peças: "",
-          status: "",
+          status: "OK",
           valor: 0
         }
       },
-      statuses: [{ text: "Selecione", value: "" }, "OK", "NOK"],
+      statuses: ["OK", "NOK"],
       money: {
         decimal: ",",
         prefix: "R$ ",
@@ -142,15 +143,14 @@
         .then(response => {
           this.lock.fonte = true;
           this.form.fonteEncontradaStatus = true;
-          this.notify("Fonte encontrada!", "", "info");
+          notify.info('Fonte encontrada!');
 
           this.$nextTick(() => {
             this.form.fonte = response.data.data;
           });
+
         })
-        .catch(error => {
-          console.log("Fonte não encontrada")
-        });
+        .catch();
     },
 
     checkTarget(e) {
@@ -182,7 +182,7 @@
 
     tratarErro(error, tituloMensagem) {
       const errorText = this.$helpers.getErroString(error);
-      this.notify(tituloMensagem, errorText, "danger");
+      notify.error(tituloMensagem, errorText);
       throw new Error(tituloMensagem);
     },
 
@@ -201,15 +201,16 @@
 
     notificarSave(fonte_data, reparo_data) {
       const fonte_txt = fonte_data ? "Fonte salva com sucesso" : "";
-      const reparo_txt = reparo_data ? "Reparo da fonte salva com sucesso" : "";
-      const responte_txt = `${fonte_txt} ${reparo_txt}`;
+      const reparo_txt = reparo_data ? "Reparo da fonte salvo com sucesso" : "";
+      const responte_txt = `${fonte_txt}\n${reparo_txt}`;
 
-      this.notify("Enviado com sucesso!", responte_txt, "success");
+      notify.sucess('Enviado com sucesso!', responte_txt);
     },
 
     onReset() {
       this.cleanFonte(true);
       this.form.reparo = _.mapValues(this.form.reparo, () => "");
+      this.form.reparo.status = 'OK';
       this.lockOrUnlockForm(true);
     },
 

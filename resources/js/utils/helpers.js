@@ -1,4 +1,5 @@
 import {interpolateTurbo} from 'd3-scale-chromatic';
+import Swal from 'sweetalert2';
 
 export default {
   /**
@@ -48,6 +49,13 @@ export default {
 
   scrollToTop() {
     window.scrollTo(0,0);
-  }
+  },
 
+  /**
+   * @returns {string[]}
+   */
+  getWalpapersList() {
+    const webPackRequire = require.context('wallpapers/', false, /\.webp$/);
+    return webPackRequire.keys().map(webPackRequire);
+  },
 };

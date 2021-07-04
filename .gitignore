@@ -192,3 +192,14 @@ public/js
 .vscode
 public/css/*
 public/js/*
+/public/*.js
+/public/images/barco.webp
+/public/images/carro.webp
+/public/images/carro2.webp
+/public/images/espaco.webp
+/public/images/dinheiro.webp
+/public/images/floresta.webp
+/public/images/gato.webp
+.phpstorm.meta.php
+_ide_helper.php
+_ide_helper_models.php
