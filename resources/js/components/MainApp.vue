@@ -1,7 +1,6 @@
 <template>
   <div class="wrapper">
     <side-bar></side-bar>
-    <notification-top></notification-top>
     <main class="w-100">
       <card-body>
         <router-view></router-view>
@@ -13,14 +12,12 @@
 <script>
 import CardBody from "./CardBody.vue";
 import SideBar from "./SideBar.vue";
-import NotificationTop from './NotificationTop';
 
 export default {
   name: "MainApp",
   components: {
     CardBody,
     SideBar,
-    NotificationTop
   }
 }
 </script>

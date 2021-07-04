@@ -37,6 +37,7 @@
 <script>
 import {BIconEnvelopeFill, BIconKeyFill} from 'bootstrap-vue';
 import { mapActions } from "vuex";
+import notify from "utils/notify";
 
 export default {
   components: {BIconEnvelopeFill, BIconKeyFill},
@@ -61,7 +62,7 @@ export default {
       this.login(this.form).then(() => {
         this.$router.push({name: 'fontes'});
       }).catch(() => {
-        this.notify("Ocorreu um erro ao se conectar.", "Verifique suas credenciais", "danger");
+        notify.error("Ocorreu um erro ao se conectar.", "Verifique suas credenciais");
       });
     },
   }

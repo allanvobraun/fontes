@@ -16,6 +16,9 @@
 
 <script>
 import BackButton from "./BackButton.vue";
+import notify from "utils/notify";
+
+
 export default {
   components: {
     BackButton
@@ -37,7 +40,7 @@ export default {
         .catch(error => {
           let erros = error.response.data.erros;
           _.mapValues(erros, err => {
-            this.notify("Erro ao procurar reparos", err[0], "danger");
+            notify.error('Erro ao procurar reparos', err[0]);
           });
         });
     }
