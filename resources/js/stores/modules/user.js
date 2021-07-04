@@ -33,14 +33,13 @@ const actions = {
     return request;
   },
 
-  async login({commit}, payload) {
+  async login({commit, dispatch}, payload) {
     await axios.post('api/login', payload);
     commit('setAuth', true);
 
-    const user = await axios.get('api/user')
-      .then(response => response.data.data);
+    const response = await axios.get('api/user');
 
-    commit('setUser', user);
+    commit('setUser', response.data.data);
   },
 
   async signOut({commit}) {

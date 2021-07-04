@@ -1,12 +1,16 @@
 <template>
-  <b-button @click="$router.go(-1)" variant="info" class="d-flex flex-row">
-    <i class="material-icons">arrow_back_ios</i>
-    <span>Voltar</span>
+  <b-button @click="$router.go(-1)" variant="info">
+    <BIconCaretLeft></BIconCaretLeft>Voltar
   </b-button>
 </template>
 
 <script>
+import {BIconCaretLeft} from 'bootstrap-vue';
+
 export default {
+  components: {
+    BIconCaretLeft
+  },
   props: ["link"]
 };
 </script>

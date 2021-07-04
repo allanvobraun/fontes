@@ -50,21 +50,17 @@ export default {
   },
 
   mounted() {
-    this.setCookie();
+    this.setCookie().then(() => {
+      this.signOut();
+    });
   },
   methods: {
-    ...mapActions('user', ['login', 'setCookie']),
+    ...mapActions('user', ['login', 'setCookie', 'signOut']),
 
-    formSubmit() {
+    formSubmit() { //TODO TROCAR PARA SWEET ALERT
       this.login(this.form).then(() => {
         this.$router.push({name: 'fontes'});
-        // this.$router.go({name: 'home'});
-        console.log("sucesso!");
-
-        // this.notify("Logado com sucesso!", "", "success");
-
       }).catch(() => {
-        console.log("errroooooooooooo")
         this.notify("Ocorreu um erro ao se conectar.", "Verifique suas credenciais", "danger");
       });
     },
