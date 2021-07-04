@@ -58,9 +58,9 @@ export default {
   methods: {
     ...mapActions('user', ['login', 'setCookie', 'signOut']),
 
-    formSubmit() { //TODO TROCAR PARA SWEET ALERT
+    formSubmit() {
       this.login(this.form).then(() => {
-        this.$router.push({name: 'fontes'});
+        this.$router.push({name: 'home'});
       }).catch(() => {
         notify.error("Ocorreu um erro ao se conectar.", "Verifique suas credenciais");
       });
