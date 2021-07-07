@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FontesController;
 use App\Http\Controllers\ReparosController;
@@ -8,7 +7,6 @@ use App\Http\Controllers\UserController;
 
 
 Auth::routes(['register' => false]);
-
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', [UserController::class, 'get']);
@@ -22,11 +20,6 @@ Route::middleware('auth:sanctum')->group(function () {
     // reparos
     Route::post('/fontes/{cod_interno}/reparos', [ReparosController::class, 'newReparo']);
     Route::get('/fontes/{cod_interno}/reparos', [ReparosController::class, 'getReparos']);
-    Route::get('/fontes/reparos', [ReparosController::class, 'getAllReparos']);
-    Route::get('/fontes/reparos/valorSum', [ReparosController::class, 'getAllReparosSum']);
     Route::get('/fontes/reparos/valorReparosAnual', [ReparosController::class, 'getValorReparosAno']);
     Route::get('/fontes/reparos/valorSemanas', [ReparosController::class, 'getValoresReparosUltimasSemanas']);
 });
-
-
-

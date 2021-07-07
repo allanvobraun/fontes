@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use App\Models\Fonte;
-use App\Models\Reparo;
 use App\Models\User;
 use Tests\TestCase;
 
@@ -71,21 +70,4 @@ class FontesTest extends TestCase
             'id' => $response['id']
         ]);
     }
-
-    public function testCreateReparo()
-    {
-        $user = User::factory()->create();
-        $this->actingAs($user);
-
-        $fonte = Fonte::factory()->create();
-        $reparo = Reparo::factory()->make();
-        $payload = $reparo->toArray();
-
-        $response = $this->postJson("/api/fontes/{$fonte->cod_interno}/reparos", $payload);
-        $response->assertCreated();
-        $this->assertDatabaseHas('reparos', [
-            'id' => $response['id']
-        ]);
-    }
-
 }

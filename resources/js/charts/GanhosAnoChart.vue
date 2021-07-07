@@ -52,7 +52,7 @@ export default {
 
   methods: {
     setChartData() {
-      const yearRange = _.range(this.firstYear, this.finalYear + 1);
+      const yearRange = _.range(this.firstYear, this.finalYear + 1); //TODO 1 request só
       yearRange.forEach((year, idx) => {
 
         this.getChartData(year).then(result => {

@@ -2,65 +2,32 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Filters\DateFilter;
 use App\Http\Requests\CreateReparoRequest;
 use App\Http\Requests\ReparosRequest;
 use App\Http\Resources\ReparoResource;
-use App\Http\Resources\ReparoResourceNotNull;
 use App\Models\Fonte;
 use App\Models\Reparo;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Spatie\QueryBuilder\AllowedFilter;
-use Spatie\QueryBuilder\QueryBuilder;
 
 class ReparosController extends Controller
 {
     public function getReparos(ReparosRequest $request, $cod_interno)
     {
-        $items = Fonte::where('cod_interno', $cod_interno)->reparos()->get();
+        $items = Fonte::where('cod_interno', $cod_interno)->first()->reparos()->get();
         return ReparoResource::collection($items);
-    }
-
-    public function getAllReparos(Request $request)
-    {
-        try {
-            $reparos = QueryBuilder::for(Reparo::class)
-                ->allowedFields(['created_at', 'valor'])
-                ->allowedFilters([
-                    AllowedFilter::custom('dia', new DateFilter),
-                    AllowedFilter::custom('mes', new DateFilter),
-                    AllowedFilter::custom('ano', new DateFilter)
-                ])
-                ->get();
-        } catch (\Throwable $th) {
-            return jsonError($th);
-        }
-
-        return jsonData(ReparoResourceNotNull::collection($reparos));
-    }
-
-    public function getAllReparosSum(Request $request)
-    {
-        try {
-            $sumReparos = QueryBuilder::for(ReparoResource::class)
-                ->allowedFilters([
-                    AllowedFilter::custom('dia', new DateFilter),
-                    AllowedFilter::custom('mes', new DateFilter),
-                    AllowedFilter::custom('ano', new DateFilter)
-                ])
-                ->sum('valor');
-        } catch (\Throwable $th) {
-            return jsonError($th);
-        }
-        return jsonData(round($sumReparos, 2));
     }
 
     public function getValorReparosAno(Request $request)
     {
+        $ano = $request->ano;
+        $monthQuery = 'month(created_at)';
+        if (app()->runningUnitTests()) {
+            $monthQuery = "strftime('%m', created_at)";
+        }
+
         try {
-            $ano = $request->ano;
-            $reparos = Reparo::selectRaw('round(sum(`valor`), 2) as valor, month(created_at) as mes')
+            $reparos = Reparo::selectRaw("round(sum(`valor`), 2) as valor, {$monthQuery} as mes")
                 ->whereYear('created_at', '=', $ano)
                 ->groupBy('mes')->get();
         } catch (\Throwable $th) {
