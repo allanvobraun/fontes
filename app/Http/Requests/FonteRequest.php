@@ -2,9 +2,8 @@
 
 namespace App\Http\Requests;
 
-use App\Http\Requests\ApiRequest;
 
-class SearchOneFonte extends ApiRequest
+class FonteRequest extends ApiRequest
 {
 
     /**

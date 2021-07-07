@@ -30,6 +30,9 @@ class Fonte extends Model
 
     public function scopeSearchInFields($query, string $search)
     {
+        if (app()->runningUnitTests()) {
+            return $query->whereRaw("cod_interno || '&' || cod_font || '&' || modelo || '&' || fabricante like ?", ["%{$search}%"]);
+        }
         return $query->whereRaw("CONCAT_WS('&', cod_interno, cod_font, modelo, fabricante) like ?", ["%{$search}%"]);
     }
 }

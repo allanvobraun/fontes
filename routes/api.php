@@ -19,7 +19,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/fontes/search', [FontesController::class, 'searchFonte']);
     Route::get('/fontes/{cod_interno}', [FontesController::class, 'getFonte']);
 
-// reparos
+    // reparos
     Route::post('/fontes/{cod_interno}/reparos', [ReparosController::class, 'newReparo']);
     Route::get('/fontes/{cod_interno}/reparos', [ReparosController::class, 'getReparos']);
     Route::get('/fontes/reparos', [ReparosController::class, 'getAllReparos']);
