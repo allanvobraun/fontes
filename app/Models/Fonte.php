@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Ramsey\Uuid\Uuid;
 
 class Fonte extends Model
 {
+    use HasFactory;
     public $keyType = 'string';
     public $incrementing = false;
     protected $guarded = ['created_at', 'updated_at', 'id'];

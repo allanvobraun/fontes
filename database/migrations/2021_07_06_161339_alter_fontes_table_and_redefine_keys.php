@@ -17,14 +17,20 @@ class AlterFontesTableAndRedefineKeys extends Migration
     {
 
         // dropar forign de reparos
-        Schema::table('reparos', function (Blueprint $table) {
-            $table->dropForeign(['cod_interno']);
-        });
+        if (!app()->runningUnitTests()) {
+            Schema::table('reparos', function (Blueprint $table) {
+                $table->dropForeign(['cod_interno']);
+            });
+        }
 
         // dropar primaria de fontes e criar coluna uuid
         Schema::table('fontes', function (Blueprint $table) {
-            $table->dropPrimary(['cod_interno']);
-            $table->uuid('id')->first();
+            if (!app()->runningUnitTests()) {
+                $table->dropPrimary(['cod_interno']);
+
+            }
+
+            $table->uuid('id')->first()->nullable();
         });
 
         // popular uuid de fontes
@@ -40,7 +46,7 @@ class AlterFontesTableAndRedefineKeys extends Migration
 
         // criar coluna fonte_id em reparos
         Schema::table('reparos', function (Blueprint $table) {
-            $table->uuid('fonte_id')->after('id');
+            $table->uuid('fonte_id')->after('id')->nullable();
         });
 
         // atualizar reparos com o novo id de fontes

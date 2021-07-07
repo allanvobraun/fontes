@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\ReparoResource as ReparoResource;
 
-class Fonte extends JsonResource
+class FonteResource extends JsonResource
 {
     /**
      * Transform the resource into an array.

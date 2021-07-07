@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Resources\Fonte as FonteResource;
+use App\Http\Resources\FonteResource;
 use App\Models\Fonte;
 use App\Http\Requests\StoreFonte;
 use App\Http\Requests\SearchFonte;
