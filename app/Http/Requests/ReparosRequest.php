@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use App\Http\Requests\ApiRequest;
 use App\Rules\ExistRelation;
 
-class GetReparos extends ApiRequest
+class ReparosRequest extends ApiRequest
 {
     /**
      * Get the validation rules that apply to the request.

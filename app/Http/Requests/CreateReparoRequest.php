@@ -2,9 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Http\Requests\ApiRequest;
-
-class StoreReparo extends ApiRequest
+class CreateReparoRequest extends ApiRequest
 {
 
     /**

@@ -3,7 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Http\Resources\Reparo as ReparoResource;
+use App\Http\Resources\ReparoResource as ReparoResource;
 
 class Fonte extends JsonResource
 {

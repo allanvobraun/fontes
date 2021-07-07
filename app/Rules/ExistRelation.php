@@ -17,7 +17,7 @@ class ExistRelation implements Rule
      */
     public function passes($attribute, $value)
     {
-        $fonte = Fonte::find($value);
+        $fonte = Fonte::where('cod_interno', $value);
         return $fonte->reparos()->exists();
     }
 

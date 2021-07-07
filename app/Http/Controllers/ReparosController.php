@@ -3,22 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Http\Filters\DateFilter;
-use App\Http\Requests\GetReparos;
-use App\Http\Requests\StoreReparo;
-use App\Http\Resources\Reparo as ReparoResource;
+use App\Http\Requests\CreateReparoRequest;
+use App\Http\Requests\ReparosRequest;
+use App\Http\Resources\ReparoResource;
 use App\Http\Resources\ReparoResourceNotNull;
-use Illuminate\Http\Request;
-use App\Models\Reparo;
 use App\Models\Fonte;
+use App\Models\Reparo;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
-use Carbon\Carbon;
 
 class ReparosController extends Controller
 {
-    public function getReparos(GetReparos $request, $cod_interno)
+    public function getReparos(ReparosRequest $request, $cod_interno)
     {
-        $items = Fonte::find($cod_interno)->reparos()->get();
+        $items = Fonte::where('cod_interno', $cod_interno)->reparos()->get();
         return ReparoResource::collection($items);
     }
 
@@ -39,10 +39,11 @@ class ReparosController extends Controller
 
         return jsonData(ReparoResourceNotNull::collection($reparos));
     }
+
     public function getAllReparosSum(Request $request)
     {
         try {
-            $sumReparos = QueryBuilder::for(Reparo::class)
+            $sumReparos = QueryBuilder::for(ReparoResource::class)
                 ->allowedFilters([
                     AllowedFilter::custom('dia', new DateFilter),
                     AllowedFilter::custom('mes', new DateFilter),
@@ -55,7 +56,8 @@ class ReparosController extends Controller
         return jsonData(round($sumReparos, 2));
     }
 
-    public function getValorReparosAno(Request $request) {
+    public function getValorReparosAno(Request $request)
+    {
         try {
             $ano = $request->ano;
             $reparos = Reparo::selectRaw('round(sum(`valor`), 2) as valor, month(created_at) as mes')
@@ -79,9 +81,9 @@ class ReparosController extends Controller
         return jsonData($agrupadoSemanas);
     }
 
-    public function newReparo(StoreReparo $request, $cod_interno)
+    public function newReparo(CreateReparoRequest $request, $cod_interno)
     {
-        return Fonte::find($cod_interno)->reparos()->create($request->all());
+        $fonte = Fonte::where('cod_interno', $cod_interno)->first();
+        return $fonte->reparos()->create($request->all());
     }
-
 }

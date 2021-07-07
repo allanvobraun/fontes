@@ -29,7 +29,8 @@ class FontesController extends Controller
 
     public function getFonte(SearchOneFonte $request, $cod_interno)
     {
-        return jsonData(Fonte::find($cod_interno));
+        $fonte = Fonte::where('cod_interno', $cod_interno)->first();
+        return jsonData($fonte);
     }
 
     public function searchFonte(SearchFonte $request)
