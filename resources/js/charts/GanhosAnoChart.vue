@@ -45,20 +45,19 @@ export default {
   },
 
   computed: {
-    finalYear() {
-      return new Date().getFullYear();
+    chartYears() {
+      const finalYear = new Date().getFullYear();
+      return _.range(this.firstYear, finalYear + 1);
     }
   },
 
   methods: {
     setChartData() {
-      const yearRange = _.range(this.firstYear, this.finalYear + 1); //TODO 1 request só
-      yearRange.forEach((year, idx) => {
-
-        this.getChartData(year).then(result => {
+      this.getChartData(this.chartYears).then(result => {
+        _.forIn(result, (value, key) => {
           const dataSetObj = {
-            data: result,
-            label: year,
+            data: value,
+            label: key,
             backgroundColor: this.$helpers.randomColor(),
           }
           this.datasets.push(dataSetObj);
@@ -66,22 +65,11 @@ export default {
       });
     },
 
-    getChartData(year) {
-      return axios.get(`/api/fontes/reparos/valorReparosAnual?ano=${year}`).then((response) => {
-        return this.formatDataMeses(response.data.data)
-      });
+    async getChartData(years) {
+      const query = this.$helpers.arrayToQueryString('anos', years);
+      const response = await axios.get('/api/fontes/reparos/valorReparosAnual?' + query);
+      return response.data.data;
     },
-
-    formatDataMeses(unformatedData) {
-      const data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-      for (let i = 0; i < data.length; i++) {
-        const dataObj = unformatedData.find((obj) => obj.mes === i + 1);
-        if (dataObj) {
-          data[i] = dataObj.valor;
-        }
-      }
-      return data;
-    }
   }
 }
 </script>

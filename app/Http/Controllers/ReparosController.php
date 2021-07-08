@@ -7,6 +7,7 @@ use App\Http\Requests\ReparosRequest;
 use App\Http\Resources\ReparoResource;
 use App\Models\Fonte;
 use App\Models\Reparo;
+use App\Services\ReparoService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -20,20 +21,13 @@ class ReparosController extends Controller
 
     public function getValorReparosAno(Request $request)
     {
-        $ano = $request->ano;
-        $monthQuery = 'month(created_at)';
-        if (app()->runningUnitTests()) {
-            $monthQuery = "strftime('%m', created_at)";
-        }
-
+        $years = $request->anos;
         try {
-            $reparos = Reparo::selectRaw("round(sum(`valor`), 2) as valor, {$monthQuery} as mes")
-                ->whereYear('created_at', '=', $ano)
-                ->groupBy('mes')->get();
+            $reparosValuesByYear = ReparoService::sumReparosByYear($years);
         } catch (\Throwable $th) {
             return jsonError($th);
         }
-        return jsonData($reparos);
+        return jsonData($reparosValuesByYear);
     }
 
     public function getValoresReparosUltimasSemanas()

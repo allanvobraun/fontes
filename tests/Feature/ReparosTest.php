@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Fonte;
 use App\Models\Reparo;
 use App\Models\User;
+use App\Services\ReparoService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
@@ -50,17 +51,13 @@ class ReparosTest extends TestCase
         $fonte = Fonte::factory()->hasReparos(10)->create();
         Reparo::take(5)->update(['created_at' => $oldYear]);
 
-        $oldSum = DB::table('reparos')->selectRaw("round(sum(`valor`), 2) as valor")
-            ->whereYear('created_at', '=', $oldYear)->pluck('valor')[0];
 
-        $currentSum = DB::table('reparos')->selectRaw("round(sum(`valor`), 2) as valor")
-            ->whereYear('created_at', '=', $currentYear)->pluck('valor')[0];
+        $years = [$oldYear->year, $currentYear->year];
+        $yearsQuery = urldecode(http_build_query(['anos' => $years]));
 
-        $responseOld = $this->getJson("/api/fontes/reparos/valorReparosAnual?ano={$oldYear->year}");
-        $responseNew = $this->getJson("/api/fontes/reparos/valorReparosAnual?ano={$currentYear->year}");
+        $response = $this->getJson("/api/fontes/reparos/valorReparosAnual?$yearsQuery");
 
-        $responseOld->assertOk()->assertJsonPath('data.0.valor', $oldSum);
-        $responseNew->assertOk()->assertJsonPath('data.0.valor', $currentSum);
+        $response->assertOk();
     }
 
     public function testGetReparosValuePerWeek()
@@ -76,4 +73,5 @@ class ReparosTest extends TestCase
         $this->assertNotEquals('{}', $response['data']);
         $this->assertNotEmpty($response['data']);
     }
+
 }

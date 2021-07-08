@@ -43,7 +43,6 @@ export default {
 
     // TODO estudar utilidade do metodo
     onInput(value) {
-      console.log(this.$refs['input-list'].$el.childNodes);
       const opts = this.$refs['input-list'].childNodes;
       for (let i = 0; i < opts.length; i++) {
         if (opts[i].value === value) {

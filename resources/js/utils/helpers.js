@@ -58,4 +58,14 @@ export default {
     const webPackRequire = require.context('wallpapers/', false, /\.webp$/);
     return webPackRequire.keys().map(webPackRequire);
   },
+
+  /**
+   * @param {string} key
+   * @param {string[]} arr
+   * @returns {string}
+   */
+  arrayToQueryString(key, arr) {
+    const paramArray = arr.map((element, index) => `${key}[${index}]=${element}`);
+    return paramArray.join('&');
+  },
 };
