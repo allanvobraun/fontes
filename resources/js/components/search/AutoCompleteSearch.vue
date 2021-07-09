@@ -40,17 +40,6 @@ export default {
         this.$emit("result-selected", value);
       }
     },
-
-    // TODO estudar utilidade do metodo
-    onInput(value) {
-      const opts = this.$refs['input-list'].childNodes;
-      for (let i = 0; i < opts.length; i++) {
-        if (opts[i].value === value) {
-          alert(opts[i].value);
-          break;
-        }
-      }
-    }
   }
 };
 </script>

@@ -1,6 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import {authRequired} from "./utils/routeGuards";
+import {authRequired} from "utils/routeGuards";
 
 Vue.use(VueRouter);
 
@@ -47,7 +47,7 @@ export default new VueRouter({
           name: "editar",
           component: () => import("components/EditorFontes.vue"),
           meta: {
-            title: route => `Editando ${route.params.cod_interno}`.replace('undefined', '')
+            title: route => `Editando ${route.params.cod_interno ?? ''}`
           }
         }
       ]

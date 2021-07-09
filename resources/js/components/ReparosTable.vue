@@ -18,7 +18,6 @@
 import BackButton from "./BackButton.vue";
 import notify from "utils/notify";
 
-
 export default {
   components: {
     BackButton

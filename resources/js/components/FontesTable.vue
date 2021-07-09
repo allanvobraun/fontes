@@ -50,6 +50,16 @@
         </h4>
       </template>
 
+      <template #custom-foot>
+        <b-tr>
+          <b-td colspan="7" variant="dark" class="text-center">
+            <b-button variant="outline-info" @click="fetchFontes">
+              <BIconCaretDownFill/>
+            </b-button>
+          </b-td>
+        </b-tr>
+      </template>
+
     </b-table>
     <b-row no-gutters class="my-3">
       <b-col offset-sm="4" sm="4" class="d-flex justify-content-center align-content-center">
@@ -63,11 +73,11 @@
 import ReparoLink from "./ReparoLink.vue";
 import infiniteScroll from 'vue-infinite-scroll';
 import { mapGetters, mapActions } from 'vuex';
-import { BIconSearch } from 'bootstrap-vue';
+import { BIconSearch, BIconCaretDownFill } from 'bootstrap-vue';
 
 export default {
   name: 'FontesTable',
-  components: {ReparoLink, BIconSearch},
+  components: {ReparoLink, BIconSearch, BIconCaretDownFill},
   directives: {infiniteScroll},
   data() {
     return {
