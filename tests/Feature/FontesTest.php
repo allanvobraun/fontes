@@ -30,11 +30,11 @@ class FontesTest extends TestCase
 
         $fonte = Fonte::factory()->create();
 
-        $response = $this->getJson("/api/fontes/{$fonte->cod_interno}");
+        $response = $this->getJson("/api/fontes/{$fonte->id}");
 
         $response->assertOk()->assertJson([
             'data' => [
-                'id' => $fonte->id,
+                'cod_interno' => $fonte->cod_interno,
             ]
         ]);
     }

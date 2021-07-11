@@ -16,13 +16,7 @@ class ReparosRequest extends ApiRequest
     public function rules()
     {
         return [
-            "cod_interno" => [
-                "bail",
-                "required",
-                "exists:App\Models\Fonte,cod_interno",
-                new ExistRelation,
-                "max:50"
-            ]
+            "id" => [new ExistRelation, 'exists:App\Models\Fonte,id'],
         ];
     }
     public function validationData()
@@ -33,7 +27,7 @@ class ReparosRequest extends ApiRequest
     public function messages()
     {
         return [
-            'cod_interno.exists' => 'Essa fonte não existe no banco de dados',
+            'id.exists' => 'Essa fonte não existe no banco de dados',
         ];
     }
 }

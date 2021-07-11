@@ -21,10 +21,10 @@ class ReparosTest extends TestCase
         $reparo = Reparo::factory()->make();
         $payload = $reparo->toArray();
 
-        $response = $this->postJson("/api/fontes/{$fonte->cod_interno}/reparos", $payload);
+        $response = $this->postJson("/api/fontes/{$fonte->id}/reparos", $payload);
         $response->assertCreated();
         $this->assertDatabaseHas('reparos', [
-            'id' => $response['id']
+            'id' => $response['id'],
         ]);
     }
 
@@ -35,7 +35,7 @@ class ReparosTest extends TestCase
 
         $fonte = Fonte::factory()->hasReparos(5)->create();
 
-        $response = $this->getJson("/api/fontes/{$fonte->cod_interno}/reparos");
+        $response = $this->getJson("/api/fontes/{$fonte->id}/reparos");
 
         $response->assertOk()->assertJsonCount(5, 'data');
     }

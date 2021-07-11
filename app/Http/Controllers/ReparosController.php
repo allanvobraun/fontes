@@ -13,9 +13,9 @@ use Illuminate\Http\Request;
 
 class ReparosController extends Controller
 {
-    public function getReparos(ReparosRequest $request, $cod_interno)
+    public function getReparos(ReparosRequest $request, $id)
     {
-        $items = Fonte::where('cod_interno', $cod_interno)->first()->reparos()->get();
+        $items = Fonte::find($id)->reparos()->get();
         return ReparoResource::collection($items);
     }
 
@@ -42,9 +42,9 @@ class ReparosController extends Controller
         return jsonData($agrupadoSemanas);
     }
 
-    public function newReparo(CreateReparoRequest $request, $cod_interno)
+    public function newReparo(CreateReparoRequest $request, $id)
     {
-        $fonte = Fonte::where('cod_interno', $cod_interno)->first();
+        $fonte = Fonte::find($id);
         return $fonte->reparos()->create($request->all());
     }
 }

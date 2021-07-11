@@ -13,7 +13,7 @@ class CreateReparoRequest extends ApiRequest
     public function rules()
     {
         return [
-            "cod_interno" => 'bail|exists:App\Models\Fonte,cod_interno|required|max:50|',
+            "id" => 'bail|exists:App\Models\Fonte,id|required|max:50|',
             "desc_problema" => 'max:100',
             "peças" => 'max:100',
             "valor" => 'numeric',
