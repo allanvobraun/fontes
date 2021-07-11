@@ -19,3 +19,15 @@ html, body, #app {
 .login-input-append {
     background-color: $primary;
 }
+
+.table-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .table-icon {
+        width: 2rem;
+        height: 2rem;
+    }
+}
+

@@ -1,6 +1,6 @@
 <template>
   <router-link :to="link">
-    <img :src="icone" alt="ferro de solda" :style="size" />
+    <img :src="icone" alt="ferro de solda" style="width: 2rem; height: 2rem" />
   </router-link>
 </template>
 
@@ -9,13 +9,10 @@ import icon from "images/soldering-iron.svg";
 export default {
   props: {
     codigo: String,
-    width: String,
-    height: String
   },
   data() {
     return {
       icone: icon,
-      size: `width:${this.width};height:${this.height};`
     };
   },
   computed: {

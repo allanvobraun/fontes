@@ -40,8 +40,13 @@
       id="fontes-table"
       empty-text="Nenhuma fonte foi encontrada"
     >
+
+      <template #cell(edit)="data">
+        <edit-link></edit-link>
+      </template>
+
       <template #cell(reparos)="data">
-        <reparo-link width="3rem" height="2rem" :codigo="data.item.cod_interno"></reparo-link>
+        <reparo-link :identification="data.item.cod_interno"></reparo-link>
       </template>
 
       <template #empty="scope">
@@ -52,7 +57,7 @@
 
       <template #custom-foot>
         <b-tr>
-          <b-td colspan="7" variant="dark" class="text-center">
+          <b-td colspan="8" variant="dark" class="text-center">
             <b-button variant="outline-info" @click="fetchFontes">
               <BIconCaretDownFill/>
             </b-button>
@@ -70,14 +75,16 @@
 </template>
 
 <script>
-import ReparoLink from "./ReparoLink.vue";
 import infiniteScroll from 'vue-infinite-scroll';
 import { mapGetters, mapActions } from 'vuex';
 import { BIconSearch, BIconCaretDownFill } from 'bootstrap-vue';
+import EditLink from "components/table/EditLink";
+import ReparoLink from "components/table/ReparoLink";
+
 
 export default {
   name: 'FontesTable',
-  components: {ReparoLink, BIconSearch, BIconCaretDownFill},
+  components: {EditLink, ReparoLink, BIconSearch, BIconCaretDownFill},
   directives: {infiniteScroll},
   data() {
     return {
@@ -95,11 +102,17 @@ export default {
         {key: "modelo"},
         {key: "fabricante"},
         {
+          key: "edit",
+          label: "Editar",
+          thStyle: "width: 5%",
+          tdClass: "text-center icon-cell"
+        },
+        {
           key: "reparos",
           label: "Reparos",
           thStyle: "width: 5%",
-          tdClass: "d-flex justify-content-center icon-cell"
-        }
+          tdClass: "text-center icon-cell"
+        },
       ],
       filterQuery: ''
     };
@@ -129,5 +142,6 @@ export default {
 <style>
 .icon-cell {
   padding: 0.60rem 0 !important;
+  vertical-align: middle !important;
 }
 </style>

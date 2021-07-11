@@ -10,6 +10,7 @@ class FonteResource extends JsonResource
     public function toArray($request)
     {
         return [
+            'id' => $this->id,
             'cod_interno' => $this->cod_interno,
             'cod_font' => $this->cod_font,
             'modelo' => $this->modelo,
