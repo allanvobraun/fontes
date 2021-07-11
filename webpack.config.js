@@ -13,6 +13,7 @@ module.exports = {
       'classes': path.resolve(__dirname, './resources/js/classes'),
       'views': path.resolve(__dirname, './resources/js/views'),
       'utils': path.resolve(__dirname, './resources/js/utils'),
+      '@': path.resolve(__dirname, './resources/js'),
     }
   },
   devServer: {

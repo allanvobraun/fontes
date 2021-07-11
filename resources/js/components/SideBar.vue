@@ -15,9 +15,6 @@
         <li>
           <router-link :to="{ name: 'novo'}">Novo Reparo</router-link>
         </li>
-        <li>
-          <router-link :to="{ name: 'editar'}">Editor</router-link>
-        </li>
       </ul>
     </div>
 

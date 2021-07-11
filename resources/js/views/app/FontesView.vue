@@ -144,4 +144,8 @@ export default {
   padding: 0.60rem 0 !important;
   vertical-align: middle !important;
 }
+
+table {
+  font-size: .85rem;
+}
 </style>

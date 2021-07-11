@@ -101,7 +101,7 @@
 <script>
   import { Money } from "v-money";
   import AutoCompleteNSRework from "components/search/AutoCompleteNSRework.vue";
-  import notify from "utils/notify.js";
+  import notify from "utils/notify";
 
   export default {
   components: { Money, AutoCompleteNSRework },

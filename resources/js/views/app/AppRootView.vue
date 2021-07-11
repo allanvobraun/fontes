@@ -10,8 +10,8 @@
 </template>
 
 <script>
-import CardBody from "./CardBody.vue";
-import SideBar from "./SideBar.vue";
+import CardBody from "components/CardBody.vue";
+import SideBar from "components/SideBar.vue";
 
 export default {
   name: "MainApp",

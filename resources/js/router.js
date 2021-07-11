@@ -9,17 +9,17 @@ export default new VueRouter({
     {
       path: '/login',
       name: 'login',
-      component: () => import('components/UserLogin')
+      component: () => import('views/UserLoginView')
     },
     {
       path: "/",
-      component: () => import('components/MainApp'),
+      component: () => import('views/app/AppRootView'),
       beforeEnter: authRequired,
       children: [
         {
           path: '',
           name: 'home',
-          component: () => import("components/HomeDashboard.vue"),
+          component: () => import("views/app/HomeDashboardView.vue"),
           meta: {title: "Home"},
         },
         {
@@ -33,23 +33,16 @@ export default new VueRouter({
         {
           path: "fontes",
           name: "fontes",
-          component: () => import("components/FontesTable.vue"),
+          component: () => import("views/app/FontesView.vue"),
           meta: {title: "Todas as fontes"}
         },
         {
           path: "new",
           name: "novo",
-          component: () => import("components/ConcertoForm.vue"),
+          component: () => import("views/app/NewRepairView.vue"),
           meta: {title: "Novo registro"}
         },
-        {
-          path: "fontes/edit/:cod_interno?",
-          name: "editar",
-          component: () => import("components/EditorFontes.vue"),
-          meta: {
-            title: route => `Editando ${route.params.cod_interno ?? ''}`
-          }
-        }
+
       ]
     },
   ],

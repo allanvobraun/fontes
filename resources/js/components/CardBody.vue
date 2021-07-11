@@ -1,5 +1,5 @@
 <template>
-  <b-card v-bind:header="titulo" header-tag="header" class="w-100">
+  <b-card v-bind:header="titulo" header-tag="header" class="w-100 h-100">
     <slot></slot>
   </b-card>
 </template>
