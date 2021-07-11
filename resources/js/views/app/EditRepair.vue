@@ -1,6 +1,6 @@
 <template>
   <div class="mx-5">
-    <repair-form></repair-form>
+    <repair-form action="put"></repair-form>
   </div>
 </template>
 

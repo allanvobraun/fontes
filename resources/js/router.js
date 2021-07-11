@@ -42,7 +42,14 @@ export default new VueRouter({
           component: () => import("views/app/NewRepairView.vue"),
           meta: {title: "Novo registro"}
         },
-
+        {
+          path: "edit/:cod_interno",
+          name: "editar",
+          component: () => import("views/app/EditRepair.vue"),
+          meta: {
+            title: route => `Editando fonte "${route.params.cod_interno}"`
+          },
+        },
       ]
     },
   ],
