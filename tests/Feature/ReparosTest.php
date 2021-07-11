@@ -5,9 +5,7 @@ namespace Tests\Feature;
 use App\Models\Fonte;
 use App\Models\Reparo;
 use App\Models\User;
-use App\Services\ReparoService;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class ReparosTest extends TestCase
@@ -67,11 +65,34 @@ class ReparosTest extends TestCase
 
         $fonte = Fonte::factory()->hasReparos(10)->create();
 
-        $response= $this->getJson("/api/fontes/reparos/valorSemanas");
+        $response = $this->getJson("/api/fontes/reparos/valorSemanas");
         $response->assertOk();
 
         $this->assertNotEquals('{}', $response['data']);
         $this->assertNotEmpty($response['data']);
+    }
+
+    public function testEditReparo()
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        $fonte = Fonte::factory()->hasReparos(1)->create();
+        $reparo = $fonte->reparos()->first();
+        $this->assertDatabaseHas('reparos', [
+            'id' => $reparo->id,
+            'desc_problema' => $reparo->desc_problema,
+        ]);
+
+        $payload = $reparo->toArray();
+        $payload['desc_problema'] = 'teste';
+
+        $response = $this->putJson("/api/fontes/{$fonte->id}/reparos/{$reparo->id}", $payload);
+        $response->assertOk();
+        $this->assertDatabaseHas('reparos', [
+            'id' => $reparo->id,
+            'desc_problema' => 'teste',
+        ]);
     }
 
 }

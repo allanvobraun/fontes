@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CreateReparoRequest;
-use App\Http\Requests\ReparosRequest;
+use App\Http\Requests\ReparoRequest;
+use App\Http\Requests\RelationReparoRequest;
 use App\Http\Resources\ReparoResource;
 use App\Models\Fonte;
 use App\Models\Reparo;
@@ -13,9 +13,9 @@ use Illuminate\Http\Request;
 
 class ReparosController extends Controller
 {
-    public function getReparos(ReparosRequest $request, $id)
+    public function getReparos(RelationReparoRequest $request, $fonteId)
     {
-        $items = Fonte::find($id)->reparos()->get();
+        $items = Fonte::find($fonteId)->reparos()->get();
         return ReparoResource::collection($items);
     }
 
@@ -42,9 +42,15 @@ class ReparosController extends Controller
         return jsonData($agrupadoSemanas);
     }
 
-    public function newReparo(CreateReparoRequest $request, $id)
+    public function newReparo(ReparoRequest $request, $fonteId)
     {
-        $fonte = Fonte::find($id);
+        $fonte = Fonte::find($fonteId);
         return $fonte->reparos()->create($request->all());
+    }
+
+    public function editReparo(ReparoRequest $request, $fonteId, $id)
+    {
+        $fonte = Fonte::find($fonteId);
+        return $fonte->reparos()->where('id', $id)->update($request->all());
     }
 }

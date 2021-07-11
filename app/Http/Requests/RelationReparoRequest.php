@@ -2,9 +2,12 @@
 
 namespace App\Http\Requests;
 
-class CreateReparoRequest extends ApiRequest
-{
+use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\ApiRequest;
+use App\Rules\ExistRelation;
 
+class RelationReparoRequest extends ApiRequest
+{
     /**
      * Get the validation rules that apply to the request.
      *
@@ -13,15 +16,9 @@ class CreateReparoRequest extends ApiRequest
     public function rules()
     {
         return [
-            "id" => 'bail|exists:App\Models\Fonte,id|required|max:50|',
-            "desc_problema" => 'max:100',
-            "peças" => 'max:100',
-            "valor" => 'numeric',
-            "status" => 'in:OK,NOK|required|max:3'
+            "fonteId" => [new ExistRelation, 'exists:App\Models\Fonte,id'],
         ];
     }
-
-
     public function validationData()
     {
         return array_merge($this->all(), $this->route()->parameters());
@@ -30,7 +27,7 @@ class CreateReparoRequest extends ApiRequest
     public function messages()
     {
         return [
-            'cod_font.exists' => 'O código da fonte não existe',
+            'id.exists' => 'Essa fonte não existe no banco de dados',
         ];
     }
 }

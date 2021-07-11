@@ -70,4 +70,26 @@ class FontesTest extends TestCase
             'id' => $response['id']
         ]);
     }
+
+    public function testEditFonte()
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        $fonte = Fonte::factory()->create();
+        $this->assertDatabaseHas('fontes', [
+            'cod_interno' => $fonte->cod_interno
+        ]);
+
+        $payload = $fonte->toArray();
+        $payload['cod_interno'] = 'teste';
+        $payload['cod_font'] = 'teste2';
+
+        $response = $this->putJson("/api/fontes/{$fonte->id}", $payload);
+        $response->assertOk();
+        $this->assertDatabaseHas('fontes', [
+            'cod_interno' => 'teste',
+            'cod_font' => 'teste2',
+        ]);
+    }
 }

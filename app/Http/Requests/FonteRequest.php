@@ -14,19 +14,18 @@ class FonteRequest extends ApiRequest
     public function rules()
     {
         return [
-            "cod_interno" => "bail|required|exists:App\Models\Fonte,cod_interno|max:50"
+            "cod_interno" => "bail|required|unique:App\Models\Fonte,cod_interno|max:50",
+            "cod_font" => "bail|unique:App\Models\Fonte,cod_font|required|max:50",
+            "modelo" => "max:100",
+            "fabricante" => "max:100"
         ];
-    }
-
-    public function validationData()
-    {
-        return array_merge($this->all(), $this->route()->parameters());
     }
 
     public function messages()
     {
         return [
-            'cod_interno.exists' => 'Essa fonte não existe no banco de dados',
+            'cod_interno.unique' => 'Esse código interno já existe no banco de dados',
+            'cod_font.unique' => 'Esse código do fabricante já existe no banco de dados',
         ];
     }
 }

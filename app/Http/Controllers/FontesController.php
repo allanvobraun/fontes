@@ -5,12 +5,17 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Resources\FonteResource;
 use App\Models\Fonte;
-use App\Http\Requests\StoreFonte;
-use App\Http\Requests\SearchFonte;
 use App\Http\Requests\FonteRequest;
+use App\Http\Requests\SearchFonte;
 
 class FontesController extends Controller
 {
+    public function getFonte($id)
+    {
+        $fonte = Fonte::find($id);
+        return jsonData($fonte);
+    }
+
     public function getFontes(Request $request)
     {
         $fontes = Fonte::orderBy('cod_interno', 'DESC');
@@ -22,15 +27,14 @@ class FontesController extends Controller
         return FonteResource::collection($items->paginate(10));
     }
 
-    public function newFonte(StoreFonte $request)
+    public function editFonte(FonteRequest $request, $id)
     {
-        return Fonte::create($request->all());
+        return Fonte::where('id', $id)->update($request->all());
     }
 
-    public function getFonte($id)
+    public function newFonte(FonteRequest $request)
     {
-        $fonte = Fonte::find($id);
-        return jsonData($fonte);
+        return Fonte::create($request->all());
     }
 
     public function searchFonte(SearchFonte $request)

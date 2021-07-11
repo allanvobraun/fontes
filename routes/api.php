@@ -16,10 +16,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/fontes', [FontesController::class, 'newFonte']);
     Route::get('/fontes/search', [FontesController::class, 'searchFonte']);
     Route::get('/fontes/{id}', [FontesController::class, 'getFonte']);
+    Route::put('/fontes/{id}', [FontesController::class, 'editFonte']);
 
     // reparos
-    Route::post('/fontes/{id}/reparos', [ReparosController::class, 'newReparo']);
-    Route::get('/fontes/{id}/reparos', [ReparosController::class, 'getReparos']);
+    Route::post('/fontes/{fonteId}/reparos', [ReparosController::class, 'newReparo']);
+    Route::get('/fontes/{fonteId}/reparos', [ReparosController::class, 'getReparos']);
+    Route::put('/fontes/{fonteId}/reparos/{id}', [ReparosController::class, 'editReparo']);
     Route::get('/fontes/reparos/valorReparosAnual', [ReparosController::class, 'getValorReparosAno']);
     Route::get('/fontes/reparos/valorSemanas', [ReparosController::class, 'getValoresReparosUltimasSemanas']);
 });

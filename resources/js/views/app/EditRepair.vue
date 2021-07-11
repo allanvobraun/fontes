@@ -13,7 +13,9 @@ export default {
   props: ['cod_interno', 'id'],
   mixins: [metaMixin],
   computed: {
-    title: () => 'Editando fonte'
+    title() {
+      return `Editando fonte ${this.cod_interno}`;
+    }
   }
 }
 
