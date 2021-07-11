@@ -42,11 +42,11 @@
     >
 
       <template #cell(edit)="data">
-        <edit-link></edit-link>
+        <edit-link :fonte-object="data.item" ></edit-link>
       </template>
 
       <template #cell(reparos)="data">
-        <reparo-link :identification="data.item.cod_interno"></reparo-link>
+        <reparo-link :fonte-object="data.item"></reparo-link>
       </template>
 
       <template #empty="scope">
@@ -80,11 +80,12 @@ import { mapGetters, mapActions } from 'vuex';
 import { BIconSearch, BIconCaretDownFill } from 'bootstrap-vue';
 import EditLink from "components/table/EditLink";
 import ReparoLink from "components/table/ReparoLink";
+import metaMixin from "utils/metaMixin";
 
 
 export default {
-  name: 'FontesTable',
   components: {EditLink, ReparoLink, BIconSearch, BIconCaretDownFill},
+  mixins: [metaMixin],
   directives: {infiniteScroll},
   data() {
     return {
@@ -121,7 +122,8 @@ export default {
     ...mapGetters('fontes', [
       "items",
       "loading",
-    ])
+    ]),
+    title: () => 'Todas as fontes'
   },
   methods: {
     ...mapActions('fontes', [

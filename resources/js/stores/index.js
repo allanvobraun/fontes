@@ -1,13 +1,15 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import fontes from "./modules/fontes";
-import user from "./modules/user";
+import fontes from "@/stores/modules/fontes";
+import user from "@/stores/modules/user";
+import meta from "@/stores/modules/meta";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   modules: {
     fontes,
-    user
+    user,
+    meta
   }
 });

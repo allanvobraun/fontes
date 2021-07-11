@@ -20,35 +20,27 @@ export default new VueRouter({
           path: '',
           name: 'home',
           component: () => import("views/app/HomeDashboardView.vue"),
-          meta: {title: "Home"},
         },
         {
-          path: "fontes/:cod_interno/reparos",
+          path: "fontes/:id/reparos",
           name: "reparos",
           component: () => import("components/ReparosTable.vue"),
-          meta: {
-            title: route => `Todos os reparos da fonte "${route.params.cod_interno}"`
-          },
+          props: true
         },
         {
           path: "fontes",
           name: "fontes",
-          component: () => import("views/app/FontesView.vue"),
-          meta: {title: "Todas as fontes"}
+          component: () => import("views/app/FontesTableView.vue"),
         },
         {
           path: "new",
           name: "novo",
           component: () => import("views/app/NewRepairView.vue"),
-          meta: {title: "Novo registro"}
         },
         {
-          path: "edit/:cod_interno",
+          path: "edit/:id",
           name: "editar",
           component: () => import("views/app/EditRepair.vue"),
-          meta: {
-            title: route => `Editando fonte "${route.params.cod_interno}"`
-          },
         },
       ]
     },

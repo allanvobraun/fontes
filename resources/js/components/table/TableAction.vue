@@ -1,11 +1,14 @@
 <script>
 export default {
   props: {
-    identification: String,
+    fonteObject: Object,
   },
   computed: {
-    endpoint() {
-      return `/fontes/${this.identification}/reparos`;
+    routeParams() {
+      return {
+        cod_interno: this.fonteObject.cod_interno,
+        id: this.fonteObject.id
+      };
     }
   }
 };

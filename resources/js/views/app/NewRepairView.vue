@@ -6,9 +6,14 @@
 
 <script>
 import RepairForm from "components/RepairForm";
+import metaMixin from "utils/metaMixin";
 
 export default {
-  components: {RepairForm}
+  components: {RepairForm},
+  mixins: [metaMixin],
+  computed: {
+    title: () => 'Novo registro'
+  }
 }
 
 </script>

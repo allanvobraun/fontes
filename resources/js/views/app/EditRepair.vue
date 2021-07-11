@@ -6,9 +6,15 @@
 
 <script>
 import RepairForm from "components/RepairForm";
+import metaMixin from "utils/metaMixin";
 
 export default {
-  components: {RepairForm}
+  components: {RepairForm},
+  props: ['cod_interno', 'id'],
+  mixins: [metaMixin],
+  computed: {
+    title: () => 'Editando fonte'
+  }
 }
 
 </script>

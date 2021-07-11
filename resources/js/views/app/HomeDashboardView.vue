@@ -50,9 +50,15 @@
 <script>
 import GanhosAnoChart from "charts/GanhosAnoChart";
 import GanhosSemanaChart from "charts/GanhosSemanaChart";
+import metaMixin from "utils/metaMixin";
 export default {
+  mixins: [metaMixin],
   components: { GanhosAnoChart, GanhosSemanaChart },
-
+  computed: {
+    title() {
+      return "Home";
+    }
+  }
 };
 </script>
 
