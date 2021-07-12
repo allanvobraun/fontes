@@ -48,7 +48,7 @@ const mutations = {
 };
 
 const actions = {
-  async submitFonte({state, commit}, payload) {
+  async submitFonte({state, commit}, payload) { // TODO trocar endpoints
     commit('setFonte', payload);
     const response = await axios[state.httpMethod]("/api/fontes", state.fonte);
     commit('setFonte', response.data.data);

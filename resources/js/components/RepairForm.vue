@@ -100,7 +100,7 @@
     </div>
 
     <b-button type="submit" variant="primary" @click="checkTarget($event)">Enviar</b-button>
-    <b-button type="reset" variant="danger">Limpar</b-button>
+    <b-button v-if="action === 'save'" type="reset" variant="danger">Limpar</b-button>
   </b-form>
 
 </template>
@@ -149,6 +149,11 @@ export default {
         reparo: true
       }
     };
+  },
+  mounted() {
+    if (this.action === 'edit') {
+      this.setFormLock(false);
+    }
   },
   destroyed() {
     this.resetState();
@@ -261,7 +266,6 @@ export default {
       Object.assign(this.form.fonte, newFonte);
     },
     reparoObject(newReparo) {
-      console.log("oi")
       Object.assign(this.form.reparo, newReparo);
     },
   }
