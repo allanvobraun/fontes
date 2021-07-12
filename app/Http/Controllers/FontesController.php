@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\GetFonteRequest;
 use Illuminate\Http\Request;
 use App\Http\Resources\FonteResource;
 use App\Models\Fonte;
@@ -13,6 +14,16 @@ class FontesController extends Controller
     public function getFonte($id)
     {
         $fonte = Fonte::find($id);
+        if ($fonte) {
+            return jsonData($fonte);
+        }
+
+        abort(404, 'Essa fonte não existe');
+    }
+
+    public function getFonteByCodInterno(GetFonteRequest $request, $cod_interno)
+    {
+        $fonte = Fonte::where('cod_interno', $cod_interno)->first();
         return jsonData($fonte);
     }
 
@@ -29,12 +40,15 @@ class FontesController extends Controller
 
     public function editFonte(FonteRequest $request, $id)
     {
-        return Fonte::where('id', $id)->update($request->all());
+        $fonte = Fonte::find($id);
+        $fonte->update($request->all());
+        return jsonData($fonte->fresh());
     }
 
     public function newFonte(FonteRequest $request)
     {
-        return Fonte::create($request->all());
+        $fonte = Fonte::create($request->all());
+        return jsonData($fonte, 201);
     }
 
     public function searchFonte(SearchFonte $request)

@@ -22,7 +22,7 @@ class ReparosTest extends TestCase
         $response = $this->postJson("/api/fontes/{$fonte->id}/reparos", $payload);
         $response->assertCreated();
         $this->assertDatabaseHas('reparos', [
-            'id' => $response['id'],
+            'id' => $response['data']['id'],
         ]);
     }
 

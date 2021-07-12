@@ -11,7 +11,7 @@
           v-if="action === 'post'"
           index="1"
           v-model="form.fonte.cod_interno"
-          @update="onPreenchido"
+          @update="onFilled"
           @keyup.enter.native="focusNextElement($event)"
           @result-selected="getFonte"
           required
@@ -106,23 +106,24 @@
 </template>
 
 <script>
-import { Money } from "v-money";
+import {Money} from "v-money";
 import AutoCompleteNSRework from "components/search/AutoCompleteNSRework.vue";
 import notify from "utils/notify";
+import {mapActions, mapGetters} from "vuex";
 
 export default {
-  components: { Money, AutoCompleteNSRework },
+  components: {Money, AutoCompleteNSRework},
   props: {
     action: {
       type: String,
       default: 'post'
-    }
+    },
   },
   data() {
     return {
+      fonteEncontradaStatus: false,
       form: {
         // foi achada  a fonte no banco
-        fonteEncontradaStatus: false,
         fonte: {
           cod_font: "",
           cod_interno: "",
@@ -149,21 +150,18 @@ export default {
       }
     };
   },
+  computed: {
+    ...mapGetters('reparoForm', ["fonteObject", "reparoObject"]),
+  },
   methods: {
+    ...mapActions('reparoForm', ['submitReparo', 'submitFonte', 'getFontByCod']),
+
     getFonte(text) {
-      axios
-        .get( `/api/fontes/${text}`)
-        .then(response => {
+      this.getFontByCod(text).then(() => {
           this.lock.fonte = true;
-          this.form.fonteEncontradaStatus = true;
+          this.fonteEncontradaStatus = true;
           notify.info('Fonte encontrada!');
-
-          this.$nextTick(() => {
-            this.form.fonte = response.data.data;
-          });
-
-        })
-        .catch();
+        }).catch(() => {});
     },
 
     checkTarget(e) {
@@ -171,27 +169,15 @@ export default {
       if (e.detail == 0) e.preventDefault();
     },
 
-    lockOrUnlockForm(lock) {
+    setFormLock(lock) {
       this.lock.fonte = lock;
       this.lock.reparo = lock;
     },
 
-    saveFonte() {
-      return axios[this.action]("/api/fontes", this.form.fonte)
-        .catch(error => {
-          this.tratarErro(error.response, "Erro ao gravar a fonte!");
-        });
-    },
-
-    saveReparo() {
-      const url = `/api/fontes/${this.form.fonte.cod_interno}/reparos`;
-      return axios[this.action](url, this.form.reparo)
-        .catch(error => {
-          this.tratarErro(error.response, "Erro ao gravar o reparo!");
-        });
-    },
-
-    tratarErro(error, tituloMensagem) {
+    handleError(error, tituloMensagem) {
+      if (!error) {
+        notify.error('Erro desconhecido');
+      }
       const errorText = this.$helpers.getErroString(error);
       notify.error(tituloMensagem, errorText);
       throw new Error(tituloMensagem);
@@ -202,15 +188,25 @@ export default {
       let reparo_data;
 
       //só tenta salvar a fonte se ja não foi auto preenchida
-      if (this.form.fonteEncontradaStatus === false) {
-        fonte_data = await this.saveFonte();
+      if (this.fonteEncontradaStatus === false) {
+        try {
+          fonte_data = await this.submitFonte(this.form.fonte);
+        } catch (error) {
+          this.handleError(error?.response, "Erro ao gravar a fonte!");
+        }
       }
-      reparo_data = await this.saveReparo();
-      this.notificarSave(fonte_data, reparo_data);
+
+      try {
+        reparo_data = await this.submitReparo(this.form.reparo);
+      } catch (error) {
+        this.handleError(error?.response, "Erro ao gravar o reparo!");
+      }
+
+      this.notifySavedEntities(fonte_data, reparo_data);
       this.onReset();
     },
 
-    notificarSave(fonte_data, reparo_data) {
+    notifySavedEntities(fonte_data, reparo_data) {
       const fonte_txt = fonte_data ? "Fonte salva com sucesso" : "";
       const reparo_txt = reparo_data ? "Reparo da fonte salvo com sucesso" : "";
       const responte_txt = `${fonte_txt}\n${reparo_txt}`;
@@ -222,7 +218,7 @@ export default {
       this.cleanFonte(true);
       this.form.reparo = _.mapValues(this.form.reparo, () => "");
       this.form.reparo.status = 'OK';
-      this.lockOrUnlockForm(true);
+      this.setFormLock(true);
     },
 
     cleanFonte(limparCod) {
@@ -232,15 +228,16 @@ export default {
       if (!limparCod) {
         this.form.fonte.cod_interno = cod_interno;
       }
-      this.form.fonteEncontradaStatus = false;
+      this.fonteEncontradaStatus = false;
     },
 
-    onPreenchido(text) {
+    onFilled(text) {
+      this.fonteEncontradaStatus = false;
       if (text !== "") {
-        this.lockOrUnlockForm(false);
+        this.setFormLock(false);
         return;
       }
-      this.lockOrUnlockForm(true);
+      this.setFormLock(true);
       this.cleanFonte(false);
     },
 
@@ -255,6 +252,17 @@ export default {
       );
       if (next_input !== undefined) next_input.focus();
     }
+  },
+  watch: {
+    fonteObject(newFonte) {
+      Object.assign(this.form.fonte, newFonte);
+    },
+    reparoObject(newReparo) {
+      Object.assign(this.form.reparo, newReparo);
+    },
+
+
   }
-};
+}
+;
 </script>

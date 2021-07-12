@@ -39,6 +39,23 @@ class FontesTest extends TestCase
         ]);
     }
 
+    public function testGetFonteByCodInterno()
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        $fonte = Fonte::factory()->create();
+
+        $response = $this->getJson("/api/fontes/cod/{$fonte->cod_interno}");
+
+        $response->assertOk()->assertJson([
+            'data' => [
+                'id' => $fonte->id,
+                'cod_interno' => $fonte->cod_interno,
+            ]
+        ]);
+    }
+
     public function testSearchFontes()
     {
         $user = User::factory()->create();
@@ -67,7 +84,7 @@ class FontesTest extends TestCase
         $response = $this->postJson("/api/fontes", $payload);
         $response->assertCreated();
         $this->assertDatabaseHas('fontes', [
-            'id' => $response['id']
+            'id' => $response['data']['id']
         ]);
     }
 

@@ -16,6 +16,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/fontes', [FontesController::class, 'newFonte']);
     Route::get('/fontes/search', [FontesController::class, 'searchFonte']);
     Route::get('/fontes/{id}', [FontesController::class, 'getFonte']);
+    Route::get('/fontes/cod/{cod_interno}', [FontesController::class, 'getFonteByCodInterno']);
     Route::put('/fontes/{id}', [FontesController::class, 'editFonte']);
 
     // reparos

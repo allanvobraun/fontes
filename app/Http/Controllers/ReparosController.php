@@ -45,12 +45,14 @@ class ReparosController extends Controller
     public function newReparo(ReparoRequest $request, $fonteId)
     {
         $fonte = Fonte::find($fonteId);
-        return $fonte->reparos()->create($request->all());
+        $reparo = $fonte->reparos()->create($request->all());
+        return jsonData($reparo, 201);
     }
 
     public function editReparo(ReparoRequest $request, $fonteId, $id)
     {
         $fonte = Fonte::find($fonteId);
-        return $fonte->reparos()->where('id', $id)->update($request->all());
+        $fonte->reparos()->where('id', $id)->update($request->all());
+        return jsonData($fonte->reparos()->where('id', $id)->get());
     }
 }

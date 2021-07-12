@@ -40,7 +40,7 @@ export default new VueRouter({
         {
           path: "edit/:id",
           name: "editar",
-          component: () => import("views/app/EditRepair.vue"),
+          component: () => import("views/app/EditRepairView.vue"),
         },
       ]
     },
