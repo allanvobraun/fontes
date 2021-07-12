@@ -137,7 +137,9 @@ export default {
     }
   },
   mounted() {
-    this.fetchFontes();
+    if (this.items.length === 0) {
+      this.fetchFontes();
+    }
   },
 };
 </script>
