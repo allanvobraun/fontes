@@ -261,6 +261,7 @@ export default {
       Object.assign(this.form.fonte, newFonte);
     },
     reparoObject(newReparo) {
+      console.log("oi")
       Object.assign(this.form.reparo, newReparo);
     },
   }

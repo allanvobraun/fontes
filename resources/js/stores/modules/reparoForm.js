@@ -24,7 +24,9 @@ const state = getDefaultState();
 
 const getters = {
   fonteObject: state => state.fonte,
-  reparoObject: state => state.fonte,
+  reparoObject: state => state.reparo,
+  reparosList: state => state.reparos,
+  reparosCount: state => state.reparos.length,
 };
 
 const mutations = {
@@ -35,7 +37,7 @@ const mutations = {
     state.reparo = payload
   },
   setReparos(state, payload) {
-    state.reparo = payload
+    state.reparos = payload
   },
   setHttpMethod(state, payload) {
     state.httpMethod = payload
@@ -81,6 +83,12 @@ const actions = {
   resetState({commit}) {
     commit('reset');
   },
+
+  setReparoByIndex({commit, state, getters}, idx) {
+    console.log(idx)
+    if (idx > getters.reparosCount -1) return;
+    commit('setReparo', getters.reparosList[idx]);
+  }
 
 };
 

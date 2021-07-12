@@ -2,11 +2,19 @@
   <div class="mx-5">
     <repair-form action="edit"></repair-form>
     <div class="reparos-pagination">
-      <b-pagination-nav
-        :number-of-pages="3"
+      <b-pagination
+        v-if="reparosCount > 1"
+        v-model="actualPage"
+        :total-rows="reparosCount"
+        :per-page="1"
+        @change="changeReparo"
         size="lg"
+        hide-goto-end-buttons
         pills
-      ></b-pagination-nav>
+      ></b-pagination>
+      <h2 v-else>
+        Essa fonte só tem um reparo cadastrado
+      </h2>
     </div>
   </div>
 </template>
@@ -15,7 +23,7 @@
 import RepairForm from "components/RepairForm";
 import metaMixin from "utils/metaMixin";
 import notify from "utils/notify";
-import {mapActions, mapMutations} from "vuex";
+import {mapActions, mapGetters, mapMutations} from "vuex";
 
 export default {
   components: {RepairForm},
@@ -23,8 +31,7 @@ export default {
   mixins: [metaMixin],
   data() {
     return {
-      fonte: {},
-      reparos: []
+      actualPage: 1
     }
   },
   mounted() {
@@ -33,8 +40,11 @@ export default {
     });
   },
   methods: {
-    ...mapActions('reparoForm', ["getFontById"]),
+    ...mapActions('reparoForm', ["getFontById", "setReparoByIndex"]),
     ...mapMutations('reparoForm', ["setHttpMethod"]),
+    changeReparo() {
+      this.setReparoByIndex(this.actualPage -1);
+    },
     async getResources() {
       try {
         await this.getFontById(this.id);
@@ -45,12 +55,16 @@ export default {
         return;
       }
       notify.info("Use as setas para trocar entre reparos");
-    }
+    },
   },
   computed: {
+    ...mapGetters('reparoForm', ["reparosCount"]),
+    pageCount() {
+      return this.reparosCount;
+    },
     title() {
-      return `Editando fonte ${this.cod_interno}`;
-    }
+      return `Editando fonte '${this.cod_interno}'`;
+    },
   },
 }
 </script>

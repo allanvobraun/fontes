@@ -13,7 +13,7 @@ class FontesController extends Controller
 {
     public function getFonte($id)
     {
-        $fonte = Fonte::with('reparos')->find($id);
+        $fonte = Fonte::with(['reparos' => fn($query) => $query->orderBy('created_at', 'ASC')])->find($id);
         if ($fonte) {
             return jsonData(new FonteResource($fonte));
         }
