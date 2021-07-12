@@ -13,3 +13,8 @@ export default {
   }
 };
 </script>
+<style scoped>
+header {
+  font-weight: bold !important;
+}
+</style>

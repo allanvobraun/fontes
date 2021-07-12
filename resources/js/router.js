@@ -38,9 +38,10 @@ export default new VueRouter({
           component: () => import("views/app/NewRepairView.vue"),
         },
         {
-          path: "edit/:id",
+          path: "fontes/:id/edit",
           name: "editar",
           component: () => import("views/app/EditRepairView.vue"),
+          props: true
         },
       ]
     },

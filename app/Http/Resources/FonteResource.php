@@ -2,8 +2,8 @@
 
 namespace App\Http\Resources;
 
-use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\ReparoResource as ReparoResource;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class FonteResource extends JsonResource
 {
@@ -14,7 +14,8 @@ class FonteResource extends JsonResource
             'cod_interno' => $this->cod_interno,
             'cod_font' => $this->cod_font,
             'modelo' => $this->modelo,
-            'fabricante' => $this->fabricante
+            'fabricante' => $this->fabricante,
+            'reparos' => ReparoResource::collection($this->whenLoaded('reparos'))
         ];
     }
 }

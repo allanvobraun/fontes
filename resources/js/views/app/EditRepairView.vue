@@ -1,6 +1,13 @@
 <template>
   <div class="mx-5">
-    <repair-form action="put"></repair-form>
+    <repair-form action="edit"></repair-form>
+    <div class="reparos-pagination">
+      <b-pagination-nav
+        :number-of-pages="3"
+        size="lg"
+        pills
+      ></b-pagination-nav>
+    </div>
   </div>
 </template>
 
@@ -8,6 +15,7 @@
 import RepairForm from "components/RepairForm";
 import metaMixin from "utils/metaMixin";
 import notify from "utils/notify";
+import {mapActions, mapMutations} from "vuex";
 
 export default {
   components: {RepairForm},
@@ -20,16 +28,16 @@ export default {
     }
   },
   mounted() {
-    this.getResources();
+    this.getResources().then(() => {
+      this.setHttpMethod('put');
+    });
   },
   methods: {
+    ...mapActions('reparoForm', ["getFontById"]),
+    ...mapMutations('reparoForm', ["setHttpMethod"]),
     async getResources() {
       try {
-        const fonteResponse = await axios.get(`/api/fontes/${this.id}`);
-        this.fonte = fonteResponse.data.data;
-
-        const reparoResponse = await axios.get(`api/fontes/${this.id}/reparos`);
-        this.reparos = reparoResponse.data.data;
+        await this.getFontById(this.id);
 
       } catch (e) {
         notify.error("Erro ao buscar informações da fonte", "Tente novamente mais tarde");
@@ -46,3 +54,12 @@ export default {
   },
 }
 </script>
+<style scoped>
+.reparos-pagination {
+  margin: auto 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+</style>

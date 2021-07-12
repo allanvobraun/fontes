@@ -13,9 +13,9 @@ class FontesController extends Controller
 {
     public function getFonte($id)
     {
-        $fonte = Fonte::find($id);
+        $fonte = Fonte::with('reparos')->find($id);
         if ($fonte) {
-            return jsonData($fonte);
+            return jsonData(new FonteResource($fonte));
         }
 
         abort(404, 'Essa fonte não existe');

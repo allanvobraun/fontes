@@ -8,7 +8,7 @@
     <div class="row">
       <b-form-group label="N/S Rework:" class="col-sm-6">
         <auto-complete-n-s-rework
-          v-if="action === 'post'"
+          v-if="action === 'save'"
           index="1"
           v-model="form.fonte.cod_interno"
           @update="onFilled"
@@ -116,7 +116,7 @@ export default {
   props: {
     action: {
       type: String,
-      default: 'post'
+      default: 'save'
     },
   },
   data() {
@@ -150,11 +150,14 @@ export default {
       }
     };
   },
+  destroyed() {
+    this.resetState();
+  },
   computed: {
     ...mapGetters('reparoForm', ["fonteObject", "reparoObject"]),
   },
   methods: {
-    ...mapActions('reparoForm', ['submitReparo', 'submitFonte', 'getFontByCod']),
+    ...mapActions('reparoForm', ['submitReparo', 'submitFonte', 'getFontByCod', 'resetState']),
 
     getFonte(text) {
       this.getFontByCod(text).then(() => {
@@ -260,9 +263,6 @@ export default {
     reparoObject(newReparo) {
       Object.assign(this.form.reparo, newReparo);
     },
-
-
   }
-}
-;
+};
 </script>
