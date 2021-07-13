@@ -8,11 +8,14 @@ use Illuminate\Contracts\Validation\Validator;
 
 class ApiRequest extends FormRequest
 {
+    protected string $errorMassage = '';
+
     public function failedValidation(Validator $validator)
     {
-        $erros = [
-            "erros" => $validator->errors()
+        $response = [
+            'message' => $this->errorMassage,
+            "erros" => $validator->errors(),
         ];
-        throw new HttpResponseException(response()->json($erros, 400));
+        throw new HttpResponseException(response()->json($response, 400));
     }
 }

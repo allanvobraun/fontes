@@ -15,7 +15,6 @@ function getDefaultState() {
       valor: 0
     },
     reparos: [],
-    httpMethod: 'post'
   };
 }
 
@@ -39,28 +38,52 @@ const mutations = {
   setReparos(state, payload) {
     state.reparos = payload
   },
-  setHttpMethod(state, payload) {
-    state.httpMethod = payload
-  },
   reset(state) {
     Object.assign(state, getDefaultState())
   }
 };
 
 const actions = {
-  async submitFonte({state, commit}, payload) { // TODO trocar endpoints
-    commit('setFonte', payload);
-    const response = await axios[state.httpMethod]("/api/fontes", state.fonte);
-    commit('setFonte', response.data.data);
+  async saveFonte({state, commit}, payload) {
+    const response = await axios.post('/api/fontes', payload);
+    return response.data.data;
   },
 
-  async submitReparo({state, commit}, payload) {
-    commit('setReparo', payload);
-    const url = `/api/fontes/${state.fonte.id}/reparos`;
-
-    const response = await axios[state.httpMethod](url, payload);
-    commit('setReparo', response.data.data);
+  async saveReparo({state, commit}, payload) {
+    const endpoint = `/api/fontes/${state.fonte.id}/reparos`;
+    const response = await axios.post(endpoint, payload);
+    return response.data.data;
   },
+
+  async editFonte({state, commit}, payload) {
+    const endpoint = `/api/fontes/${state.fonte.id}`;
+    const response = await axios.put(endpoint, payload);
+    return response.data.data;
+  },
+
+  async editReparo({state, dispatch}, payload) {
+    const endpoint = `/api/fontes/${state.fonte.id}/reparos/${state.reparo.id}`;
+    const response = await axios.put(endpoint, payload);
+    await dispatch('getReparosByFonteId', state.fonte.id);
+    return response.data.data;
+  },
+
+  /**
+   * @param {?Object} fonte
+   * @param {?Object} reparo
+   * @param {string} type edit | save
+   * @return {Promise<void>}
+   */
+  async submit({dispatch, commit}, {fonte, reparo, type}) {
+
+    if (fonte) {
+      const fonteResponse = await dispatch(`${type}Fonte`, fonte);
+      commit('setFonte', fonteResponse);
+    }
+    const reparoResponse = await dispatch(`${type}Reparo`, reparo);
+    commit('setReparo', reparoResponse);
+  },
+
 
   async getFontByCod({state, commit}, payload) {
     const response = await axios.get(`/api/fontes/cod/${payload}`);
@@ -80,13 +103,20 @@ const actions = {
     }
   },
 
+  async getReparosByFonteId({state, commit}, payload) {
+    const response = await axios.get(`/api/fontes/${payload}/reparos`);
+    const reparos = response.data.data;
+    if (reparos) {
+      commit('setReparos', reparos);
+    }
+  },
+
   resetState({commit}) {
     commit('reset');
   },
 
   setReparoByIndex({commit, state, getters}, idx) {
-    console.log(idx)
-    if (idx > getters.reparosCount -1) return;
+    if (idx > getters.reparosCount - 1) return;
     commit('setReparo', getters.reparosList[idx]);
   }
 

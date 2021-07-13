@@ -162,18 +162,19 @@ export default {
     ...mapGetters('reparoForm', ["fonteObject", "reparoObject"]),
   },
   methods: {
-    ...mapActions('reparoForm', ['submitReparo', 'submitFonte', 'getFontByCod', 'resetState']),
+    ...mapActions('reparoForm', ['submit', 'getFontByCod', 'resetState']),
 
     getFonte(text) {
       this.getFontByCod(text).then(() => {
-          this.lock.fonte = true;
-          this.fonteEncontradaStatus = true;
-          notify.info('Fonte encontrada!');
-        }).catch(() => {});
+        this.lock.fonte = true;
+        this.fonteEncontradaStatus = true;
+        notify.info('Fonte encontrada!');
+      }).catch(() => {
+      });
     },
 
     checkTarget(e) {
-      // checa se o click veio do mause ou se foi do browser (0 é do browser)
+      // checa se o click veio do mouse ou se foi do browser (0 é do browser)
       if (e.detail == 0) e.preventDefault();
     },
 
@@ -182,41 +183,38 @@ export default {
       this.lock.reparo = lock;
     },
 
-    handleError(error, tituloMensagem) {
+    handleError(error) {
       if (!error) {
         notify.error('Erro desconhecido');
       }
       const errorText = this.$helpers.getErroString(error);
-      notify.error(tituloMensagem, errorText);
-      throw new Error(tituloMensagem);
+      notify.error(error.data?.message, errorText);
     },
 
     async onSubmit() {
-      let fonte_data;
-      let reparo_data;
-
       //só tenta salvar a fonte se ja não foi auto preenchida
-      if (this.fonteEncontradaStatus === false) {
-        try {
-          fonte_data = await this.submitFonte(this.form.fonte);
-        } catch (error) {
-          this.handleError(error?.response, "Erro ao gravar a fonte!");
-        }
-      }
+      const fonte = this.fonteEncontradaStatus ? null : this.form.fonte;
 
       try {
-        reparo_data = await this.submitReparo(this.form.reparo);
+        await this.submit({
+          fonte,
+          reparo: this.form.reparo,
+          type: this.action
+        });
       } catch (error) {
-        this.handleError(error?.response, "Erro ao gravar o reparo!");
+        this.handleError(error?.response);
+        return;
       }
 
-      this.notifySavedEntities(fonte_data, reparo_data);
-      this.onReset();
+      this.notifySavedEntities(fonte);
+      if (this.action === 'save') {
+        this.onReset();
+      }
     },
 
-    notifySavedEntities(fonte_data, reparo_data) {
-      const fonte_txt = fonte_data ? "Fonte salva com sucesso" : "";
-      const reparo_txt = reparo_data ? "Reparo da fonte salvo com sucesso" : "";
+    notifySavedEntities(fonte) {
+      const fonte_txt = fonte ? "Fonte salva com sucesso" : "";
+      const reparo_txt = "Reparo da fonte salvo com sucesso";
       const responte_txt = `${fonte_txt}\n${reparo_txt}`;
 
       notify.sucess('Enviado com sucesso!', responte_txt);

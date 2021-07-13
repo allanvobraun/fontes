@@ -20,7 +20,7 @@ export default {
       const url = `/api/fontes/search?query=${input}&attribute=cod_interno`;
       return axios.get(url).then(response => {
         return response.data.data;
-      });
+      }).catch(() => {});
     }, 200),
   }
 }

@@ -12,12 +12,9 @@ export default {
    */
   getErroString(error) {
     const errosObj = error.data.erros;
-    const errosObjStrings = _.mapValues(errosObj, erroList => erroList.join('.\n'));
-    let stringFinal = '';
-    _.forIn(errosObjStrings, (value, key) => {
-      stringFinal += `${key}:\n${value}.\n\n`
-    });
-    return stringFinal;
+    const errorArray = Object.entries(errosObj);
+    const errorMessageArray = errorArray.map((item) => item[1]);
+    return errorMessageArray.join('\n');
   },
 
   /**

@@ -60,10 +60,7 @@ export default {
           this.items = response.data.data;
         })
         .catch(error => {
-          let erros = error.response.data.erros;
-          _.mapValues(erros, err => {
-            notify.error('Erro ao procurar reparos', err[0]);
-          });
+          notify.error('Erro ao procurar reparos', this.$helpers.getErroString(error.response));
         });
     },
     formatValue(value) {

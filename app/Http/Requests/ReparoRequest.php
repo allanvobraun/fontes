@@ -4,6 +4,8 @@ namespace App\Http\Requests;
 
 class ReparoRequest extends ApiRequest
 {
+    protected string $errorMassage = 'Erro ao salvar o reparo';
+
     public function rules()
     {
         return [
@@ -17,7 +19,7 @@ class ReparoRequest extends ApiRequest
 
     public function validationData()
     {
-        return array_merge($this->all(), $this->route()->parameters());
+        return array_merge($this->only(['desc_problema', 'peças', 'valor', 'status', 'fonteId', 'id']), $this->route()->parameters());
     }
 
     public function messages()

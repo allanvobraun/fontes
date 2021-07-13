@@ -15,8 +15,8 @@ class ReparosController extends Controller
 {
     public function getReparos(RelationReparoRequest $request, $fonteId)
     {
-        $items = Fonte::find($fonteId)->reparos()->get();
-        return ReparoResource::collection($items);
+        $items = Reparo::where('fonte_id', $fonteId)->orderBy('created_at', 'ASC')->get();
+        return jsonData(ReparoResource::collection($items));
     }
 
     public function getValorReparosAno(Request $request)
@@ -51,8 +51,9 @@ class ReparosController extends Controller
 
     public function editReparo(ReparoRequest $request, $fonteId, $id)
     {
+        $fields = $request->only(['desc_problema', 'peças', 'valor', 'status']);
         $fonte = Fonte::find($fonteId);
-        $fonte->reparos()->where('id', $id)->update($request->all());
-        return jsonData($fonte->reparos()->where('id', $id)->get());
+        $fonte->reparos()->where('id', $id)->update($fields);
+        return jsonData($fonte->reparos()->where('id', $id)->first());
     }
 }
