@@ -45,7 +45,6 @@ export default {
     async getResources() {
       try {
         await this.getFontById(this.id);
-
       } catch (e) {
         notify.error("Erro ao buscar informações da fonte", "Tente novamente mais tarde");
         return;

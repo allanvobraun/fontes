@@ -155,6 +155,7 @@ export default {
     if (this.action === 'edit') {
       this.setFormLock(false);
     }
+    this.focusElementByIndex(1);
   },
   destroyed() {
     this.resetState();
@@ -211,6 +212,7 @@ export default {
       if (this.action === 'save') {
         this.onReset();
       }
+      this.focusElementByIndex(1);
     },
 
     notifySavedEntities(fonte) {
@@ -226,6 +228,7 @@ export default {
       this.form.reparo = _.mapValues(this.form.reparo, () => "");
       this.form.reparo.status = 'OK';
       this.setFormLock(true);
+      this.focusElementByIndex(1);
     },
 
     cleanFonte(limparCod) {
@@ -249,12 +252,16 @@ export default {
 
     focusNextElement(event) {
       const idx = event.target.getAttribute("index");
-      const next = (parseInt(idx) + 1).toString();
+      const next = parseInt(idx) + 1;
+      this.focusElementByIndex(next);
+    },
+
+    focusElementByIndex(index) {
+      const idx = (index).toString();
       const form = this.$refs.form;
       const inputs = Array.from(form.getElementsByTagName("input"));
-
       const next_input = inputs.find(
-        input => input.getAttribute("index") === next
+        input => input.getAttribute("index") === idx
       );
       next_input?.focus();
     }
