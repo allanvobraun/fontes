@@ -50,13 +50,15 @@ export default {
         notify.error("Erro ao buscar informações da fonte", "Tente novamente mais tarde");
         return;
       }
-      notify.info("Use as setas para trocar entre reparos");
+      if (this.reparosCount > 1) {
+        notify.info("Use as setas para trocar entre reparos");
+      }
     },
   },
   computed: {
-    ...mapGetters('reparoForm', ["reparosCount"]),
+    ...mapGetters('reparoForm', ["reparosCount", "fonteObject"]),
     title() {
-      return `Editando fonte '${this.cod_interno}'`;
+      return `Editando fonte '${this.fonteObject.cod_interno}'`;
     },
   },
 }

@@ -122,6 +122,7 @@ export default {
   data() {
     return {
       fonteEncontradaStatus: false,
+      dirtyFonte: false,
       form: {
         // foi achada  a fonte no banco
         fonte: {
@@ -167,7 +168,7 @@ export default {
     getFonte(text) {
       this.getFontByCod(text).then(() => {
         this.lock.fonte = true;
-        this.fonteEncontradaStatus = true;
+        this.dirtyFonte = false;
         notify.info('Fonte encontrada!');
       }).catch(() => {
       });
@@ -193,7 +194,7 @@ export default {
 
     async onSubmit() {
       //só tenta salvar a fonte se ja não foi auto preenchida
-      const fonte = this.fonteEncontradaStatus ? null : this.form.fonte;
+      const fonte = this.dirtyFonte ? this.form.fonte: null;
 
       try {
         await this.submit({
@@ -234,11 +235,10 @@ export default {
       if (!limparCod) {
         this.form.fonte.cod_interno = cod_interno;
       }
-      this.fonteEncontradaStatus = false;
+      this.dirtyFonte = false;
     },
 
     onFilled(text) {
-      this.fonteEncontradaStatus = false;
       if (text !== "") {
         this.setFormLock(false);
         return;
@@ -256,12 +256,21 @@ export default {
       const next_input = inputs.find(
         input => input.getAttribute("index") === next
       );
-      if (next_input !== undefined) next_input.focus();
+      next_input?.focus();
     }
   },
   watch: {
+    'form.fonte': {
+      deep: true,
+      handler() {
+        this.dirtyFonte = true;
+      }
+    },
     fonteObject(newFonte) {
       Object.assign(this.form.fonte, newFonte);
+      setTimeout(() => {
+        this.dirtyFonte = false;
+      }, 100);
     },
     reparoObject(newReparo) {
       Object.assign(this.form.reparo, newReparo);

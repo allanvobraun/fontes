@@ -3,12 +3,17 @@ export default {
   methods: {
     ...mapMutations('meta', ['setTitle']),
   },
-  mounted() {
-    this.setTitle(this.title);
-  },
   computed: {
     title() {
       return '';
+    }
+  },
+  watch: {
+    title: {
+      immediate: true,
+      handler(newValue) {
+        this.setTitle(newValue);
+      }
     }
   }
 }

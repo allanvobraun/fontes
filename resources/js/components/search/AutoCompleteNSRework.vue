@@ -21,7 +21,7 @@ export default {
       return axios.get(url).then(response => {
         return response.data.data;
       }).catch(() => {});
-    }, 200),
+    }, 300),
   }
 }
 </script>

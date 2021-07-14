@@ -5,7 +5,7 @@ function getDefaultState() {
       cod_font: "",
       cod_interno: "",
       modelo: "",
-      fabricante: ""
+      fabricante: "",
     },
     reparo: {
       id: "",
@@ -115,7 +115,7 @@ const actions = {
     commit('reset');
   },
 
-  setReparoByIndex({commit, state, getters}, idx) {
+  setReparoByIndex({commit, getters}, idx) {
     if (idx > getters.reparosCount - 1) return;
     commit('setReparo', getters.reparosList[idx]);
   }
