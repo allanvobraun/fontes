@@ -1,12 +1,16 @@
 import {debounce} from 'lodash';
 
-const state = {
-  items: [],
-  page: 0,
-  last_page: 2,
-  loading: false,
-  filter: '',
-};
+function getDefaultState() {
+  return {
+    items: [],
+    page: 0,
+    last_page: 2,
+    loading: false,
+    filter: '',
+  };
+}
+
+const state = getDefaultState();
 
 const getters = {
   items(state) {
@@ -70,6 +74,9 @@ const mutations = {
   },
   set_filter(state, payload) {
     state.filter = payload;
+  },
+  reset(state) {
+    Object.assign(state, getDefaultState());
   }
 };
 

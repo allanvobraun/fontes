@@ -58,6 +58,7 @@ const actions = {
   async editFonte({state, commit}, payload) {
     const endpoint = `/api/fontes/${state.fonte.id}`;
     const response = await axios.put(endpoint, payload);
+    commit('fontes/reset', null, { root: true });
     return response.data.data;
   },
 
