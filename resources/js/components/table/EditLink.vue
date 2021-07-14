@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="{name: 'editar', params: this.routeParams}" class="table-link">
+  <router-link :to="{name: 'editar', params: this.routeParams}" class="table-icon-wrapper">
     <BIconPencilSquare variant="dark" class="table-icon" />
   </router-link>
 </template>

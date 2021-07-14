@@ -21,11 +21,7 @@ html, body, #app {
     background-color: $primary;
 }
 
-.table-link {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
+.table-icon-wrapper {
     .table-icon {
         width: 1.5rem;
         height: 1.5rem;

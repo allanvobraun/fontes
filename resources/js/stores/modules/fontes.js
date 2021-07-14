@@ -40,6 +40,12 @@ const actions = {
     return dispatch('fetchFontes');
   },
 
+  async deleteFonte({commit, state}, id) {
+    await axios.delete(`/api/fontes/${id}`);
+    const fontes = state.items.filter((fonte) => fonte.id !== id); // removendo fonte da lista
+    commit('set_items', fontes);
+  },
+
 };
 
 const mutations = {
@@ -58,6 +64,9 @@ const mutations = {
   },
   union_items(state, payload) {
     state.items = _.unionBy(state.items, payload, 'cod_interno');
+  },
+  set_items(state, payload) {
+    state.items = payload;
   },
   set_filter(state, payload) {
     state.filter = payload;

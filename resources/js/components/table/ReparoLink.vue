@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="{name: 'reparos', params: this.routeParams}" class="table-link">
+  <router-link :to="{name: 'reparos', params: this.routeParams}" class="table-icon-wrapper">
     <img :src="icon" alt="ferro de solda" class="table-icon"/>
   </router-link>
 </template>
