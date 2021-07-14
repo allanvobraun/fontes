@@ -1,12 +1,16 @@
 import {debounce} from 'lodash';
 
-const state = {
-  items: [],
-  page: 0,
-  last_page: 2,
-  loading: false,
-  filter: '',
-};
+function getDefaultState() {
+  return {
+    items: [],
+    page: 0,
+    last_page: 2,
+    loading: false,
+    filter: '',
+  };
+}
+
+const state = getDefaultState();
 
 const getters = {
   items(state) {
@@ -40,6 +44,12 @@ const actions = {
     return dispatch('fetchFontes');
   },
 
+  async deleteFonte({commit, state}, id) {
+    await axios.delete(`/api/fontes/${id}`);
+    const fontes = state.items.filter((fonte) => fonte.id !== id); // removendo fonte da lista
+    commit('set_items', fontes);
+  },
+
 };
 
 const mutations = {
@@ -59,8 +69,14 @@ const mutations = {
   union_items(state, payload) {
     state.items = _.unionBy(state.items, payload, 'cod_interno');
   },
+  set_items(state, payload) {
+    state.items = payload;
+  },
   set_filter(state, payload) {
     state.filter = payload;
+  },
+  reset(state) {
+    Object.assign(state, getDefaultState());
   }
 };
 

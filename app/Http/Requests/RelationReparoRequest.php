@@ -2,11 +2,12 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Foundation\Http\FormRequest;
 use App\Http\Requests\ApiRequest;
+use App\Rules\ExistRelation;
 
-class SearchOneFonte extends ApiRequest
+class RelationReparoRequest extends ApiRequest
 {
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -15,10 +16,9 @@ class SearchOneFonte extends ApiRequest
     public function rules()
     {
         return [
-            "cod_interno" => "bail|required|exists:App\Models\Fonte,cod_interno|max:50"
+            "fonteId" => [new ExistRelation, 'exists:App\Models\Fonte,id'],
         ];
     }
-
     public function validationData()
     {
         return array_merge($this->all(), $this->route()->parameters());
@@ -27,7 +27,7 @@ class SearchOneFonte extends ApiRequest
     public function messages()
     {
         return [
-            'cod_interno.exists' => 'Essa fonte não existe no banco de dados',
+            'id.exists' => 'Essa fonte não existe no banco de dados',
         ];
     }
 }

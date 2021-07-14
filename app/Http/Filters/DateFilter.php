@@ -2,31 +2,28 @@
 
 namespace App\Http\Filters;
 
-use Spatie\QueryBuilder\Filters\Filter;
 use Illuminate\Database\Eloquent\Builder;
+use Spatie\QueryBuilder\Filters\Filter;
 
 class DateFilter implements Filter
 {
     public function __invoke(Builder $query, $value, string $property)
     {
-        $whereDate = $this->getDateFunction($property);
+        $whereDate = $this->dateMethodMap($property);
         $query->$whereDate('created_at', $value);
     }
 
-    private function getDateFunction(string $dateType)
+    private function dateMethodMap(string $dateType): string
     {
         switch ($dateType) {
             case 'dia':
                 return 'whereDay';
-                break;
 
             case 'mes':
                 return 'whereMonth';
-                break;
 
             case 'ano':
                 return 'whereYear';
-                break;
         }
         return 'erro';
     }

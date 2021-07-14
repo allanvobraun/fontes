@@ -40,14 +40,33 @@
       id="fontes-table"
       empty-text="Nenhuma fonte foi encontrada"
     >
+
+      <template #cell(edit)="data">
+        <edit-link :fonte-object="data.item"></edit-link>
+      </template>
+
+      <template #cell(delete)="data">
+        <delete-button :fonte-object="data.item" @click="deleteItem"></delete-button>
+      </template>
+
       <template #cell(reparos)="data">
-        <reparo-link width="3rem" height="2rem" :codigo="data.item.cod_interno"></reparo-link>
+        <reparo-link :fonte-object="data.item"></reparo-link>
       </template>
 
       <template #empty="scope">
         <h4 class="d-flex flex-row justify-content-center align-content-center">
           {{ scope.emptyText }}
         </h4>
+      </template>
+
+      <template #custom-foot v-if="filterQuery === ''">
+        <b-tr>
+          <b-td colspan="8" variant="dark" class="text-center">
+            <b-button variant="outline-info" @click="fetchFontes">
+              <BIconCaretDownFill/>
+            </b-button>
+          </b-td>
+        </b-tr>
       </template>
 
     </b-table>
@@ -60,14 +79,19 @@
 </template>
 
 <script>
-import ReparoLink from "./ReparoLink.vue";
 import infiniteScroll from 'vue-infinite-scroll';
-import { mapGetters, mapActions } from 'vuex';
-import { BIconSearch } from 'bootstrap-vue';
+import {mapActions, mapGetters} from 'vuex';
+import {BIconCaretDownFill, BIconSearch} from 'bootstrap-vue';
+import EditLink from "components/table/EditLink";
+import ReparoLink from "components/table/ReparoLink";
+import metaMixin from "utils/metaMixin";
+import DeleteButton from "components/table/DeleteButton";
+import notify from "utils/notify";
+
 
 export default {
-  name: 'FontesTable',
-  components: {ReparoLink, BIconSearch},
+  components: {DeleteButton, EditLink, ReparoLink, BIconSearch, BIconCaretDownFill},
+  mixins: [metaMixin],
   directives: {infiniteScroll},
   data() {
     return {
@@ -85,11 +109,27 @@ export default {
         {key: "modelo"},
         {key: "fabricante"},
         {
+          key: "data",
+          sortable: true,
+        },
+        {
+          key: "edit",
+          label: "Editar",
+          thStyle: "width: 5%",
+          tdClass: "text-center icon-cell"
+        },
+        {
+          key: "delete",
+          label: "Deletar",
+          thStyle: "width: 5%",
+          tdClass: "text-center icon-cell"
+        },
+        {
           key: "reparos",
           label: "Reparos",
           thStyle: "width: 5%",
-          tdClass: "d-flex justify-content-center icon-cell"
-        }
+          tdClass: "text-center icon-cell"
+        },
       ],
       filterQuery: ''
     };
@@ -98,26 +138,41 @@ export default {
     ...mapGetters('fontes', [
       "items",
       "loading",
-    ])
+    ]),
+    title: () => 'Todas as fontes'
   },
   methods: {
     ...mapActions('fontes', [
       'fetchFontes',
-      'searchFontes'
+      'searchFontes',
+      'deleteFonte'
     ]),
 
     wipeFilter() {
       this.filterQuery = '';
       this.searchFontes('');
+    },
+
+    deleteItem(fonte) {
+      this.deleteFonte(fonte.id)
+        .then(() => notify.sucess('Fonte deletada com sucesso!'))
+        .catch(() => notify.error('Ocorreu um erro e fonte não foi deletada'));
     }
   },
   mounted() {
-    this.fetchFontes();
+    if (this.items.length === 0) {
+      this.fetchFontes();
+    }
   },
 };
 </script>
 <style>
 .icon-cell {
-  padding: 0.60rem 0 !important;
+  padding: 0.40rem 0 !important;
+  vertical-align: middle !important;
+}
+
+table {
+  font-size: .85rem;
 }
 </style>

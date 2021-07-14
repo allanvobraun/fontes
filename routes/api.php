@@ -1,23 +1,12 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FontesController;
 use App\Http\Controllers\ReparosController;
 use App\Http\Controllers\UserController;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
-Auth::routes(['register' => false]);
 
+Auth::routes(['register' => false]);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', [UserController::class, 'get']);
@@ -25,17 +14,17 @@ Route::middleware('auth:sanctum')->group(function () {
     // fontes
     Route::get('/fontes', [FontesController::class, 'getFontes']);
     Route::post('/fontes', [FontesController::class, 'newFonte']);
+    Route::delete('/fontes/{id}', [FontesController::class, 'deleteFonte']);
     Route::get('/fontes/search', [FontesController::class, 'searchFonte']);
-    Route::get('/fontes/{cod_interno}', [FontesController::class, 'getFonte']);
+    Route::get('/fontes/{id}', [FontesController::class, 'getFonte']);
+    Route::get('/fontes/cod/{cod_interno}', [FontesController::class, 'getFonteByCodInterno']);
+    Route::put('/fontes/{id}', [FontesController::class, 'editFonte']);
 
-// reparos
-    Route::post('/fontes/{cod_interno}/reparos', [ReparosController::class, 'newReparo']);
-    Route::get('/fontes/{cod_interno}/reparos', [ReparosController::class, 'getReparos']);
-    Route::get('/fontes/reparos', [ReparosController::class, 'getAllReparos']);
-    Route::get('/fontes/reparos/valorSum', [ReparosController::class, 'getAllReparosSum']);
+    // reparos
+    Route::post('/fontes/{fonteId}/reparos', [ReparosController::class, 'newReparo']);
+    Route::get('/fontes/{fonteId}/reparos', [ReparosController::class, 'getReparos']);
+    Route::put('/fontes/{fonteId}/reparos/{id}', [ReparosController::class, 'editReparo']);
+    Route::delete('/fontes/{fonteId}/reparos/{id}', [ReparosController::class, 'deleteReparo']);
     Route::get('/fontes/reparos/valorReparosAnual', [ReparosController::class, 'getValorReparosAno']);
     Route::get('/fontes/reparos/valorSemanas', [ReparosController::class, 'getValoresReparosUltimasSemanas']);
 });
-
-
-

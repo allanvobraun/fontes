@@ -2,69 +2,32 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Filters\DateFilter;
-use App\Http\Requests\GetReparos;
-use App\Http\Requests\StoreReparo;
-use App\Http\Resources\Reparo as ReparoResource;
-use App\Http\Resources\ReparoResourceNotNull;
-use Illuminate\Http\Request;
-use App\Models\Reparo;
+use App\Http\Requests\ReparoRequest;
+use App\Http\Requests\RelationReparoRequest;
+use App\Http\Resources\ReparoResource;
 use App\Models\Fonte;
-use Spatie\QueryBuilder\AllowedFilter;
-use Spatie\QueryBuilder\QueryBuilder;
+use App\Models\Reparo;
+use App\Services\ReparoService;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class ReparosController extends Controller
 {
-    public function getReparos(GetReparos $request, $cod_interno)
+    public function getReparos(RelationReparoRequest $request, $fonteId)
     {
-        $items = Fonte::find($cod_interno)->reparos()->get();
-        return ReparoResource::collection($items);
+        $items = Reparo::where('fonte_id', $fonteId)->orderBy('created_at', 'ASC')->get();
+        return jsonData(ReparoResource::collection($items));
     }
 
-    public function getAllReparos(Request $request)
+    public function getValorReparosAno(Request $request)
     {
+        $years = $request->anos;
         try {
-            $reparos = QueryBuilder::for(Reparo::class)
-                ->allowedFields(['created_at', 'valor'])
-                ->allowedFilters([
-                    AllowedFilter::custom('dia', new DateFilter),
-                    AllowedFilter::custom('mes', new DateFilter),
-                    AllowedFilter::custom('ano', new DateFilter)
-                ])
-                ->get();
+            $reparosValuesByYear = ReparoService::sumReparosByYear($years);
         } catch (\Throwable $th) {
             return jsonError($th);
         }
-
-        return jsonData(ReparoResourceNotNull::collection($reparos));
-    }
-    public function getAllReparosSum(Request $request)
-    {
-        try {
-            $sumReparos = QueryBuilder::for(Reparo::class)
-                ->allowedFilters([
-                    AllowedFilter::custom('dia', new DateFilter),
-                    AllowedFilter::custom('mes', new DateFilter),
-                    AllowedFilter::custom('ano', new DateFilter)
-                ])
-                ->sum('valor');
-        } catch (\Throwable $th) {
-            return jsonError($th);
-        }
-        return jsonData(round($sumReparos, 2));
-    }
-
-    public function getValorReparosAno(Request $request) {
-        try {
-            $ano = $request->ano;
-            $reparos = Reparo::selectRaw('round(sum(`valor`), 2) as valor, month(created_at) as mes')
-                ->whereYear('created_at', '=', $ano)
-                ->groupBy('mes')->get();
-        } catch (\Throwable $th) {
-            return jsonError($th);
-        }
-        return jsonData($reparos);
+        return jsonData($reparosValuesByYear);
     }
 
     public function getValoresReparosUltimasSemanas()
@@ -79,9 +42,25 @@ class ReparosController extends Controller
         return jsonData($agrupadoSemanas);
     }
 
-    public function newReparo(StoreReparo $request, $cod_interno)
+    public function newReparo(ReparoRequest $request, $fonteId)
     {
-        return Fonte::find($cod_interno)->reparos()->create($request->all());
+        $fonte = Fonte::find($fonteId);
+        $reparo = $fonte->reparos()->create($request->all());
+        return jsonData($reparo, 201);
+    }
+
+    public function editReparo(ReparoRequest $request, $fonteId, $id)
+    {
+        $fields = $request->only(['desc_problema', 'peças', 'valor', 'status']);
+        $fonte = Fonte::find($fonteId);
+        $fonte->reparos()->where('id', $id)->update($fields);
+        return jsonData($fonte->reparos()->where('id', $id)->first());
+    }
+
+    public function deleteReparo($fonteId, $id)
+    {
+        $fonte = Fonte::find($fonteId);
+        return $fonte->reparos()->where('id', $id)->delete();
     }
 
 }

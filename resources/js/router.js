@@ -1,6 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import {authRequired} from "./utils/routeGuards";
+import {authRequired} from "utils/routeGuards";
 
 Vue.use(VueRouter);
 
@@ -9,47 +9,40 @@ export default new VueRouter({
     {
       path: '/login',
       name: 'login',
-      component: () => import('components/UserLogin')
+      component: () => import('views/UserLoginView')
     },
     {
       path: "/",
-      component: () => import('components/MainApp'),
+      component: () => import('views/app/AppRootView'),
       beforeEnter: authRequired,
       children: [
         {
           path: '',
           name: 'home',
-          component: () => import("components/HomeDashboard.vue"),
-          meta: {title: "Home"},
+          component: () => import("views/app/HomeDashboardView.vue"),
         },
         {
-          path: "fontes/:cod_interno/reparos",
+          path: "fontes/:id/reparos",
           name: "reparos",
           component: () => import("components/ReparosTable.vue"),
-          meta: {
-            title: route => `Todos os reparos da fonte "${route.params.cod_interno}"`
-          },
+          props: true
         },
         {
           path: "fontes",
           name: "fontes",
-          component: () => import("components/FontesTable.vue"),
-          meta: {title: "Todas as fontes"}
+          component: () => import("views/app/FontesTableView.vue"),
         },
         {
           path: "new",
           name: "novo",
-          component: () => import("components/ConcertoForm.vue"),
-          meta: {title: "Novo registro"}
+          component: () => import("views/app/NewRepairView.vue"),
         },
         {
-          path: "fontes/edit/:cod_interno?",
+          path: "fontes/:id/edit",
           name: "editar",
-          component: () => import("components/EditorFontes.vue"),
-          meta: {
-            title: route => `Editando ${route.params.cod_interno}`.replace('undefined', '')
-          }
-        }
+          component: () => import("views/app/EditRepairView.vue"),
+          props: true
+        },
       ]
     },
   ],

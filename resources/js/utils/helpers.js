@@ -12,12 +12,9 @@ export default {
    */
   getErroString(error) {
     const errosObj = error.data.erros;
-    const errosObjStrings = _.mapValues(errosObj, erroList => erroList.join('.\n'));
-    let stringFinal = '';
-    _.forIn(errosObjStrings, (value, key) => {
-      stringFinal += `${key}:\n${value}.\n\n`
-    });
-    return stringFinal;
+    const errorArray = Object.entries(errosObj);
+    const errorMessageArray = errorArray.map((item) => item[1]);
+    return errorMessageArray.join('\n');
   },
 
   /**
@@ -57,5 +54,15 @@ export default {
   getWalpapersList() {
     const webPackRequire = require.context('wallpapers/', false, /\.webp$/);
     return webPackRequire.keys().map(webPackRequire);
+  },
+
+  /**
+   * @param {string} key
+   * @param {string[]} arr
+   * @returns {string}
+   */
+  arrayToQueryString(key, arr) {
+    const paramArray = arr.map((element, index) => `${key}[${index}]=${element}`);
+    return paramArray.join('&');
   },
 };

@@ -1,20 +1,20 @@
 <template>
-  <b-card v-bind:header="titulo" header-tag="header" class="w-100">
+  <b-card v-bind:header="title" header-tag="header" class="w-100 h-100">
     <slot></slot>
   </b-card>
 </template>
 
 <script>
+import {mapGetters} from "vuex";
+
 export default {
   computed: {
-    titulo() {
-      let title = this.$route.meta.title;
-      if (typeof title === "function") {
-        return title(this.$route);
-      } else {
-        return title;
-      }
-    }
+    ...mapGetters('meta', ["title"]),
   }
 };
 </script>
+<style scoped>
+header {
+  font-weight: bold !important;
+}
+</style>
