@@ -15,7 +15,8 @@ class FonteResource extends JsonResource
             'cod_font' => $this->cod_font,
             'modelo' => $this->modelo,
             'fabricante' => $this->fabricante,
-            'reparos' => ReparoResource::collection($this->whenLoaded('reparos'))
+            'reparos' => ReparoResource::collection($this->whenLoaded('reparos')),
+            'data' => $this->data
         ];
     }
 }

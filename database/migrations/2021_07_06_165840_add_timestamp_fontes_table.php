@@ -16,6 +16,14 @@ class AddTimestampFontesTable extends Migration
         Schema::table('fontes', function (Blueprint $table) {
             $table->timestamps();
         });
+        if (!app()->runningUnitTests()) {
+            DB::table('fontes as f')
+                ->join('reparos as r', 'f.id', '=', 'r.fonte_id')
+                ->update([
+                    'f.created_at' => DB::raw("`r`.`created_at`"),
+                    'f.updated_at' => DB::raw("`r`.`created_at`")
+                ]);
+        }
     }
 
     /**

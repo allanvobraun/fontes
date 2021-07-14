@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Ramsey\Uuid\Uuid;
@@ -34,5 +35,13 @@ class Fonte extends Model
             return $query->whereRaw("cod_interno || '&' || cod_font || '&' || modelo || '&' || fabricante like ?", ["%{$search}%"]);
         }
         return $query->whereRaw("CONCAT_WS('&', cod_interno, cod_font, modelo, fabricante) like ?", ["%{$search}%"]);
+    }
+
+    public function getDataAttribute()
+    {
+        if (is_null($this->created_at)) {
+            return null;
+        }
+        return Carbon::parse($this->created_at)->format('d/m/Y');
     }
 }

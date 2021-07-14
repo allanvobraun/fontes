@@ -29,7 +29,7 @@ class FontesController extends Controller
 
     public function getFontes(Request $request)
     {
-        $fontes = Fonte::orderBy('cod_interno', 'DESC');
+        $fontes = Fonte::orderBy('created_at', 'DESC');
         $items = $fontes;
         if ($request->search) {
             $items = $fontes->searchInFields($request->search);

@@ -103,6 +103,10 @@ export default {
         {key: "modelo"},
         {key: "fabricante"},
         {
+          key: "data",
+          sortable: true,
+        },
+        {
           key: "edit",
           label: "Editar",
           thStyle: "width: 5%",
