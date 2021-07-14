@@ -14,6 +14,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // fontes
     Route::get('/fontes', [FontesController::class, 'getFontes']);
     Route::post('/fontes', [FontesController::class, 'newFonte']);
+    Route::delete('/fontes/{id}', [FontesController::class, 'deleteFonte']);
     Route::get('/fontes/search', [FontesController::class, 'searchFonte']);
     Route::get('/fontes/{id}', [FontesController::class, 'getFonte']);
     Route::get('/fontes/cod/{cod_interno}', [FontesController::class, 'getFonteByCodInterno']);
@@ -23,6 +24,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/fontes/{fonteId}/reparos', [ReparosController::class, 'newReparo']);
     Route::get('/fontes/{fonteId}/reparos', [ReparosController::class, 'getReparos']);
     Route::put('/fontes/{fonteId}/reparos/{id}', [ReparosController::class, 'editReparo']);
+    Route::delete('/fontes/{fonteId}/reparos/{id}', [ReparosController::class, 'deleteReparo']);
     Route::get('/fontes/reparos/valorReparosAnual', [ReparosController::class, 'getValorReparosAno']);
     Route::get('/fontes/reparos/valorSemanas', [ReparosController::class, 'getValoresReparosUltimasSemanas']);
 });

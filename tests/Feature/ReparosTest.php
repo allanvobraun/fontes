@@ -95,4 +95,18 @@ class ReparosTest extends TestCase
         ]);
     }
 
+    public function testDeleteReparo()
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        $fonte = Fonte::factory()->hasReparos(1)->create();
+        $reparo = $fonte->reparos()->first();
+
+        $response = $this->delete("/api/fontes/{$fonte->id}/reparos/{$reparo->id}");
+        $response->assertOk();
+        $this->assertSoftDeleted('reparos', [
+            'id' => $reparo->id
+        ]);
+    }
 }

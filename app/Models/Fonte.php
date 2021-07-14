@@ -5,14 +5,24 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Ramsey\Uuid\Uuid;
 
 class Fonte extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
+
     public $keyType = 'string';
     public $incrementing = false;
     protected $guarded = ['created_at', 'updated_at', 'id'];
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::deleting(function (Fonte $record) {
+            $record->reparos()->delete();
+        });
+    }
 
     protected static function booted()
     {

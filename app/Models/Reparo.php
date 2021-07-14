@@ -5,11 +5,13 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Ramsey\Uuid\Uuid;
 
 class Reparo extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
+
     protected $keyType = 'string';
     public $incrementing = false;
     protected $attributes = [

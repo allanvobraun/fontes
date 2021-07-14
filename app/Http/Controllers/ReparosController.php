@@ -56,4 +56,11 @@ class ReparosController extends Controller
         $fonte->reparos()->where('id', $id)->update($fields);
         return jsonData($fonte->reparos()->where('id', $id)->first());
     }
+
+    public function deleteReparo($fonteId, $id)
+    {
+        $fonte = Fonte::find($fonteId);
+        return $fonte->reparos()->where('id', $id)->delete();
+    }
+
 }

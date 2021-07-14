@@ -23,6 +23,23 @@ class FontesTest extends TestCase
         $response2->assertOk()->assertJsonCount(10, 'data');
     }
 
+    public function testDeleteFonte()
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        $fonte = Fonte::factory()->hasReparos(5)->create();
+
+        $response = $this->delete("/api/fontes/{$fonte->id}");
+        $response->assertOk();
+        $this->assertSoftDeleted('fontes', [
+            'id' => $fonte->id
+        ]);
+        $this->assertSoftDeleted('reparos', [
+            'fonte_id' => $fonte->id
+        ]);
+    }
+
     public function testGetFonte()
     {
         $user = User::factory()->create();

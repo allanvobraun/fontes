@@ -45,6 +45,11 @@ class FontesController extends Controller
         return jsonData($fonte->fresh());
     }
 
+    public function deleteFonte($id)
+    {
+        return Fonte::find($id)->delete();
+    }
+
     public function newFonte(FonteRequest $request)
     {
         $fonte = Fonte::create($request->all());
