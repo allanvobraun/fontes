@@ -2,11 +2,9 @@
 
 namespace Database\Factories;
 
-use App\Models\Fonte;
 use App\Models\Reparo;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Ramsey\Uuid\Uuid;
 
 class ReparoFactory extends Factory
 {
