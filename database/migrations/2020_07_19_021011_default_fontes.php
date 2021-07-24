@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class DefaultFontes extends Migration
+class DefaultFontes extends DefaultMigration
 {
     /**
      * Run the migrations.
@@ -13,6 +13,7 @@ class DefaultFontes extends Migration
      */
     public function up()
     {
+        parent::up();
         Schema::table('reparos', function ($table) {
             $table->float('valor')->default(0)->change();
 

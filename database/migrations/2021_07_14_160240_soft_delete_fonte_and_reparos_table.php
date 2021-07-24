@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class SoftDeleteFonteAndReparosTable extends Migration
+class SoftDeleteFonteAndReparosTable extends DefaultMigration
 {
     /**
      * Run the migrations.
@@ -13,6 +13,7 @@ class SoftDeleteFonteAndReparosTable extends Migration
      */
     public function up()
     {
+        parent::up();
         Schema::table('fontes', function (Blueprint $table) {
             $table->softDeletes();
         });

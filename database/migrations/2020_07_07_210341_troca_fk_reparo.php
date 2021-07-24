@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class TrocaFkReparo extends Migration
+class TrocaFkReparo extends DefaultMigration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class TrocaFkReparo extends Migration
      */
     public function up()
     {
-        // Schema::dropIfExists('reparos');
+        parent::up();
         Schema::create('reparos', function (Blueprint $table) {
             $table->id();
             $table->string('cod_interno', 50);
@@ -21,7 +21,7 @@ class TrocaFkReparo extends Migration
             $table->string('peças', 100)->nullable();
             $table->float('valor');
             $table->string('status', 20)->nullable();
-            
+
             $table->foreign('cod_interno')->references('cod_interno')->on('fontes');
             $table->timestamps();
         });

@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Schema;
 use Ramsey\Uuid\Uuid;
 
 
-class AlterFontesTableAndRedefineKeys extends Migration
+class AlterFontesTableAndRedefineKeys extends DefaultMigration
 {
     /**
      * Run the migrations.
@@ -15,7 +15,7 @@ class AlterFontesTableAndRedefineKeys extends Migration
      */
     public function up()
     {
-
+        parent::up();
         // dropar forign de reparos
         if (!app()->runningUnitTests()) {
             Schema::table('reparos', function (Blueprint $table) {
