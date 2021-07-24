@@ -13,6 +13,9 @@ class CreateNewFontesTable extends Migration
      */
     public function up()
     {
+        if (App::environment(['production'])) {
+            DB::statement('SET SESSION sql_require_primary_key=0');
+        }
         Schema::create('fontes', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('cod_interno', 50);
