@@ -19,12 +19,12 @@ class UserSeeder extends Seeder
             [
                 'name' => 'admin',
                 'email' => 'admin@admin.com',
-                'password' => Hash::make('nicememory60'),
+                'password' => Hash::make(env('ADM_PASSWORD')),
             ],
             [
                 'name' => 'alcido',
                 'email' => 'alcido@admin.com',
-                'password' => Hash::make('12501250'),
+                'password' => Hash::make(env('USER_PASSWORD')),
             ]
         ]);
 

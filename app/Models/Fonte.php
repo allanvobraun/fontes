@@ -14,7 +14,7 @@ class Fonte extends Model
 
     public $keyType = 'string';
     public $incrementing = false;
-    protected $guarded = ['created_at', 'updated_at', 'id'];
+    protected $guarded = ['id'];
 
     protected static function boot()
     {
