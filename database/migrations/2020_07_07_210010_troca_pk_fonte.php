@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class TrocaPkFonte extends DefaultMigration
+class TrocaPkFonte extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class TrocaPkFonte extends DefaultMigration
      */
     public function up()
     {
-        parent::up();
+        // Schema::dropIfExists('fontes');
         Schema::create('fontes', function (Blueprint $table) {
             $table->string('cod_interno', 50);
             $table->string('cod_font', 50);
@@ -21,7 +21,7 @@ class TrocaPkFonte extends DefaultMigration
             $table->string('fabricante', 100)->nullable();
             $table->primary('cod_interno');
         });
-
+        
     }
 
     /**

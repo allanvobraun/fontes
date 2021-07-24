@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddTimestampFontesTable extends DefaultMigration
+class AddTimestampFontesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,6 @@ class AddTimestampFontesTable extends DefaultMigration
      */
     public function up()
     {
-        parent::up();
-
         Schema::table('fontes', function (Blueprint $table) {
             $table->timestamps();
         });

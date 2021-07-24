@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Ramsey\Uuid\Uuid;
 
-class AlterReparosTable extends DefaultMigration
+class AlterReparosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -15,7 +15,6 @@ class AlterReparosTable extends DefaultMigration
      */
     public function up()
     {
-        parent::up();
         Schema::table('reparos', function (Blueprint $table) {
             $table->uuid('id')->change();
         });
