@@ -17,10 +17,8 @@ jobs:
           ssh-host: allanbraun.net
       - name: Copy files to server
         run: |
-          echo $user
-          echo $host
           ssh "$user@$host" "
-          rm -rf fontes
+          sudo rm -rf fontes
           git clone https://github.com/allanvobraun/fontes.git"
         env:
           user: ${{ secrets.DEPLOY_USERNAME }}
