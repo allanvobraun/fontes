@@ -16,6 +16,8 @@ jobs:
           ssh-private-key: ${{ secrets.DEPLOY_SSH_KEY }}
           ssh-host: allanbraun.net
       - name: Copy files to server
+        echo $user
+        echo $host
         run: |
           ssh $user@$host "
           rm -rf fontes
