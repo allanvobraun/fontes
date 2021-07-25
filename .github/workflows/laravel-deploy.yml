@@ -17,18 +17,25 @@ jobs:
           ssh-host: allanbraun.net
       - name: Copy files to server
         run: |
-          ssh ${{ secrets.DEPLOY_USERNAME }}@${{ secrets.SERVER_HOST }} "
+          ssh $user@$host "
           rm -rf fontes
           git clone https://github.com/allanvobraun/fontes.git"
+        env:
+          user: ${{ secrets.DEPLOY_USERNAME }}
+          host: ${{ secrets.SERVER_HOST }}
       - name: Build
         if: success()
         run: |
-          ssh ${{ secrets.DEPLOY_USERNAME }}@${{ secrets.SERVER_HOST }} "
+          ssh $user@$host "
           cd fontes
           sudo sh ./build.sh
-          echo ${{ secrets.ENV_DIGITAL_OCEAN }} >> .env
-          ln -sf /home/${{ secrets.DEPLOY_USERNAME }}/fontes /var/www/fontes.${{ secrets.SERVER_HOST }}
+          echo $dotenv >> .env
+          ln -sf /home/$user/fontes /var/www/fontes.$host
           "
+        env:
+          user: ${{ secrets.DEPLOY_USERNAME }}
+          host: ${{ secrets.SERVER_HOST }}
+          dotenv: ${{ secrets.ENV_DIGITAL_OCEAN }}
 
 
 
