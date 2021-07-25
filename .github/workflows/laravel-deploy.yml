@@ -32,7 +32,7 @@ jobs:
           cd fontes
           sudo sh ./build.sh
           echo $dotenv >> .env
-          ln -sf /home/$user/fontes /var/www/fontes.$host
+          sudo ln -sf /home/$user/fontes /var/www/fontes.$host
           "
         env:
           user: ${{ secrets.DEPLOY_USERNAME }}

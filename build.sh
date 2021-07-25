@@ -4,7 +4,7 @@ yarn
 echo 'instalação de modulos finalizada'
 yarn run prod
 echo 'build do yarn finalzado'
-php artisan migrate
+php artisan migrate --no-interaction
 echo 'migração do banco finalizada'
 
 sudo chgrp -R www-data storage bootstrap/cache
