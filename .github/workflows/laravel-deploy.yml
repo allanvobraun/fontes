@@ -1,0 +1,32 @@
+name: Laravel
+
+on:
+  push:
+    branches:
+      - master
+
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup SSH
+        uses: kielabokkie/ssh-key-and-known-hosts-action@v1.2.0
+        with:
+          ssh-private-key: ${{ secrets.DEPLOY_SSH_KEY }}
+          ssh-host: ${{ secrets.SERVER_HOST }}
+      - name: Copy files to server
+        run: ssh ${{ secrets.DEPLOY_USERNAME }}@${{ secrets.SERVER_HOST }} "
+        rm -rf fontes
+        git clone https://github.com/allanvobraun/fontes.git"
+      - name: Build
+        if: success()
+        run: ssh ${{ secrets.DEPLOY_USERNAME }}@${{ secrets.SERVER_HOST }} "
+          cd fontes
+          sudo sh ./build.sh
+          echo ${{ secrets.ENV_DIGITAL_OCEAN }} >> .env
+          ln -sf /home/${{ secrets.DEPLOY_USERNAME }}/fontes /var/www/fontes.${{ secrets.SERVER_HOST }}
+          "
+
+
+

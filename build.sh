@@ -7,5 +7,6 @@ echo 'build do yarn finalzado'
 php artisan migrate
 echo 'migração do banco finalizada'
 
-#sudo chgrp -R www-data storage bootstrap/cache
-#sudo chmod -R ug+rwx storage bootstrap/cache
+sudo chgrp -R www-data storage bootstrap/cache
+sudo chmod -R ug+rwx storage bootstrap/cache
+echo 'permissões do laravel finalizadas'
