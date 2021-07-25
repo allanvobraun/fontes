@@ -19,7 +19,7 @@ jobs:
         run: |
           echo $user
           echo $host
-          ssh $user@$host "
+          ssh "$user@$host" "
           rm -rf fontes
           git clone https://github.com/allanvobraun/fontes.git"
         env:
