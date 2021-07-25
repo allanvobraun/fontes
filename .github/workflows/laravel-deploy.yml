@@ -1,4 +1,4 @@
-name: Laravel
+name: test
 
 on:
   push:
@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Setup SSH
-        uses: kielabokkie/ssh-key-and-known-hosts-action@v1.2.0
+        uses: kielabokkie/ssh-key-and-known-hosts-action@v1
         with:
           ssh-private-key: ${{ secrets.DEPLOY_SSH_KEY }}
           ssh-host: ${{ secrets.SERVER_HOST }}
