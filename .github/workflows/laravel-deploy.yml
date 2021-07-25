@@ -16,12 +16,14 @@ jobs:
           ssh-private-key: ${{ secrets.DEPLOY_SSH_KEY }}
           ssh-host: ${{ secrets.SERVER_HOST }}
       - name: Copy files to server
-        run: ssh ${{ secrets.DEPLOY_USERNAME }}@${{ secrets.SERVER_HOST }} "
-        rm -rf fontes
-        git clone https://github.com/allanvobraun/fontes.git"
+        run: |
+          ssh ${{ secrets.DEPLOY_USERNAME }}@${{ secrets.SERVER_HOST }} "
+          rm -rf fontes
+          git clone https://github.com/allanvobraun/fontes.git"
       - name: Build
         if: success()
-        run: ssh ${{ secrets.DEPLOY_USERNAME }}@${{ secrets.SERVER_HOST }} "
+        run: |
+          ssh ${{ secrets.DEPLOY_USERNAME }}@${{ secrets.SERVER_HOST }} "
           cd fontes
           sudo sh ./build.sh
           echo ${{ secrets.ENV_DIGITAL_OCEAN }} >> .env
