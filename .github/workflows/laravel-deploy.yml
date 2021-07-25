@@ -1,4 +1,4 @@
-name: test
+name: release
 
 on:
   push:
@@ -16,9 +16,9 @@ jobs:
           ssh-private-key: ${{ secrets.DEPLOY_SSH_KEY }}
           ssh-host: allanbraun.net
       - name: Copy files to server
-        echo $user
-        echo $host
         run: |
+          echo $user
+          echo $host
           ssh $user@$host "
           rm -rf fontes
           git clone https://github.com/allanvobraun/fontes.git"
