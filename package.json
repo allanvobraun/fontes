@@ -2,13 +2,13 @@
     "private": true,
     "scripts": {
         "dev": "npm run development",
-        "development": "mix",
+        "development": "npx mix",
         "watch": "yarn run development -- --watch",
         "watch-poll": "yarn run watch -- --watch-poll",
         "hot": "npx cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --port 8181 --inline --hot --disable-host-check --config=node_modules/laravel-mix/setup/webpack.config.js",
         "prod": "yarn run production",
         "build": "yarn run production",
-        "production": "mix --production"
+        "production": "npx mix --production"
     },
     "devDependencies": {
         "eslint": "^7.7.0",
