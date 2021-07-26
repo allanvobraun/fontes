@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FontesController;
 use App\Http\Controllers\ReparosController;
@@ -7,7 +8,7 @@ use App\Http\Controllers\UserController;
 
 
 Auth::routes(['register' => false]);
-
+Route::get('/walpaper', [FileController::class, 'getWalpaper']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', [UserController::class, 'get']);
 

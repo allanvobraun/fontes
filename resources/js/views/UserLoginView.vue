@@ -1,6 +1,6 @@
 <template>
   <b-container
-    :style="{backgroundImage: `url(${randomImage})`}"
+    :style="{backgroundImage: `url(${walpaperUrl})`}"
     fluid
     class="login-container h-100 d-flex flex-column justify-content-center align-content-center"
   >
@@ -26,12 +26,16 @@ export default {
   components: {LoginForm},
   data() {
     return {
-      wallpapers: this.$helpers.getWalpapersList()
+      walpaperUrl: ''
     }
   },
-  computed: {
-    randomImage() {
-      return _.sample(this.wallpapers);
+  mounted() {
+    this.getWalpaper();
+  },
+  methods: {
+    async getWalpaper() {
+      const response = await axios.get('/api/walpaper');
+      this.walpaperUrl = response.data;
     }
   }
 }
