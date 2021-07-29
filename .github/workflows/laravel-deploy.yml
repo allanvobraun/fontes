@@ -29,7 +29,7 @@ jobs:
           ssh $user@$host "
           cd fontes
           sudo sh ./build.sh
-          echo $dotenv >> .env
+          printf $dotenv >> .env
           sudo ln -sf /home/$user/fontes /var/www/fontes.$host
           "
         env:
