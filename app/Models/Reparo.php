@@ -17,7 +17,7 @@ class Reparo extends Model
     protected $attributes = [
         'valor' => 0
     ];
-    protected $guarded = ['fonte_id','id'];
+    protected $guarded = ['fonte_id','id', 'created_at', 'updated_at', 'deleted_at'];
 
     protected static function booted()
     {
