@@ -1,0 +1,50 @@
+version: "3.7"
+services:
+
+  app:
+    build:
+      context: ./
+      dockerfile: app.Dockerfile
+    image: fontes-app-img
+    container_name: fontes-app
+    restart: unless-stopped
+    volumes:
+      - /var/www/storage
+    networks:
+      - fontes
+
+  db:
+    image: mysql:8.0
+    container_name: fontes-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - fontes-mysql-volume:/var/lib/mysql
+    networks:
+      - fontes
+
+  nginx:
+    image: fontes-webserver-img
+    container_name: fontes-webserver
+    restart: unless-stopped
+    build:
+      context: ./
+      dockerfile: nginx.Dockerfile
+    ports:
+      - "8000:80"
+      - "8001:443"
+    networks:
+      - fontes
+
+networks:
+  fontes:
+    driver: bridge
+
+volumes:
+  fontes-mysql-volume:

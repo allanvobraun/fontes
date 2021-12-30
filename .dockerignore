@@ -1,0 +1,14 @@
+.git
+.github
+.idea
+.editorconfig
+.phpstorm.meta.php
+_ide_helper.php
+_ide_helper_models.php
+node_modules
+vendor
+storage/framework/cache/**
+storage/framework/sessions/**
+storage/framework/views/**
+public/css/**
+public/js/**
