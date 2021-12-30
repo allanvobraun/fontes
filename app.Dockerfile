@@ -12,33 +12,29 @@ RUN yarn run build
 RUN npm prune --production
 
 
-FROM php:7.4-fpm AS BUILD_PHP
+FROM php:7.4-fpm
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
     curl \
+    libpng-dev \
+    libonig-dev \
+    libxml2-dev \
     zip \
     unzip
 
+# Install PHP extensions
+RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Set working directory
-WORKDIR /usr/app
-
-COPY --from=BUILD_VUE /usr/app /usr/app
-
-
-RUN composer install --no-dev
-
-
-FROM php:7.4-fpm-alpine
-
-RUN apk add --no-cache libpng-dev libxml2-dev oniguruma-dev
-RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 WORKDIR /var/www
-COPY --from=BUILD_PHP /usr/app /var/www
-RUN chown -R www-data:www-data storage/
-RUN php artisan key:generate
 
+COPY --from=BUILD_VUE /usr/app /var/www
+RUN chown -R www-data:www-data storage/
+
+
+RUN composer install
+RUN php artisan key:generate
