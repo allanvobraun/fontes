@@ -8,6 +8,7 @@ jobs:
     docker:
       # Specify the version you desire here
       - image: cimg/php:7.4
+    resource_class: small
 
     steps:
       - checkout
@@ -39,7 +40,13 @@ jobs:
 
       - run:
           name: "Run all Tests"
-          command: php artisan test
+          command: |
+            mkdir -p ~/phpunit
+            php artisan test --log-junit ~/phpunit/junit.xml tests
+          when: always
+      - store_test_results:
+          path: ~/phpunit
+
 
 
 workflows:
