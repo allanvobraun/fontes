@@ -17,26 +17,28 @@ FROM php:7.4-fpm AS BUILD_PHP
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
     curl \
-    libpng-dev \
-    libonig-dev \
-    libxml2-dev \
     zip \
     unzip
 
-# Install PHP extensions
-RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Set working directory
-WORKDIR /var/www
+WORKDIR /usr/app
 
-COPY --chown=www-data:www-data --from=BUILD_VUE /usr/app /var/www
-RUN chown -R www-data:www-data storage/
+COPY --from=BUILD_VUE /usr/app /usr/app
 
 
 RUN composer install --no-dev
-RUN php artisan key:generate
 
+
+FROM php:7.4-fpm-alpine
+
+RUN apk add --no-cache libpng-dev libxml2-dev oniguruma-dev
+RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
+WORKDIR /var/www
+COPY --from=BUILD_PHP /usr/app /var/www
+RUN chown -R www-data:www-data storage/
+RUN php artisan key:generate
 

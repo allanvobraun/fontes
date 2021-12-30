@@ -3,12 +3,14 @@
 .idea
 .editorconfig
 .phpstorm.meta.php
+README.MD
 _ide_helper.php
 _ide_helper_models.php
 node_modules
 vendor
 storage/framework/cache/**
-storage/framework/sessions/**
+storage/framework/sessions/**ls
 storage/framework/views/**
+storage/framework/testing/**
 public/css/**
 public/js/**
