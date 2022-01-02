@@ -131,7 +131,7 @@ jobs:
             aws ecr-public get-login-password --region $<<parameters.region>> --profile <<parameters.profile-name>> | docker login --username AWS --password-stdin $<<parameters.account-url>>
 
       - setup_remote_docker:
-          version: 19.03.13
+          version: 20.10.6
           docker_layer_caching: false
 
       - run:
