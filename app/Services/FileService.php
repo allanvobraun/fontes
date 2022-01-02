@@ -14,7 +14,7 @@ class FileService
         $files = self::getWalpaperOptions();
         $index = array_rand($files, 1);
         $image = $files[$index];
-        return env('FTP_HTTP_URL') . $image;
+        return config('app.ftp-url') . $image;
     }
 
     public static function getWalpaperOptions(): array
