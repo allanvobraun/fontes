@@ -111,6 +111,7 @@ jobs:
         description: A comma-separated string containing docker image tags to build and push (default = latest)
 
     steps:
+      - checkout
       - run:
           name: Confirm that environment variables are set
           command: |
@@ -128,7 +129,6 @@ jobs:
           name: Log into Amazon ECR
           command: |
             aws ecr-public get-login-password --region $<<parameters.region>> --profile <<parameters.profile-name>> | docker login --username AWS --password-stdin $<<parameters.account-url>>
-      - checkout
 
       - setup_remote_docker:
           version: 19.03.13
@@ -156,8 +156,6 @@ jobs:
               docker push $<<parameters.account-url>>/<<parameters.repo>>:${tag}
             done
 
-
-
 workflows:
   build_and_test:
     jobs:
@@ -165,7 +163,6 @@ workflows:
   build_and_deploy:
     jobs:
       - build-and-push-image:
-          path: .
           repo: "fontes"
           tag: "latest,${CIRCLE_SHA1:0:8}"
 
