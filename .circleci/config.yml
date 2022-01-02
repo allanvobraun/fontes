@@ -165,6 +165,7 @@ workflows:
   build_and_deploy:
     jobs:
       - build-and-push-image:
+          path: .
           repo: "fontes"
           tag: "latest,${CIRCLE_SHA1:0:8}"
 
