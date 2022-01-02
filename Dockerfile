@@ -10,7 +10,7 @@ RUN yarn run build
 
 FROM webdevops/php-nginx:7.4-alpine
 
-RUN apk add oniguruma-dev postgresql-dev libxml2-dev
+RUN apk add oniguruma-dev libxml2-dev
 RUN docker-php-ext-install \
         bcmath \
         ctype \
@@ -18,8 +18,6 @@ RUN docker-php-ext-install \
         json \
         mbstring \
         pdo_mysql \
-        pdo_pgsql \
-        tokenizer \
         xml
 
 # Copy Composer binary from the Composer official Docker image
