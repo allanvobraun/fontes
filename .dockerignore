@@ -10,8 +10,7 @@ _ide_helper_models.php
 node_modules
 vendor
 storage/framework/cache/**
-storage/framework/sessions/**ls
+storage/framework/sessions/**
 storage/framework/views/**
-storage/framework/testing/**
 public/css/**
 public/js/**
