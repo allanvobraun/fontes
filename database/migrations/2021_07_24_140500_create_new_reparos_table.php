@@ -13,9 +13,6 @@ class CreateNewReparosTable extends Migration
      */
     public function up()
     {
-        if (App::environment(['production'])) {
-            DB::statement('SET SESSION sql_require_primary_key=0');
-        }
         Schema::create('reparos', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('fonte_id');
