@@ -2,7 +2,7 @@ version: "3.7"
 services:
 
   app:
-    image: allan/fontes-app:latest
+    image: public.ecr.aws/t6b6n7l9/fontes:latest
     container_name: fontes-app
     restart: unless-stopped
     tty: true

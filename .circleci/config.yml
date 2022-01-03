@@ -3,6 +3,10 @@
 # Check https://circleci.com/docs/2.0/language-php/ for more details
 #
 version: 2.1
+executors:
+  python:
+    docker:
+      - image: circleci/python
 orbs:
   aws-cli: circleci/aws-cli@2.0.0
 jobs:
@@ -156,6 +160,43 @@ jobs:
               docker push $<<parameters.account-url>>/<<parameters.repo>>:${tag}
             done
 
+  deploy:
+    description: Roda o docker compose no servidor com a nova imagem
+    docker:
+      - image: cimg/python:3.8
+
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - ansible-cache
+      - run:
+          name: Install Dependencies
+          command: |
+            python3 -m venv env
+            . env/bin/activate
+            pip install ansible
+      - save_cache:
+          key: ansible-cache
+          paths:
+            - "env"
+      - run:
+          name: Set inventory and key
+          command: |
+            mkdir .ansible-playbook-circleci
+            echo "$ANSIBLE_INVENTORY" | base64 -di > .ansible-playbook-circleci/inventory
+            echo "$ANSIBLE_SSH_KEY" | base64 -di > .ansible-playbook-circleci/private-key
+            chmod 600 .ansible-playbook-circleci/private-key
+
+      - run:
+          name: Deploy to production
+          command: |
+            . env/bin/activate
+            ansible-playbook -i .ansible-playbook-circleci/inventory --private-key .ansible-playbook-circleci/private-key ansible/ansible-deploy.yaml
+          environment:
+            ANSIBLE_HOST_KEY_CHECKING: False
+
+
 workflows:
   build_and_test:
     jobs:
@@ -163,6 +204,16 @@ workflows:
   build_and_deploy:
     jobs:
       - build-and-push-image:
+          filters:
+            branches:
+              only: main
           repo: "fontes"
           tag: "latest,${CIRCLE_SHA1:0:8}"
+      - deploy:
+          requires:
+            - build-and-push-image
+  deploy:
+    jobs:
+      - deploy
+
 

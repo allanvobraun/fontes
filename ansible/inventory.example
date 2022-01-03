@@ -1,0 +1,5 @@
+all:
+  hosts:
+    web:
+      ansible_user: ansible
+      ansible_host: xxx.xxx.xxx.xxx

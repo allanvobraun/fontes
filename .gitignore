@@ -197,3 +197,5 @@ public/js/*
 _ide_helper.php
 _ide_helper_models.php
 /.env.prod
+ansible/inventory
+ansible/ansible.cfg
