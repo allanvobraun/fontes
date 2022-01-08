@@ -29,10 +29,6 @@ COPY . .
 COPY --from=VUE_BUILD /app/public ./public
 
 RUN composer install --no-interaction --optimize-autoloader
-# Optimizing Configuration loading
-RUN php artisan config:cache
-# Optimizing Route loading
-RUN php artisan route:cache
 
 # nginx
 COPY docker/nginx/vhost.conf /opt/docker/etc/nginx/vhost.conf
