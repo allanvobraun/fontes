@@ -204,16 +204,13 @@ workflows:
   build_and_deploy:
     jobs:
       - build-and-push-image:
-#          filters:
-#            branches:
-#              only: main
+          filters:
+            branches:
+              only: master
           repo: "fontes"
           tag: "latest,${CIRCLE_SHA1:0:8}"
       - deploy:
           requires:
             - build-and-push-image
-#  deploy:
-#    jobs:
-#      - deploy
 
 
