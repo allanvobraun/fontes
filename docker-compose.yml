@@ -1,0 +1,31 @@
+version: "3.7"
+services:
+
+  app:
+    image: public.ecr.aws/t6b6n7l9/fontes:latest
+    container_name: fontes-app
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "9000:80"
+      - "9001:443"
+
+  db:
+    image: mysql:8.0
+    container_name: fontes-db
+    restart: unless-stopped
+    tty: true
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - fontes-mysql-volume:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+volumes:
+  fontes-mysql-volume:

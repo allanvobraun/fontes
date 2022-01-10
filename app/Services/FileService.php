@@ -14,14 +14,25 @@ class FileService
         $files = self::getWalpaperOptions();
         $index = array_rand($files, 1);
         $image = $files[$index];
-        return env('FTP_HTTP_URL') . $image;
+        return self::getUrlForImage($image);
+    }
+
+    private static function getUrlForImage(string $image)
+    {
+        $chacheKey = 'walpapers_url_'. $image;
+        return Cache::get($chacheKey, function () use ($image, $chacheKey) {
+            $tempUrl = Storage::disk('s3')->temporaryUrl($image, now()->addHours(24));
+            Cache::add($chacheKey, $tempUrl, now()->addHours(24));
+            return $tempUrl;
+        });
     }
 
     public static function getWalpaperOptions(): array
     {
-        return Cache::get('walpapers_ftp', function () {
-            $filesFromFtp = Storage::disk('ftp')->files('walpapers');
-            Cache::add('walpapers_ftp', $filesFromFtp, now()->addHours(24));
+        return Cache::get('walpapers_options', function () {
+            $filesFromFtp = Storage::disk('s3')->files('walpapers');
+
+            Cache::add('walpapers_options', $filesFromFtp, now()->addHours(24));
             return $filesFromFtp;
         });
     }

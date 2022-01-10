@@ -1,0 +1,43 @@
+---
+- name: Deploy com docker compose
+  hosts: all
+  become_user: deploy
+  any_errors_fatal: true
+  tasks:
+    - name: Copy docker-compose
+      copy:
+        src: ../docker-compose.yml
+        dest: "{{ lookup('env', 'DEPLOY_PATH') }}/docker-compose.yml"
+    - name: Download env file
+      amazon.aws.aws_s3:
+        bucket: "{{ lookup('env', 'AWS_BUCKET') }}"
+        object: .env.prod
+        dest: "{{ lookup('env', 'DEPLOY_PATH') }}/.env"
+        mode: get
+        aws_access_key: "{{ lookup('env', 'AWS_ACCESS_KEY_ID') }}"
+        aws_secret_key: "{{ lookup('env', 'AWS_SECRET_ACCESS_KEY') }}"
+
+    - name: Run docker-compose
+      become_user: deploy
+      docker_compose:
+        project_src: "{{ lookup('env', 'DEPLOY_PATH') }}"
+        state: present
+        pull: yes
+        recreate: always
+
+    - name: Copiar env para o docker
+      ansible.builtin.shell: docker cp "{{ lookup('env', 'DEPLOY_PATH') }}/.env" fontes-app:/app/.env
+
+    - name: Run key generate
+      community.docker.docker_container_exec:
+          container: fontes-app
+          command: /bin/sh -c "php artisan key:generate --no-interaction --force"
+    - name: Run php artisan migrate
+      community.docker.docker_container_exec:
+        container: fontes-app
+        command: /bin/sh -c "php artisan migrate --no-interaction --force"
+      register: result
+    - name: Print stdout
+      debug:
+        var: result.stdout
+
