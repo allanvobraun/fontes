@@ -1,6 +1,12 @@
 <?php
 
 return [
+    'ftp-host' => env('FTP_HOST', 'allanbraun.net'),
+    'ftp-username' => env('FTP_USERNAME'),
+    'ftp-password' => env('FTP_PASSWORD'),
+    'ftp-url' => env('FTP_HTTP_URL', 'https://ftp.allanbraun.net/fontes/'),
+    'adm-password' => env('ADM_PASSWORD'),
+    'user-password' => env('USER_PASSWORD'),
 
     /*
     |--------------------------------------------------------------------------

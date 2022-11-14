@@ -1,0 +1,216 @@
+# PHP CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-php/ for more details
+#
+version: 2.1
+executors:
+  python:
+    docker:
+      - image: circleci/python
+orbs:
+  aws-cli: circleci/aws-cli@2.0.0
+jobs:
+  test:
+    docker:
+      # Specify the version you desire here
+      - image: cimg/php:7.4
+    resource_class: small
+
+    steps:
+      - checkout
+      - run:
+          name: "Create Environment file"
+          command: |
+            mv .env.testing .env
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            # "composer.lock" can be used if it is committed to the repo
+            - v1-dependencies-{{ checksum "composer.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+
+      - run:
+          name: "Install Dependencies"
+          command: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+
+      - save_cache:
+          key: v1-dependencies-{{ checksum "composer.json" }}
+          paths:
+            - ./vendor
+
+      - run:
+          name: "Generate App key"
+          command: php artisan key:generate
+
+      - run:
+          name: "Run all Tests"
+          command: |
+            mkdir -p ~/phpunit
+            php artisan test --log-junit ~/phpunit/junit.xml tests
+          when: always
+      - store_test_results:
+          path: ~/phpunit
+
+  build-and-push-image:
+    description: build and push docker images to public AWS ECR registry
+    executor: aws-cli/default
+    parameters:
+      profile-name:
+        type: string
+        default: "default"
+        description: AWS profile name to be configured.
+
+      aws-access-key-id:
+        type: env_var_name
+        default: AWS_ACCESS_KEY_ID
+        description: >
+          AWS access key id for IAM role. Set this to the name of
+          the environment variable you will set to hold this
+          value, i.e. AWS_ACCESS_KEY.
+      aws-secret-access-key:
+        type: env_var_name
+        default: AWS_SECRET_ACCESS_KEY
+        description: >
+          AWS secret key for IAM role. Set this to the name of
+          the environment variable you will set to hold this
+          value, i.e. AWS_SECRET_ACCESS_KEY.
+      region:
+        type: env_var_name
+        default: AWS_REGION
+        description: >
+          Name of env var storing your AWS region information,
+          defaults to AWS_REGION
+      account-url:
+        type: env_var_name
+        default: AWS_ECR_ACCOUNT_URL
+        description: >
+          Env var storing Amazon ECR account URL that maps to an AWS account,
+          e.g. {awsAccountNum}.dkr.ecr.us-west-2.amazonaws.com
+          defaults to AWS_ECR_ACCOUNT_URL
+      dockerfile:
+        type: string
+        default: Dockerfile
+        description: Name of dockerfile to use. Defaults to Dockerfile.
+
+      path:
+        type: string
+        default: .
+        description: Path to the directory containing your Dockerfile and build context. Defaults to . (working directory).
+
+      extra-build-args:
+        type: string
+        default: ""
+        description: >
+          Extra flags to pass to docker build. For examples, see
+          https://docs.docker.com/engine/reference/commandline/build
+      repo:
+        type: string
+        description: Name of an Amazon ECR repository
+
+      tag:
+        type: string
+        default: "latest"
+        description: A comma-separated string containing docker image tags to build and push (default = latest)
+
+    steps:
+      - checkout
+      - run:
+          name: Confirm that environment variables are set
+          command: |
+            if [ -z "$AWS_ACCESS_KEY_ID" ]; then
+              echo "No AWS_ACCESS_KEY_ID is set. Skipping build-and-push job ..."
+              circleci-agent step halt
+            fi
+      - aws-cli/setup:
+          profile-name: <<parameters.profile-name>>
+          aws-access-key-id: <<parameters.aws-access-key-id>>
+          aws-secret-access-key: <<parameters.aws-secret-access-key>>
+          aws-region: <<parameters.region>>
+
+      - run:
+          name: Log into Amazon ECR
+          command: |
+            aws ecr-public get-login-password --region $<<parameters.region>> --profile <<parameters.profile-name>> | docker login --username AWS --password-stdin $<<parameters.account-url>>
+
+      - setup_remote_docker:
+          version: 20.10.6
+          docker_layer_caching: false
+
+      - run:
+          name: Build docker image
+          command: |
+            registry_id=$(echo $<<parameters.account-url>> | sed "s;\..*;;g")
+            docker_tag_args=""
+            IFS="," read -ra DOCKER_TAGS \<<< "<< parameters.tag >>"
+            for tag in "${DOCKER_TAGS[@]}"; do
+              docker_tag_args="$docker_tag_args -t $<<parameters.account-url>>/<<parameters.repo>>:$tag"
+            done
+            docker build \
+              <<#parameters.extra-build-args>><<parameters.extra-build-args>><</parameters.extra-build-args>> \
+              -f <<parameters.path>>/<<parameters.dockerfile>> \
+              $docker_tag_args \
+              <<parameters.path>>
+      - run:
+          name: Push image to Amazon ECR
+          command: |
+            IFS="," read -ra DOCKER_TAGS \<<< "<< parameters.tag >>"
+            for tag in "${DOCKER_TAGS[@]}"; do
+              docker push $<<parameters.account-url>>/<<parameters.repo>>:${tag}
+            done
+
+  deploy:
+    description: Roda o docker compose no servidor com a nova imagem
+    docker:
+      - image: cimg/python:3.8
+
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - ansible-cache
+      - run:
+          name: Install Dependencies
+          command: |
+            python3 -m venv env
+            . env/bin/activate
+            pip install ansible
+      - save_cache:
+          key: ansible-cache
+          paths:
+            - "env"
+      - run:
+          name: Set inventory and key
+          command: |
+            mkdir .ansible-playbook-circleci
+            echo "$ANSIBLE_INVENTORY" | base64 -di > .ansible-playbook-circleci/inventory
+            echo "$ANSIBLE_SSH_KEY" | base64 -di > .ansible-playbook-circleci/private-key
+            chmod 600 .ansible-playbook-circleci/private-key
+
+      - run:
+          name: Deploy to production
+          command: |
+            . env/bin/activate
+            ansible-playbook -i .ansible-playbook-circleci/inventory --private-key .ansible-playbook-circleci/private-key ansible/ansible-deploy.yaml
+          environment:
+            ANSIBLE_HOST_KEY_CHECKING: False
+
+
+workflows:
+  build_and_test:
+    jobs:
+      - test
+  build_and_deploy:
+    jobs:
+      - build-and-push-image:
+          filters:
+            branches:
+              only: master
+          repo: "fontes"
+          tag: "latest,${CIRCLE_SHA1:0:8}"
+      - deploy:
+          requires:
+            - build-and-push-image
+
+

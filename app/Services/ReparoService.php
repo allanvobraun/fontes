@@ -6,16 +6,20 @@ namespace App\Services;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class ReparoService
 {
-    public static function sumReparosByYear(array $years = [2020, 2021]): Collection
+    public static function sumReparosByYear(array $years): Collection
     {
+        $years = $years ?? now()->year;
         $selectQuery = ReparoService::selectByYearQuery();
+        $bindings = self::arrayToBindings($years);
         $queryResult = DB::table('reparos')
             ->selectRaw($selectQuery)
             ->groupBy('mes', 'ano')
-            ->havingBetween('ano', $years)->get();
+            ->havingRaw("ano in ($bindings)", $years)
+            ->get();
 
         return ReparoService::formatData($queryResult);
     }
@@ -42,5 +46,10 @@ class ReparoService
             return "round(sum(`valor`), 2) as valor, strftime('%m', created_at) as mes, strftime('%y', created_at) as ano";
         }
         return "round(sum(`valor`), 2) as valor, month(created_at) as mes, year(created_at) as ano";
+    }
+
+    private static function arrayToBindings(array $arr): string
+    {
+        return implode(",", array_fill(0, count($arr), '?'));
     }
 }

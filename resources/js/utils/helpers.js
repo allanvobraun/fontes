@@ -49,14 +49,6 @@ export default {
   },
 
   /**
-   * @returns {string[]}
-   */
-  getWalpapersList() {
-    const webPackRequire = require.context('wallpapers/', false, /\.webp$/);
-    return webPackRequire.keys().map(webPackRequire);
-  },
-
-  /**
    * @param {string} key
    * @param {string[]} arr
    * @returns {string}
